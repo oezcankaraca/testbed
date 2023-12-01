@@ -1,0 +1,61 @@
+name: containerlab-topology
+prefix: p2p
+
+topology:
+  nodes:
+    lecturestudioserver:
+      kind: linux
+      image: image-lecturestudioserver
+      labels:
+        role: sender
+        group: server
+      binds:
+        - /home/ozcankaraca/Desktop/mydocument.pdf:/app/mydocument.pdf
+      env:
+        TARGET_PEERS: 1,2,3,4,5
+
+    1:
+      kind: linux
+      image: image-peer
+      env:
+        SUPER_PEER: lectureStudioServer
+      labels:
+        role: receiver
+        group: peer
+        
+    2:
+      kind: linux
+      image: image-peer
+      env:
+        SUPER_PEER: lectureStudioServer
+      labels:
+        role: receiver
+        group: peer
+
+    3:
+      kind: linux
+      image: image-peer
+      env:
+        SUPER_PEER: lectureStudioServer
+      labels:
+        role: receiver
+        group: peer
+        
+    4:
+      kind: linux
+      image: image-peer
+      env:
+        SUPER_PEER: lectureStudioServer
+      labels:
+        role: receiver
+        group: peer
+        
+    5:
+      kind: linux
+      image: image-peer
+      env:
+        SUPER_PEER: lectureStudioServer
+      labels:
+        role: receiver
+        group: peer
+

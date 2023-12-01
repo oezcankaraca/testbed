@@ -1,0 +1,23 @@
+# Verwenden Sie ein Maven-Image als Basis, um die Anwendung zu bauen
+FROM maven:3.8.4-openjdk-17 AS build
+
+# Arbeitsverzeichnis im Build-Stage setzen
+WORKDIR /app
+
+# Kopieren der pom.xml und des src-Verzeichnisses
+COPY pom.xml .
+COPY src ./src
+
+# Bauen und Verpacken der Anwendung
+RUN mvn package
+
+# Starten von einem sauberen OpenJDK-Image
+FROM openjdk:17 AS runtime
+
+# Arbeitsverzeichnis im finalen Image setzen
+WORKDIR /app
+
+COPY --from=build /app/target/demo-1.0-SNAPSHOT-jar-with-dependencies.jar /app/
+
+CMD ["java", "-jar", "demo-1.0-SNAPSHOT-jar-with-dependencies.jar"]
+

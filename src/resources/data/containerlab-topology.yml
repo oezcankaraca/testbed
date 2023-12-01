@@ -1,0 +1,119 @@
+name: containerlab-topology
+prefix: p2p
+
+topology:
+  nodes:
+    lecturestudioserver:
+      kind: linux
+      image: image-lecturestudioserver
+      labels:
+        role: sender
+        group: server
+      binds:
+        - /home/ozcankaraca/Desktop/mydocument.pdf:/app/mydocument.pdf
+      env:
+        TARGET_PEERS: 1,2,3,4,5,6
+      exec:
+        - sleep 15
+      cmd: java -cp /app LectureStudioServer
+
+    5:
+      kind: linux
+      image: image-superpeer
+      env:
+        TARGET_PEERS: 7
+      labels:
+        role: relaysender
+        group: superpeer
+      cmd: java -cp /app SuperPeer
+
+    6:
+      kind: linux
+      image: image-superpeer
+      env:
+        TARGET_PEERS: 8,9,10
+      labels:
+        role: relaysender
+        group: superpeer
+      cmd: java -cp /app SuperPeer
+
+    1:
+      kind: linux
+      image: image-peer
+      env:
+        SUPER_PEER: lectureStudioServer
+      labels:
+        role: receiver
+        group: peer
+      cmd: java -cp /app Peer
+
+    2:
+      kind: linux
+      image: image-peer
+      env:
+        SUPER_PEER: lectureStudioServer
+      labels:
+        role: receiver
+        group: peer
+      cmd: java -cp /app Peer
+
+    3:
+      kind: linux
+      image: image-peer
+      env:
+        SUPER_PEER: lectureStudioServer
+      labels:
+        role: receiver
+        group: peer
+      cmd: java -cp /app Peer
+
+    4:
+      kind: linux
+      image: image-peer
+      env:
+        SUPER_PEER: lectureStudioServer
+      labels:
+        role: receiver
+        group: peer
+      cmd: java -cp /app Peer
+
+    7:
+      kind: linux
+      image: image-peer
+      env:
+        SUPER_PEER: 5
+      labels:
+        role: receiver
+        group: peer
+      cmd: java -cp /app Peer
+
+    8:
+      kind: linux
+      image: image-peer
+      env:
+        SUPER_PEER: 6
+      labels:
+        role: receiver
+        group: peer
+      cmd: java -cp /app Peer
+
+    9:
+      kind: linux
+      image: image-peer
+      env:
+        SUPER_PEER: 6
+      labels:
+        role: receiver
+        group: peer
+      cmd: java -cp /app Peer
+
+    10:
+      kind: linux
+      image: image-peer
+      env:
+        SUPER_PEER: 6
+      labels:
+        role: receiver
+        group: peer
+      cmd: java -cp /app Peer
+
