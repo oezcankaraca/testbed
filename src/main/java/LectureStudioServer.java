@@ -3,13 +3,18 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.stream.ChunkedWriteHandler;
+
 import java.io.File;
+import java.io.IOException;
+
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class LectureStudioServer {
 
@@ -24,13 +29,8 @@ public class LectureStudioServer {
         System.out.println("LectureStudioServer initialized on port " + port);
     }
 
-    private void sendFileToPeer(String peerIP) {
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+    private void sendFileToPeer(String peerIP, int peerPort) {
+
         Bootstrap b = new Bootstrap();
         b.group(group)
                 .channel(NioSocketChannel.class)
@@ -42,7 +42,7 @@ public class LectureStudioServer {
                     }
                 });
 
-        b.connect(new InetSocketAddress(peerIP, port)).addListener(future -> {
+        b.connect(new InetSocketAddress(peerIP, peerPort)).addListener(future -> {
             if (!future.isSuccess()) {
                 System.err.println("Failed to connect with peer " + peerIP + ": " + future.cause());
             } else {
@@ -59,30 +59,37 @@ public class LectureStudioServer {
         }
     }
 
-    public void sendFileToAllPeers(List<String> peerIPs) {
-        totalPeers = peerIPs.size();
+    public void sendFileToAllPeers(Map<String, Integer> peerAddresses) {
+        totalPeers = peerAddresses.size();
         System.out.println("Sending file to all peers...");
-        for (String ip : peerIPs) {
-            sendFileToPeer(ip);
+        for (Map.Entry<String, Integer> entry : peerAddresses.entrySet()) {
+            sendFileToPeer(entry.getKey(), entry.getValue());
         }
     }
 
-    private List<String> resolvePeerAddresses(String peersEnvVar) {
-        System.out.println("Resolving peer addresses...");
+    private Map<String, Integer> resolvePeerAddressesAndPorts(String peersEnvVar) throws IOException {
+        System.out.println("Resolving peer addresses and ports...");
         List<String> peerNames = peersEnvVar != null ? Arrays.asList(peersEnvVar.split(",")) : new ArrayList<>();
-        List<String> peerIPs = new ArrayList<>();
+        Map<String, Integer> peerAddresses = new HashMap<>();
 
         for (String peerName : peerNames) {
             String peerIP = resolvePeerAddress("p2p-containerlab-topology-" + peerName);
+            int peerPort = resolvePeerPort(peerName); // Verwendet die separate resolvePeerPort Methode
             if (peerIP != null) {
-                peerIPs.add(peerIP);
+                peerAddresses.put(peerIP, peerPort);
             }
         }
 
-        return peerIPs;
+        return peerAddresses;
     }
 
-    private String resolvePeerAddress(String peerName) {
+    private int resolvePeerPort(String peerName) {
+        String portEnvVar = "PEER_" + peerName + "_PORT"; // Konstruiert den Namen der Umgebungsvariablen für den Port
+        String portValue = System.getenv(portEnvVar); // Holt den Port aus der Umgebungsvariable
+        return portValue != null ? Integer.parseInt(portValue) : -1; // Konvertiert den Port-Wert in eine Integer-Zahl
+    }
+
+    private String resolvePeerAddress(String peerName) throws IOException {
         try {
             InetAddress inetAddress = InetAddress.getByName(peerName);
             System.out.println("Resolved IP for " + peerName + ": " + inetAddress.getHostAddress());
@@ -93,17 +100,16 @@ public class LectureStudioServer {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         int port = 8080; // Server listening port
         String peersEnvVar = System.getenv("TARGET_PEERS");
         LectureStudioServer server = new LectureStudioServer(port);
-        List<String> peerIPs = server.resolvePeerAddresses(peersEnvVar);
-
-        System.out.println("Peer IPs: " + peerIPs);
-        if (peerIPs.isEmpty()) {
+        Map<String, Integer> peerAddresses = server.resolvePeerAddressesAndPorts(peersEnvVar);
+        System.out.println("Peer IPs and Ports: " + peerAddresses);
+        if (peerAddresses.isEmpty()) {
             System.out.println("No peers found for file transmission.");
         } else {
-            server.sendFileToAllPeers(peerIPs);
+            server.sendFileToAllPeers(peerAddresses);
         }
     }
 }

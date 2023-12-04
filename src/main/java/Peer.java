@@ -14,7 +14,7 @@ public class Peer {
     }
 
     public void start() throws Exception {
-        Thread.sleep(5000);
+        Thread.sleep(20000);
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
