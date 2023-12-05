@@ -43,16 +43,16 @@ public class Peer {
     }
 
     public static void main(String[] args) throws Exception {
+        Thread.sleep(10000);
         System.out.println("Main-Methode gestartet.");
         int port = 8080;
         System.out.println("Peer-Instanz wird erstellt.");
-         String superPeerHost = System.getenv("SUPER_PEER"); // Hostname des SuperPeers
-        System.out.println(superPeerHost);
+        String superPeerHost = System.getenv("SUPER_PEER");
         if(superPeerHost.equals("lectureStudioServer")){
             new Peer(port).start();
         }
         else {
-            System.out.println("This peer has no superpeer from lectureStudioServer");
+            System.out.println("The superpeer of this peer is not lecturestudioserver, it is " + superPeerHost);
         }
     }
 }

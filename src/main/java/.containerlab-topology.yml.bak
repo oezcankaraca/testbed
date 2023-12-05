@@ -17,7 +17,7 @@ topology:
       binds:
         - /home/ozcankaraca/Desktop/mydocument.pdf:/app/mydocument.pdf
       env:
-        TARGET_PEERS: 1,2,3
+        TARGET_PEERS: 1,2,3,5,7,9
       ports:
         - "8080:8080"
 
@@ -36,7 +36,87 @@ topology:
       image: image-peer
       mgmt-ipv4: 172.100.100.12
       env:
-        SUPER_PEER: notlectureStudioServer
+        SUPER_PEER: lectureStudioServer
+      labels:
+        role: receiver
+        group: peer
+        
+    3:
+      kind: linux
+      image: image-peer
+      mgmt-ipv4: 172.100.100.13
+      env:
+        SUPER_PEER: lectureStudioServer
+      labels:
+        role: receiver
+        group: peer
+        
+    4:
+      kind: linux
+      image: image-peer
+      mgmt-ipv4: 172.100.100.14
+      env:
+        SUPER_PEER: 2
+      labels:
+        role: receiver
+        group: peer
+        
+    5:
+      kind: linux
+      image: image-peer
+      mgmt-ipv4: 172.100.100.15
+      env:
+        SUPER_PEER: lectureStudioServer
+      labels:
+        role: receiver
+        group: peer
+        
+    6:
+      kind: linux
+      image: image-peer
+      mgmt-ipv4: 172.100.100.16
+      env:
+        SUPER_PEER: 3
+      labels:
+        role: receiver
+        group: peer
+        
+    7:
+      kind: linux
+      image: image-peer
+      mgmt-ipv4: 172.100.100.17
+      env:
+        SUPER_PEER: lectureStudioServer
+      labels:
+        role: receiver
+        group: peer
+        
+    8:
+      kind: linux
+      image: image-peer
+      mgmt-ipv4: 172.100.100.18
+      env:
+        SUPER_PEER: 5
+      labels:
+        role: receiver
+        group: peer
+        
+    9:
+      kind: linux
+      image: image-peer
+      mgmt-ipv4: 172.100.100.19
+      env:
+        SUPER_PEER: lectureStudioServer
+      labels:
+        role: receiver
+        group: peer
+        
+    10:
+      kind: linux
+      image: image-peer
+      mgmt-ipv4: 172.100.100.20
+      env:
+        SUPER_PEER: 3
       labels:
         role: receiver
         group: peer

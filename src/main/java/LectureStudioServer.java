@@ -1,3 +1,7 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -46,10 +50,16 @@ public class LectureStudioServer {
     }
 
     public static void main(String[] args) throws Exception {
+        Thread.sleep(10000);
         System.out.println("Main-Methode des LectureStudioServers gestartet.");
         int port = 8080;
         System.out.println("LectureStudioServer-Instanz wird erstellt.");
         new LectureStudioServer(port).start();
+        String peersEnvVar = System.getenv("TARGET_PEERS");
+        List<String> myPeers = peersEnvVar != null ? Arrays.asList(peersEnvVar.split(",")) : new ArrayList<>();
+        for (String peer : myPeers) {
+            System.out.println("Data could be sent to the container p2p-containerlab-topology-" + peer);
+        }
     }
 
 }
