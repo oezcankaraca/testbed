@@ -1,6 +1,7 @@
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -19,10 +20,16 @@ public class FileReceiverHandler extends SimpleChannelInboundHandler<ByteBuf> {
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
         try {
+            // Stellen Sie sicher, dass der Ordner existiert
+            if (!file.getParentFile().exists()) {
+                file.getParentFile().mkdirs();
+            }
+
             if (!file.exists()) {
                 file.createNewFile();
                 System.out.println("File created: " + file.getAbsolutePath());
             }
+
             fileOutputStream = new FileOutputStream(file);
             System.out.println("File output stream opened for " + file.getAbsolutePath());
         } catch (IOException e) {
@@ -48,31 +55,27 @@ public class FileReceiverHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
+        closeFileStream();
+        System.out.println("Total received bytes: " + totalReceivedBytes); // Gesamtzahl der empfangenen Bytes ausgeben
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+        closeFileStream();
+        System.err.println("An exception occurred: " + cause.getMessage());
+        ctx.close();
+        cause.printStackTrace();
+    }
+
+    private void closeFileStream() {
         try {
             if (fileOutputStream != null) {
                 fileOutputStream.close();
                 System.out.println("File output stream closed.");
-                System.out.println("Total received bytes: " + totalReceivedBytes); // Gesamtzahl der empfangenen Bytes ausgeben
             }
         } catch (IOException e) {
             System.err.println("Error while closing file output stream: " + e.getMessage());
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        if (fileOutputStream != null) {
-            try {
-                fileOutputStream.close();
-                System.out.println("File output stream closed due to an exception.");
-            } catch (IOException e) {
-                System.err.println("Error while closing file output stream after an exception: " + e.getMessage());
-                e.printStackTrace();
-            }
-        }
-        System.err.println("An exception occurred: " + cause.getMessage());
-        ctx.close();
-        cause.printStackTrace();
     }
 }

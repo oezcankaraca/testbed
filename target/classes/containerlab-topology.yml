@@ -1,81 +1,37 @@
 name: containerlab-topology
 prefix: p2p
 
+mgmt:
+  network: fixedips
+  ipv4-subnet: 172.100.100.0/24
+  ipv6-subnet: 2001:172:100:100::/80
+
 topology:
   nodes:
     lecturestudioserver:
       kind: linux
       image: image-lecturestudioserver
+      mgmt-ipv4: 172.100.100.11       # set ipv4 address on management network
+      mgmt-ipv6: 2001:172:100:100::11 # set ipv6 address on management network
       labels:
         role: sender
         group: server
       binds:
         - /home/ozcankaraca/Desktop/mydocument.pdf:/app/mydocument.pdf
       env:
-        TARGET_PEERS: "1,2,3,4,5"
-        PEER_1_PORT: 8081
-        PEER_2_PORT: 8082
-        PEER_3_PORT: 8083
-        PEER_4_PORT: 8084
-        PEER_5_PORT: 8085
+        TARGET_PEERS: 1
+      ports:
+        - "8080:8080"
 
     1:
       kind: linux
       image: image-peer
-      ports:
-        - 8081:8081
+      mgmt-ipv4: 172.100.100.12       # set ipv4 address on management network
+      mgmt-ipv6: 2001:172:100:100::12 # set ipv6 address on management network
       env:
         SUPER_PEER: lectureStudioServer
-        PEER_PORT: 8081
       labels:
         role: receiver
         group: peer
 
-    2:
-      kind: linux
-      image: image-peer
-      ports:
-        - 8082:8081
-      env:
-        SUPER_PEER: lectureStudioServer
-        PEER_PORT: 8082
-      labels:
-        role: receiver
-        group: peer
-
-    3:
-      kind: linux
-      image: image-peer
-      ports:
-        - 8083:8081
-      env:
-        SUPER_PEER: lectureStudioServer
-        PEER_PORT: 8083
-      labels:
-        role: receiver
-        group: peer
-
-    4:
-      kind: linux
-      image: image-peer
-      ports:
-        - 8084:8081
-      env:
-        SUPER_PEER: lectureStudioServer
-        PEER_PORT: 8084
-      labels:
-        role: receiver
-        group: peer
-
-    5:
-      kind: linux
-      image: image-peer
-      ports:
-        - 8085:8081
-      env:
-        SUPER_PEER: lectureStudioServer
-        PEER_PORT: 8085
-      labels:
-        role: receiver
-        group: peer
 
