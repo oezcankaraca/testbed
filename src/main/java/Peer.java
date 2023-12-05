@@ -30,6 +30,7 @@ public class Peer {
              .option(ChannelOption.SO_KEEPALIVE, true);
 
             System.out.println("Verbindungsaufbau zu: "+ port);
+            Thread.sleep(5000);
             ChannelFuture f = b.connect("172.100.100.11", port);
             System.out.println("Verbindung hergestellt zu:" + port);
 

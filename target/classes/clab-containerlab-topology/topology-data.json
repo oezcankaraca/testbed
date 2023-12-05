@@ -1,0 +1,97 @@
+{
+  "name": "containerlab-topology",
+  "type": "clab",
+  "clab": {
+    "config": {
+      "prefix": "p2p",
+      "mgmt": {
+        "network": "fixedips",
+        "bridge": "br-41cd2ed0ef02",
+        "ipv4-subnet": "172.100.100.0/24",
+        "ipv4-gw": "172.100.100.1",
+        "ipv6-subnet": "2001:172:100:100::/80",
+        "ipv6-gw": "2001:172:100:100::1",
+        "mtu": 1500,
+        "external-access": true
+      }
+    }
+  },
+  "nodes": {
+    "1": {
+      "index": "0",
+      "shortname": "1",
+      "longname": "p2p-containerlab-topology-1",
+      "fqdn": "1.containerlab-topology.io",
+      "group": "",
+      "labdir": "/home/ozcankaraca/Desktop/testbed/src/main/java/clab-containerlab-topology/1",
+      "kind": "linux",
+      "image": "image-peer",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.100.100.12",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "2001:172:100:100::12",
+      "mgmt-ipv6-prefix-length": 80,
+      "mac-address": "",
+      "labels": {
+        "clab-mgmt-net-bridge": "br-41cd2ed0ef02",
+        "clab-node-group": "",
+        "clab-node-kind": "linux",
+        "clab-node-lab-dir": "/home/ozcankaraca/Desktop/testbed/src/main/java/clab-containerlab-topology/1",
+        "clab-node-name": "1",
+        "clab-node-type": "",
+        "clab-topo-file": "/home/ozcankaraca/Desktop/testbed/src/main/java/containerlab-topology.yml",
+        "containerlab": "containerlab-topology",
+        "group": "peer",
+        "role": "receiver"
+      },
+      "port-bindings": [
+      ]
+    },
+    "lecturestudioserver": {
+      "index": "1",
+      "shortname": "lecturestudioserver",
+      "longname": "p2p-containerlab-topology-lecturestudioserver",
+      "fqdn": "lecturestudioserver.containerlab-topology.io",
+      "group": "",
+      "labdir": "/home/ozcankaraca/Desktop/testbed/src/main/java/clab-containerlab-topology/lecturestudioserver",
+      "kind": "linux",
+      "image": "image-lecturestudioserver",
+      "mgmt-net": "",
+      "mgmt-intf": "",
+      "mgmt-ipv4-address": "172.100.100.11",
+      "mgmt-ipv4-prefix-length": 24,
+      "mgmt-ipv6-address": "2001:172:100:100::11",
+      "mgmt-ipv6-prefix-length": 80,
+      "mac-address": "",
+      "labels": {
+        "clab-mgmt-net-bridge": "br-41cd2ed0ef02",
+        "clab-node-group": "",
+        "clab-node-kind": "linux",
+        "clab-node-lab-dir": "/home/ozcankaraca/Desktop/testbed/src/main/java/clab-containerlab-topology/lecturestudioserver",
+        "clab-node-name": "lecturestudioserver",
+        "clab-node-type": "",
+        "clab-topo-file": "/home/ozcankaraca/Desktop/testbed/src/main/java/containerlab-topology.yml",
+        "containerlab": "containerlab-topology",
+        "group": "server",
+        "role": "sender"
+      },
+      "port-bindings": [
+        {
+          "host-ip": "0.0.0.0",
+          "host-port": 8080,
+          "port": 8080,
+          "protocol": "tcp"
+        },
+        {
+          "host-ip": "::",
+          "host-port": 8080,
+          "port": 8080,
+          "protocol": "tcp"
+        }
+      ]
+    }
+  },
+  "links": [
+  ]
+}
