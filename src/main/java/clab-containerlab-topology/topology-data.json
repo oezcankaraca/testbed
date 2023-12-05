@@ -6,7 +6,7 @@
       "prefix": "p2p",
       "mgmt": {
         "network": "fixedips",
-        "bridge": "br-753e68a9a397",
+        "bridge": "br-d4e66ef26b03",
         "ipv4-subnet": "172.100.100.0/24",
         "ipv4-gw": "172.100.100.1",
         "ipv6-subnet": "2001:172:100:100::/80",
@@ -34,7 +34,7 @@
       "mgmt-ipv6-prefix-length": 80,
       "mac-address": "",
       "labels": {
-        "clab-mgmt-net-bridge": "br-753e68a9a397",
+        "clab-mgmt-net-bridge": "br-d4e66ef26b03",
         "clab-node-group": "",
         "clab-node-kind": "linux",
         "clab-node-lab-dir": "/home/ozcankaraca/Desktop/testbed/src/main/java/clab-containerlab-topology/1",
@@ -65,7 +65,7 @@
       "mgmt-ipv6-prefix-length": 80,
       "mac-address": "",
       "labels": {
-        "clab-mgmt-net-bridge": "br-753e68a9a397",
+        "clab-mgmt-net-bridge": "br-d4e66ef26b03",
         "clab-node-group": "",
         "clab-node-kind": "linux",
         "clab-node-lab-dir": "/home/ozcankaraca/Desktop/testbed/src/main/java/clab-containerlab-topology/lecturestudioserver",
