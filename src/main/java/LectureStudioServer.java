@@ -26,7 +26,7 @@ public class LectureStudioServer {
                  @Override
                  protected void initChannel(Channel ch) {
                      System.out.println("ChannelInitializer: Pipeline-Konfiguration für den Port " + port);
-                     ch.pipeline().addLast(new FileSenderHandler("/app/mydocument.pdf", "172.100.100.12"));
+                     ch.pipeline().addLast(new FileSenderHandler("/app/mydocument.pdf"));
                  }
              })
              .option(ChannelOption.SO_BACKLOG, 128)

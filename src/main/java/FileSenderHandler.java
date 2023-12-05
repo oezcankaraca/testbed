@@ -3,18 +3,16 @@ import java.io.File;
 
 public class FileSenderHandler extends SimpleChannelInboundHandler<Object> {
     private final String filePath;
-    private final String peerIP; // Hinzufügen der Peer-IP
 
-    public FileSenderHandler(String filePath, String peerIP) {
+    public FileSenderHandler(String filePath) {
         this.filePath = filePath;
-        this.peerIP = peerIP; // Speichern der Peer-IP
     }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
         File file = new File(filePath);
         if (file.exists()) {
-            System.out.println("Sending file: " + filePath + " to peer " + peerIP);
+            System.out.println("Sending file: " + filePath);
             // Senden der Datei und Hinzufügen eines ChannelFutureListeners
             ctx.writeAndFlush(new DefaultFileRegion(file, 0, file.length())).addListener(new ChannelFutureListener() {
                 @Override

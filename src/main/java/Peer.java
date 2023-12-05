@@ -31,7 +31,7 @@ public class Peer {
 
             System.out.println("Verbindungsaufbau zu: "+ port);
             Thread.sleep(5000);
-            ChannelFuture f = b.connect("172.100.100.11", port);
+            ChannelFuture f = b.connect("172.100.100.10", port);
             System.out.println("Verbindung hergestellt zu:" + port);
 
             // Warten, bis der Channel geschlossen wird
@@ -46,6 +46,13 @@ public class Peer {
         System.out.println("Main-Methode gestartet.");
         int port = 8080;
         System.out.println("Peer-Instanz wird erstellt.");
-        new Peer(port).start();
+         String superPeerHost = System.getenv("SUPER_PEER"); // Hostname des SuperPeers
+        System.out.println(superPeerHost);
+        if(superPeerHost.equals("lectureStudioServer")){
+            new Peer(port).start();
+        }
+        else {
+            System.out.println("This peer has no superpeer from lectureStudioServer");
+        }
     }
 }

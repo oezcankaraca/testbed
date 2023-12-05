@@ -8,6 +8,8 @@ all:
     linux:
       hosts:
         p2p-containerlab-topology-1:
+          ansible_host: 172.100.100.11
+        p2p-containerlab-topology-2:
           ansible_host: 172.100.100.12
         p2p-containerlab-topology-lecturestudioserver:
-          ansible_host: 172.100.100.11
+          ansible_host: 172.100.100.10
