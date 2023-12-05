@@ -2,9 +2,19 @@ import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
+import org.apache.log4j.Level;
+
 
 public class Peer {
 
+    static {
+        // Initialisiert die Log4j-Konfiguration
+        BasicConfigurator.configure();
+        Logger.getRootLogger().setLevel(Level.ERROR); // Setzt das globale Log-Level auf ERROR
+    }
+    
     private final int port;
 
     public Peer(int port) {

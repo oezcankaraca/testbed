@@ -2,12 +2,22 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 public class LectureStudioServer {
+
+    static {
+        // Initialisiert die Log4j-Konfiguration
+        BasicConfigurator.configure();
+        Logger.getRootLogger().setLevel(Level.ERROR); // Setzt das globale Log-Level auf ERROR
+    }
 
     private final int port;
 
