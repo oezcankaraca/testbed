@@ -32,6 +32,19 @@ public class FileSenderHandler extends SimpleChannelInboundHandler<Object> {
     }
 
     @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        System.out.println("Channel inaktiv. Schließe den Channel.");
+        ctx.close(); // Schließt den Channel, wenn er inaktiv wird
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+        System.err.println("Ein Fehler ist aufgetreten: " + cause.getMessage());
+        cause.printStackTrace();
+        ctx.close(); // Schließt den Channel im Fehlerfall
+    }
+
+    @Override
     protected void channelRead0(ChannelHandlerContext ctx, Object msg) {
         // Nicht benötigt in diesem Kontext
         throw new UnsupportedOperationException("Unimplemented method 'channelRead0'");
