@@ -16,7 +16,7 @@ public class LectureStudioServer {
     static {
         // Initialisiert die Log4j-Konfiguration
         BasicConfigurator.configure();
-        Logger.getRootLogger().setLevel(Level.ERROR); // Setzt das globale Log-Level auf ERROR
+        Logger.getRootLogger().setLevel(Level.ERROR);
     }
 
     private final int port;

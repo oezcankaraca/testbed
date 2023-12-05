@@ -17,13 +17,13 @@ topology:
       binds:
         - /home/ozcankaraca/Desktop/mydocument.pdf:/app/mydocument.pdf
       env:
-        TARGET_PEERS: 1,2,3,5,7,9
+        TARGET_PEERS: 1,2,3,5,7
       ports:
         - "8080:8080"
 
     1:
       kind: linux
-      image: image-peer
+      image: image-superpeer
       mgmt-ipv4: 172.100.100.11
       env:
         SUPER_PEER: lectureStudioServer
@@ -43,7 +43,7 @@ topology:
         
     3:
       kind: linux
-      image: image-peer
+      image: image-superpeer
       mgmt-ipv4: 172.100.100.13
       env:
         SUPER_PEER: lectureStudioServer
@@ -96,7 +96,7 @@ topology:
       image: image-peer
       mgmt-ipv4: 172.100.100.18
       env:
-        SUPER_PEER: 5
+        SUPER_PEER: 1
       labels:
         role: receiver
         group: peer
@@ -106,7 +106,7 @@ topology:
       image: image-peer
       mgmt-ipv4: 172.100.100.19
       env:
-        SUPER_PEER: lectureStudioServer
+        SUPER_PEER: 1
       labels:
         role: receiver
         group: peer
