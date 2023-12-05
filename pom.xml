@@ -104,7 +104,7 @@
                     <configuration>
                         <archive>
                             <manifest>
-                                <mainClass>LectureStudioServer</mainClass>
+                                <mainClass>Peer</mainClass>
                             </manifest>
                         </archive>
                         <descriptorRefs>

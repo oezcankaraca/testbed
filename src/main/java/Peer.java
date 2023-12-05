@@ -5,38 +5,46 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 
 public class Peer {
 
-    private final String host;
     private final int port;
 
-    public Peer(String host, int port) {
-        this.host = host;
+    public Peer(int port) {
         this.port = port;
+        System.out.println("Peer-Konstruktor aufgerufen mit " + port);
     }
 
     public void start() throws Exception {
         EventLoopGroup workerGroup = new NioEventLoopGroup();
+        System.out.println("WorkerGroup erstellt.");
         try {
             Bootstrap b = new Bootstrap();
+            System.out.println("Bootstrap-Objekt erstellt.");
             b.group(workerGroup)
              .channel(NioSocketChannel.class)
              .handler(new ChannelInitializer<Channel>() {
                  @Override
                  protected void initChannel(Channel ch) {
+                     System.out.println("ChannelInitializer: Pipeline-Konfiguration.");
                      ch.pipeline().addLast(new FileReceiverHandler("/app/receivedMydocument.pdf"));
                  }
              })
              .option(ChannelOption.SO_KEEPALIVE, true);
 
-            ChannelFuture f = b.connect(host, port).sync();
+            System.out.println("Verbindungsaufbau zu: "+ port);
+            ChannelFuture f = b.connect("172.100.100.11", port);
+            System.out.println("Verbindung hergestellt zu:" + port);
+
+            // Warten, bis der Channel geschlossen wird
             f.channel().closeFuture().sync();
         } finally {
             workerGroup.shutdownGracefully();
+            System.out.println("WorkerGroup heruntergefahren.");
         }
     }
 
     public static void main(String[] args) throws Exception {
-        String host = "lecturestudioserver"; // oder der Hostname des Servers
+        System.out.println("Main-Methode gestartet.");
         int port = 8080;
-        new Peer(host, port).start();
+        System.out.println("Peer-Instanz wird erstellt.");
+        new Peer(port).start();
     }
 }

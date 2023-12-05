@@ -9,12 +9,20 @@ public class FileSenderHandler extends SimpleChannelInboundHandler<Channel> {
 
     public FileSenderHandler(String filePath) {
         this.filePath = filePath;
+        System.out.println("FileSenderHandler erstellt mit Dateipfad: " + filePath);
     }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         File file = new File(filePath);
-        ctx.writeAndFlush(new ChunkedFile(file)).addListener(ChannelFutureListener.CLOSE);
+        System.out.println("FileSenderHandler: Verbindung aktiv. Datei wird gesendet: " + file.getAbsolutePath());
+        if (file.exists() && !file.isDirectory()) {
+            ctx.writeAndFlush(new ChunkedFile(file)).addListener(ChannelFutureListener.CLOSE);
+            System.out.println("FileSenderHandler: Datei gesendet und Channel wird geschlossen.");
+        } else {
+            System.err.println("FileSenderHandler: Datei existiert nicht oder ist ein Verzeichnis.");
+            ctx.close();
+        }
     }
 
     @Override
@@ -24,6 +32,7 @@ public class FileSenderHandler extends SimpleChannelInboundHandler<Channel> {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+        System.err.println("FileSenderHandler: Ein Fehler ist aufgetreten: " + cause.getMessage());
         cause.printStackTrace();
         ctx.close();
     }
