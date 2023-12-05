@@ -68,20 +68,28 @@ public class LectureStudioServer {
             File file = new File(filePath);
             if (file.exists()) {
                 System.out.println("Sending file: " + filePath + " to peer " + peerIP);
-                ctx.writeAndFlush(new DefaultFileRegion(file, 0, file.length()));
+                // Senden der Datei und Hinzufügen eines ChannelFutureListeners
+                ctx.writeAndFlush(new DefaultFileRegion(file, 0, file.length())).addListener(new ChannelFutureListener() {
+                    @Override
+                    public void operationComplete(ChannelFuture future) {
+                        if (future.isSuccess()) {
+                            System.out.println("File sent successfully: " + filePath);
+                        } else {
+                            System.err.println("Error sending file: " + future.cause());
+                        }
+                        ctx.close(); // Schließen des Channels nach dem Senden
+                    }
+                });
             } else {
                 System.err.println("File not found: " + filePath);
                 ctx.close();
             }
         }
-
+    
         @Override
-        protected void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception {
-            // TODO Auto-generated method stub
+        protected void channelRead0(ChannelHandlerContext ctx, Object msg) {
+            // Nicht benötigt in diesem Kontext
             throw new UnsupportedOperationException("Unimplemented method 'channelRead0'");
         }
-    
-        // Rest des Codes bleibt gleich
     }
-    
 }
