@@ -60,7 +60,7 @@ topology:
       image: image-testbed
       mgmt-ipv4: 172.100.100.14
       env:
-        SUPER_PEER: 2
+        SUPER_PEER: 3
         MAIN_CLASS: Peer
       labels:
         role: receiver

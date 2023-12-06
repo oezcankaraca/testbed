@@ -29,11 +29,9 @@ public class LectureStudioServer {
     public void start() throws Exception {
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
-        System.out.println("BossGroup und WorkerGroup erstellt.");
 
         try {
             ServerBootstrap b = new ServerBootstrap();
-            System.out.println("ServerBootstrap-Objekt erstellt.");
             b.group(bossGroup, workerGroup)
              .channel(NioServerSocketChannel.class)
              .childHandler(new ChannelInitializer<Channel>() {
@@ -51,16 +49,15 @@ public class LectureStudioServer {
             System.out.println("Server gebunden an Port " + port);
 
             f.channel().closeFuture().sync();
-            System.out.println("Server-Channel geschlossen.");
+
         } finally {
             workerGroup.shutdownGracefully();
             bossGroup.shutdownGracefully();
-            System.out.println("BossGroup und WorkerGroup heruntergefahren.");
         }
     }
 
     public static void main(String[] args) throws Exception {
-        Thread.sleep(10000);
+        Thread.sleep(20000);
         System.out.println("Main-Methode des LectureStudioServers gestartet.");
         String peersEnvVar = System.getenv("TARGET_PEERS");
         List<String> myPeers = peersEnvVar != null ? Arrays.asList(peersEnvVar.split(",")) : new ArrayList<>();
@@ -69,8 +66,9 @@ public class LectureStudioServer {
             System.out.println("Data is going to be sent to the container p2p-containerlab-topology-" + peer);
         }
         int port = 8080;
-        System.out.println("LectureStudioServer-Instanz wird erstellt.");
         new LectureStudioServer(port).start();
+
+        Thread.sleep(5000000);
     }
 
 }

@@ -54,7 +54,6 @@ public class SuperPeer {
         } finally {
             workerGroup.shutdownGracefully();
             bossGroup.shutdownGracefully();
-            System.out.println("Server-WorkerGroup und BossGroup heruntergefahren.");
         }
     }
 
@@ -81,13 +80,12 @@ public class SuperPeer {
             System.out.println("Client-Channel zu:" + clientPort + " geschlossen.");
         } finally {
             workerGroup.shutdownGracefully();
-            System.out.println("Client-WorkerGroup heruntergefahren.");
         }
     }
 
     public static void main(String[] args) throws Exception {
-        Thread.sleep(10000);
-        System.out.println("SuperPeer Main-Methode gestartet.");
+        Thread.sleep(20000);
+        System.out.println("Main-Methode des SuperPeer gestartet.");
         int serverPort = 9090; // Port für den Server-Teil
         int clientPort = 8080; // Port für den Client-Teil
         String filePathToSend = "/app/receivedMydocumentFromLectureStudioServer.pdf";
@@ -113,6 +111,8 @@ public class SuperPeer {
                 e.printStackTrace();
             }
         }).start();
+
+        Thread.sleep(5000000);
         
         }
     }

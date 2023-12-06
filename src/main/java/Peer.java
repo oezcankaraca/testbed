@@ -21,22 +21,27 @@ public class Peer {
 
     public Peer(int port) {
         this.port = port;
-        System.out.println("Peer-Konstruktor aufgerufen mit " + port);
+        if(port == 808)
+        {
+            System.out.println("Peer-Konstruktor aufgerufen mit lectureStudioServer und " + port);
+        } else if (port == 9090)
+        {
+            System.out.println("Peer-Konstruktor aufgerufen mit superPeer und " + port);
+        }
+        
     }
 
     public void startLectureStudioServer() throws Exception {
         EventLoopGroup workerGroup = new NioEventLoopGroup();
-        System.out.println("WorkerGroup erstellt.");
         try {
             Bootstrap b = new Bootstrap();
-            System.out.println("Bootstrap-Objekt erstellt.");
             b.group(workerGroup)
                     .channel(NioSocketChannel.class)
                     .handler(new ChannelInitializer<Channel>() {
                         @Override
                         protected void initChannel(Channel ch) {
                             System.out.println("ChannelInitializer: Pipeline-Konfiguration.");
-                            ch.pipeline().addLast(new FileReceiverHandler("/app/receivedMydocument.pdf"));
+                            ch.pipeline().addLast(new FileReceiverHandler("/app/receivedMydocumentFromLectureStudioServer.pdf"));
                         }
                     })
                     .option(ChannelOption.SO_KEEPALIVE, true);
@@ -44,29 +49,25 @@ public class Peer {
             System.out.println("Verbindungsaufbau zu: " + port);
             Thread.sleep(5000);
             ChannelFuture f = b.connect("172.100.100.10", port);
-            System.out.println("Verbindung hergestellt zu:" + port);
+            System.out.println("Verbindung hergestellt zu: " + port);
 
             // Warten, bis der Channel geschlossen wird
             f.channel().closeFuture().sync();
         } finally {
             workerGroup.shutdownGracefully();
-            System.out.println("WorkerGroup heruntergefahren.");
         }
     }
 
     public void startSuperPeer(String serverAddress) throws Exception {
         EventLoopGroup workerGroup = new NioEventLoopGroup();
-        System.out.println("WorkerGroup erstellt.");
         try {
             Bootstrap b = new Bootstrap();
-            System.out.println("Bootstrap-Objekt erstellt.");
             b.group(workerGroup)
                     .channel(NioSocketChannel.class)
                     .handler(new ChannelInitializer<Channel>() {
                         @Override
                         protected void initChannel(Channel ch) {
-                            System.out.println("ChannelInitializer: Pipeline-Konfiguration.");
-                            ch.pipeline().addLast(new FileReceiverHandler("/app/receivedMydocument.pdf"));
+                            ch.pipeline().addLast(new FileReceiverHandler("/app/receivedMydocumentFromSuperPeer.pdf"));
                         }
                     })
                     .option(ChannelOption.SO_KEEPALIVE, true);
@@ -74,19 +75,18 @@ public class Peer {
             System.out.println("Verbindungsaufbau zu: " + port + "und mit IP Adress: " + serverAddress);
             Thread.sleep(5000);
             ChannelFuture f = b.connect(serverAddress, port);
-            System.out.println("Verbindung hergestellt zu:" + port + "und mit IP Adress: " + serverAddress);
+            System.out.println("Verbindung hergestellt zu: " + port + "und mit IP Adress: " + serverAddress);
 
             // Warten, bis der Channel geschlossen wird
             f.channel().closeFuture().sync();
         } finally {
             workerGroup.shutdownGracefully();
-            System.out.println("WorkerGroup heruntergefahren.");
         }
     }
 
     public static void main(String[] args) throws Exception {
-        Thread.sleep(10000);
-        System.out.println("Main-Methode gestartet.");
+        Thread.sleep(20000);
+        System.out.println("Main-Methode des Peer gestartet.");
         int portLectureServerStudio = 8080;
         int portSuperPeer = 9090;
         System.out.println("Peer-Instanz wird erstellt.");
@@ -100,7 +100,9 @@ public class Peer {
             InetAddress inetAddress = InetAddress.getByName("p2p-containerlab-topology-" + superPeerHost);
             serverAddress = inetAddress.getHostAddress(); // Holen Sie sich die IP-Adresse aus dem
             new Peer(portSuperPeer).startSuperPeer(serverAddress);
-            System.out.println("The superpeer of this peer is not lecturestudioserver, it is " + superPeerHost);
+            System.out.println("SuperPeer von diesem Peer ist " + superPeerHost);
         }
+
+        Thread.sleep(5000000);
     }
 }
