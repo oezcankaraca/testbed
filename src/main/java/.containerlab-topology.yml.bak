@@ -27,7 +27,7 @@ topology:
       image: image-testbed
       mgmt-ipv4: 172.100.100.11
       env:
-        SUPER_PEER: lectureStudioServer
+        SUPER_PEER: lecturestudioserver
         MAIN_CLASS: SuperPeer
       labels:
         role: receiver
@@ -38,7 +38,7 @@ topology:
       image: image-testbed
       mgmt-ipv4: 172.100.100.12
       env:
-        SUPER_PEER: lectureStudioServer
+        SUPER_PEER: lecturestudioserver
         MAIN_CLASS: Peer
       labels:
         role: receiver
@@ -49,7 +49,7 @@ topology:
       image: image-testbed
       mgmt-ipv4: 172.100.100.13
       env:
-        SUPER_PEER: lectureStudioServer
+        SUPER_PEER: lecturestudioserver
         MAIN_CLASS: SuperPeer
       labels:
         role: receiver
@@ -71,7 +71,7 @@ topology:
       image: image-testbed
       mgmt-ipv4: 172.100.100.15
       env:
-        SUPER_PEER: lectureStudioServer
+        SUPER_PEER: lecturestudioserver
         MAIN_CLASS: Peer
       labels:
         role: receiver
@@ -93,7 +93,7 @@ topology:
       image: image-testbed
       mgmt-ipv4: 172.100.100.17
       env:
-        SUPER_PEER: lectureStudioServer
+        SUPER_PEER: lecturestudioserver
         MAIN_CLASS: Peer
       labels:
         role: receiver

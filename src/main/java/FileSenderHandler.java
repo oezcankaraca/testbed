@@ -33,7 +33,6 @@ public class FileSenderHandler extends SimpleChannelInboundHandler<Object> {
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("Channel inaktiv. Schließe den Channel.");
         ctx.close(); // Schließt den Channel, wenn er inaktiv wird
     }
 

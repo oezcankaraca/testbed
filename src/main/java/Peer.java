@@ -14,7 +14,7 @@ public class Peer {
     static {
         // Initialisiert die Log4j-Konfiguration
         BasicConfigurator.configure();
-        Logger.getRootLogger().setLevel(Level.ERROR); // Setzt das globale Log-Level auf ERROR
+        Logger.getRootLogger().setLevel(Level.ERROR);
     }
 
     private final int port;
@@ -40,16 +40,14 @@ public class Peer {
                     .handler(new ChannelInitializer<Channel>() {
                         @Override
                         protected void initChannel(Channel ch) {
-                            System.out.println("ChannelInitializer: Pipeline-Konfiguration.");
                             ch.pipeline().addLast(new FileReceiverHandler("/app/receivedMydocumentFromLectureStudioServer.pdf"));
                         }
                     })
                     .option(ChannelOption.SO_KEEPALIVE, true);
 
-            System.out.println("Verbindungsaufbau zu: " + port);
             Thread.sleep(5000);
             ChannelFuture f = b.connect("172.100.100.10", port);
-            System.out.println("Verbindung hergestellt zu: " + port);
+            System.out.println("Verbindung hergestellt zu: " + port + "und mit lecturestudioserver");
 
             // Warten, bis der Channel geschlossen wird
             f.channel().closeFuture().sync();
@@ -58,7 +56,7 @@ public class Peer {
         }
     }
 
-    public void startSuperPeer(String serverAddress) throws Exception {
+    public void startSuperPeer(String serverAddress, String superPeerHost) throws Exception {
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
             Bootstrap b = new Bootstrap();
@@ -72,10 +70,9 @@ public class Peer {
                     })
                     .option(ChannelOption.SO_KEEPALIVE, true);
 
-            System.out.println("Verbindungsaufbau zu: " + port + "und mit IP Adress: " + serverAddress);
             Thread.sleep(5000);
             ChannelFuture f = b.connect(serverAddress, port);
-            System.out.println("Verbindung hergestellt zu: " + port + "und mit IP Adress: " + serverAddress);
+            System.out.println("Verbindung hergestellt zu: " + port + " und mit Peer " + superPeerHost + ", mit IP Adress: " + serverAddress);
 
             // Warten, bis der Channel geschlossen wird
             f.channel().closeFuture().sync();
@@ -93,13 +90,13 @@ public class Peer {
         String superPeerHost = System.getenv("SUPER_PEER");
         String serverAddress = null;
 
-        if (superPeerHost.equals("lectureStudioServer")) {
+        if (superPeerHost.equals("lecturestudioserver")) {
             new Peer(portLectureServerStudio).startLectureStudioServer();
         } 
         else {
             InetAddress inetAddress = InetAddress.getByName("p2p-containerlab-topology-" + superPeerHost);
             serverAddress = inetAddress.getHostAddress(); // Holen Sie sich die IP-Adresse aus dem
-            new Peer(portSuperPeer).startSuperPeer(serverAddress);
+            new Peer(portSuperPeer).startSuperPeer(serverAddress, superPeerHost);
             System.out.println("SuperPeer von diesem Peer ist " + superPeerHost);
         }
 

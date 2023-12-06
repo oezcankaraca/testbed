@@ -40,7 +40,7 @@ public class SuperPeer {
              .childHandler(new ChannelInitializer<Channel>() {
                  @Override
                  protected void initChannel(Channel ch) {
-                     System.out.println("Server: ChannelInitializer für Port " + serverPort);
+                     //System.out.println("Server: ChannelInitializer für Port " + serverPort);
                      ch.pipeline().addLast(new FileSenderHandler(filePathToSend));
                  }
              })
@@ -48,9 +48,9 @@ public class SuperPeer {
              .childOption(ChannelOption.SO_KEEPALIVE, true);
 
             ChannelFuture f = b.bind(serverPort).sync();
-            System.out.println("Server gebunden an Port " + serverPort);
+            //System.out.println("Server gebunden an Port " + serverPort);
             f.channel().closeFuture().sync();
-            System.out.println("Server-Channel auf Port " + serverPort + " geschlossen.");
+            //System.out.println("Server-Channel auf Port " + serverPort + " geschlossen.");
         } finally {
             workerGroup.shutdownGracefully();
             bossGroup.shutdownGracefully();
@@ -58,7 +58,7 @@ public class SuperPeer {
     }
 
     public void startClient() throws Exception {
-        System.out.println("Starte Client, verbinde mit Server auf Port " + clientPort);
+        //System.out.println("Starte Client, verbinde mit Server auf Port " + clientPort);
         EventLoopGroup workerGroup = new NioEventLoopGroup();
 
         try {
@@ -68,16 +68,15 @@ public class SuperPeer {
              .handler(new ChannelInitializer<Channel>() {
                  @Override
                  protected void initChannel(Channel ch) {
-                     System.out.println("Client: ChannelInitializer für Verbindung zu:" + clientPort);
+                     //System.out.println("Client: ChannelInitializer für Verbindung zu: " + clientPort);
                      ch.pipeline().addLast(new FileReceiverHandler(filePathToReceive));
                  }
              })
              .option(ChannelOption.SO_KEEPALIVE, true);
 
             ChannelFuture f = b.connect("172.100.100.10", clientPort).sync();
-            System.out.println("Client verbunden mit Server:" + clientPort);
+            //System.out.println("Client verbunden mit Server: " + clientPort);
             f.channel().closeFuture().sync();
-            System.out.println("Client-Channel zu:" + clientPort + " geschlossen.");
         } finally {
             workerGroup.shutdownGracefully();
         }
@@ -92,7 +91,6 @@ public class SuperPeer {
         String filePathToReceive = "/app/receivedMydocumentFromLectureStudioServer.pdf";
 
         SuperPeer superPeer = new SuperPeer(serverPort, clientPort, filePathToSend, filePathToReceive);
-        System.out.println("SuperPeer-Instanz erstellt.");
 
         // Starten des Client-Teils in einem separaten Thread
         new Thread(() -> {

@@ -6,7 +6,7 @@
       "prefix": "p2p",
       "mgmt": {
         "network": "fixedips",
-        "bridge": "br-be099c1fca3f",
+        "bridge": "br-3e18bc2bbf96",
         "ipv4-subnet": "172.100.100.0/24",
         "ipv4-gw": "172.100.100.1",
         "mtu": 1500,
@@ -32,7 +32,7 @@
       "mgmt-ipv6-prefix-length": 0,
       "mac-address": "",
       "labels": {
-        "clab-mgmt-net-bridge": "br-be099c1fca3f",
+        "clab-mgmt-net-bridge": "br-3e18bc2bbf96",
         "clab-node-group": "",
         "clab-node-kind": "linux",
         "clab-node-lab-dir": "/home/ozcankaraca/Desktop/testbed/src/main/java/clab-containerlab-topology/1",
@@ -63,7 +63,7 @@
       "mgmt-ipv6-prefix-length": 0,
       "mac-address": "",
       "labels": {
-        "clab-mgmt-net-bridge": "br-be099c1fca3f",
+        "clab-mgmt-net-bridge": "br-3e18bc2bbf96",
         "clab-node-group": "",
         "clab-node-kind": "linux",
         "clab-node-lab-dir": "/home/ozcankaraca/Desktop/testbed/src/main/java/clab-containerlab-topology/10",
@@ -94,7 +94,7 @@
       "mgmt-ipv6-prefix-length": 0,
       "mac-address": "",
       "labels": {
-        "clab-mgmt-net-bridge": "br-be099c1fca3f",
+        "clab-mgmt-net-bridge": "br-3e18bc2bbf96",
         "clab-node-group": "",
         "clab-node-kind": "linux",
         "clab-node-lab-dir": "/home/ozcankaraca/Desktop/testbed/src/main/java/clab-containerlab-topology/2",
@@ -125,7 +125,7 @@
       "mgmt-ipv6-prefix-length": 0,
       "mac-address": "",
       "labels": {
-        "clab-mgmt-net-bridge": "br-be099c1fca3f",
+        "clab-mgmt-net-bridge": "br-3e18bc2bbf96",
         "clab-node-group": "",
         "clab-node-kind": "linux",
         "clab-node-lab-dir": "/home/ozcankaraca/Desktop/testbed/src/main/java/clab-containerlab-topology/3",
@@ -156,7 +156,7 @@
       "mgmt-ipv6-prefix-length": 0,
       "mac-address": "",
       "labels": {
-        "clab-mgmt-net-bridge": "br-be099c1fca3f",
+        "clab-mgmt-net-bridge": "br-3e18bc2bbf96",
         "clab-node-group": "",
         "clab-node-kind": "linux",
         "clab-node-lab-dir": "/home/ozcankaraca/Desktop/testbed/src/main/java/clab-containerlab-topology/4",
@@ -187,7 +187,7 @@
       "mgmt-ipv6-prefix-length": 0,
       "mac-address": "",
       "labels": {
-        "clab-mgmt-net-bridge": "br-be099c1fca3f",
+        "clab-mgmt-net-bridge": "br-3e18bc2bbf96",
         "clab-node-group": "",
         "clab-node-kind": "linux",
         "clab-node-lab-dir": "/home/ozcankaraca/Desktop/testbed/src/main/java/clab-containerlab-topology/5",
@@ -218,7 +218,7 @@
       "mgmt-ipv6-prefix-length": 0,
       "mac-address": "",
       "labels": {
-        "clab-mgmt-net-bridge": "br-be099c1fca3f",
+        "clab-mgmt-net-bridge": "br-3e18bc2bbf96",
         "clab-node-group": "",
         "clab-node-kind": "linux",
         "clab-node-lab-dir": "/home/ozcankaraca/Desktop/testbed/src/main/java/clab-containerlab-topology/6",
@@ -249,7 +249,7 @@
       "mgmt-ipv6-prefix-length": 0,
       "mac-address": "",
       "labels": {
-        "clab-mgmt-net-bridge": "br-be099c1fca3f",
+        "clab-mgmt-net-bridge": "br-3e18bc2bbf96",
         "clab-node-group": "",
         "clab-node-kind": "linux",
         "clab-node-lab-dir": "/home/ozcankaraca/Desktop/testbed/src/main/java/clab-containerlab-topology/7",
@@ -280,7 +280,7 @@
       "mgmt-ipv6-prefix-length": 0,
       "mac-address": "",
       "labels": {
-        "clab-mgmt-net-bridge": "br-be099c1fca3f",
+        "clab-mgmt-net-bridge": "br-3e18bc2bbf96",
         "clab-node-group": "",
         "clab-node-kind": "linux",
         "clab-node-lab-dir": "/home/ozcankaraca/Desktop/testbed/src/main/java/clab-containerlab-topology/8",
@@ -311,7 +311,7 @@
       "mgmt-ipv6-prefix-length": 0,
       "mac-address": "",
       "labels": {
-        "clab-mgmt-net-bridge": "br-be099c1fca3f",
+        "clab-mgmt-net-bridge": "br-3e18bc2bbf96",
         "clab-node-group": "",
         "clab-node-kind": "linux",
         "clab-node-lab-dir": "/home/ozcankaraca/Desktop/testbed/src/main/java/clab-containerlab-topology/9",
@@ -342,7 +342,7 @@
       "mgmt-ipv6-prefix-length": 0,
       "mac-address": "",
       "labels": {
-        "clab-mgmt-net-bridge": "br-be099c1fca3f",
+        "clab-mgmt-net-bridge": "br-3e18bc2bbf96",
         "clab-node-group": "",
         "clab-node-kind": "linux",
         "clab-node-lab-dir": "/home/ozcankaraca/Desktop/testbed/src/main/java/clab-containerlab-topology/lecturestudioserver",

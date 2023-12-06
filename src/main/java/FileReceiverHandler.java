@@ -10,7 +10,7 @@ public class FileReceiverHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
     private FileOutputStream fileOutputStream;
     private File file;
-    private long totalReceivedBytes = 0; // Variable zum Zählen der insgesamt empfangenen Bytes
+    private long totalReceivedBytes = 0; 
 
     public FileReceiverHandler(String outputPath) {
         this.file = new File(outputPath);
@@ -25,7 +25,6 @@ public class FileReceiverHandler extends SimpleChannelInboundHandler<ByteBuf> {
                 System.out.println("File created: " + file.getAbsolutePath());
             }
             fileOutputStream = new FileOutputStream(file);
-            System.out.println("File output stream opened for " + file.getAbsolutePath());
         } catch (IOException e) {
             System.err.println("Error while opening file output stream: " + e.getMessage());
             ctx.close();
@@ -52,7 +51,6 @@ public class FileReceiverHandler extends SimpleChannelInboundHandler<ByteBuf> {
         try {
             if (fileOutputStream != null) {
                 fileOutputStream.close();
-                System.out.println("File output stream closed.");
                 System.out.println("Total received bytes: " + totalReceivedBytes); // Gesamtzahl der empfangenen Bytes ausgeben
             }
         } catch (IOException e) {
