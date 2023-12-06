@@ -19,6 +19,7 @@ public class SuperPeer {
     private final int clientPort;
     private final String filePathToSend;
     private final String filePathToReceive;
+    private volatile boolean fileReceived = false;
 
     public SuperPeer(int serverPort, int clientPort, String filePathToSend, String filePathToReceive) {
         this.serverPort = serverPort;
@@ -29,6 +30,9 @@ public class SuperPeer {
     }
 
     public void startServer() throws Exception {
+        while (!fileReceived) {
+            Thread.sleep(1000); // Warten, bis die Datei empfangen wurde
+        }
         System.out.println("Starte Server auf Port " + serverPort);
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
@@ -40,7 +44,6 @@ public class SuperPeer {
              .childHandler(new ChannelInitializer<Channel>() {
                  @Override
                  protected void initChannel(Channel ch) {
-                     //System.out.println("Server: ChannelInitializer für Port " + serverPort);
                      ch.pipeline().addLast(new FileSenderHandler(filePathToSend));
                  }
              })
@@ -48,9 +51,7 @@ public class SuperPeer {
              .childOption(ChannelOption.SO_KEEPALIVE, true);
 
             ChannelFuture f = b.bind(serverPort).sync();
-            //System.out.println("Server gebunden an Port " + serverPort);
             f.channel().closeFuture().sync();
-            //System.out.println("Server-Channel auf Port " + serverPort + " geschlossen.");
         } finally {
             workerGroup.shutdownGracefully();
             bossGroup.shutdownGracefully();
@@ -58,9 +59,8 @@ public class SuperPeer {
     }
 
     public void startClient() throws Exception {
-        //System.out.println("Starte Client, verbinde mit Server auf Port " + clientPort);
         EventLoopGroup workerGroup = new NioEventLoopGroup();
-
+    
         try {
             Bootstrap b = new Bootstrap();
             b.group(workerGroup)
@@ -68,15 +68,28 @@ public class SuperPeer {
              .handler(new ChannelInitializer<Channel>() {
                  @Override
                  protected void initChannel(Channel ch) {
-                     //System.out.println("Client: ChannelInitializer für Verbindung zu: " + clientPort);
                      ch.pipeline().addLast(new FileReceiverHandler(filePathToReceive));
                  }
              })
              .option(ChannelOption.SO_KEEPALIVE, true);
-
-            ChannelFuture f = b.connect("172.100.100.10", clientPort).sync();
-            //System.out.println("Client verbunden mit Server: " + clientPort);
-            f.channel().closeFuture().sync();
+    
+            int maxAttempts = 5; // Maximale Anzahl von Verbindungsversuchen
+            int attempts = 0;    // Aktuelle Anzahl von Versuchen
+            boolean connected = false;
+    
+            while (!connected && attempts < maxAttempts) {
+                try {
+                    System.out.println("Versuche, eine Verbindung herzustellen. Versuch: " + (attempts + 1));
+                    ChannelFuture f = b.connect("172.100.100.10", clientPort).sync();
+                    f.channel().closeFuture().sync();
+                    connected = true;  // Verbindung erfolgreich
+                    fileReceived = true;
+                } catch (Exception e) {
+                    attempts++;
+                    System.out.println("Verbindung fehlgeschlagen. Versuche erneut in 5 Sekunden...");
+                    Thread.sleep(5000); // 5 Sekunden Wartezeit zwischen den Versuchen
+                }
+            }
         } finally {
             workerGroup.shutdownGracefully();
         }
@@ -84,24 +97,24 @@ public class SuperPeer {
 
     public static void main(String[] args) throws Exception {
         Thread.sleep(20000);
-        System.out.println("Main-Methode des SuperPeer gestartet.");
-        int serverPort = 9090; // Port für den Server-Teil
-        int clientPort = 8080; // Port für den Client-Teil
+        System.out.println("Main-Methode des SuperPeer gestartet.\n");
+        int serverPort = 9090;
+        int clientPort = 8080;
         String filePathToSend = "/app/receivedMydocumentFromLectureStudioServer.pdf";
         String filePathToReceive = "/app/receivedMydocumentFromLectureStudioServer.pdf";
 
         SuperPeer superPeer = new SuperPeer(serverPort, clientPort, filePathToSend, filePathToReceive);
 
-        // Starten des Client-Teils in einem separaten Thread
-        new Thread(() -> {
+        Thread clientThread = new Thread(() -> {
             try {
                 superPeer.startClient();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }).start();
+        });
+        clientThread.start();
+        clientThread.join(); // Warten auf die Beendigung des Client-Threads
 
-        // Starten des Server-Teils in einem separaten Thread
         new Thread(() -> {
             try {
                 superPeer.startServer();
@@ -111,8 +124,5 @@ public class SuperPeer {
         }).start();
 
         Thread.sleep(5000000);
-        
-        }
     }
-
-
+}

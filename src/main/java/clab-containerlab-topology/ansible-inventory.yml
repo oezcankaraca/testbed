@@ -11,8 +11,40 @@ all:
           ansible_host: 172.100.100.11
         p2p-containerlab-topology-10:
           ansible_host: 172.100.100.20
+        p2p-containerlab-topology-11:
+          ansible_host: 172.100.100.21
+        p2p-containerlab-topology-12:
+          ansible_host: 172.100.100.22
+        p2p-containerlab-topology-13:
+          ansible_host: 172.100.100.23
+        p2p-containerlab-topology-14:
+          ansible_host: 172.100.100.24
+        p2p-containerlab-topology-15:
+          ansible_host: 172.100.100.25
+        p2p-containerlab-topology-16:
+          ansible_host: 172.100.100.26
+        p2p-containerlab-topology-17:
+          ansible_host: 172.100.100.27
+        p2p-containerlab-topology-18:
+          ansible_host: 172.100.100.28
+        p2p-containerlab-topology-19:
+          ansible_host: 172.100.100.29
         p2p-containerlab-topology-2:
           ansible_host: 172.100.100.12
+        p2p-containerlab-topology-20:
+          ansible_host: 172.100.100.30
+        p2p-containerlab-topology-21:
+          ansible_host: 172.100.100.31
+        p2p-containerlab-topology-22:
+          ansible_host: 172.100.100.32
+        p2p-containerlab-topology-23:
+          ansible_host: 172.100.100.33
+        p2p-containerlab-topology-24:
+          ansible_host: 172.100.100.34
+        p2p-containerlab-topology-25:
+          ansible_host: 172.100.100.35
+        p2p-containerlab-topology-26:
+          ansible_host: 172.100.100.36
         p2p-containerlab-topology-3:
           ansible_host: 172.100.100.13
         p2p-containerlab-topology-4:

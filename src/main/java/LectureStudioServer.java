@@ -14,7 +14,6 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 public class LectureStudioServer {
 
     static {
-        // Initialisiert die Log4j-Konfiguration
         BasicConfigurator.configure();
         Logger.getRootLogger().setLevel(Level.ERROR);
     }
@@ -57,7 +56,7 @@ public class LectureStudioServer {
 
     public static void main(String[] args) throws Exception {
         Thread.sleep(20000);
-        System.out.println("Main-Methode des LectureStudioServers gestartet.");
+        System.out.println("Main-Methode des LectureStudioServers gestartet.\n");
         String peersEnvVar = System.getenv("TARGET_PEERS");
         List<String> myPeers = peersEnvVar != null ? Arrays.asList(peersEnvVar.split(",")) : new ArrayList<>();
         System.out.println("Name of the containern that get the file from lecturestudioserver");
