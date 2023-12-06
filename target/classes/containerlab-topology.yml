@@ -9,7 +9,7 @@ topology:
   nodes:
     lecturestudioserver:
       kind: linux
-      image: image-lecturestudioserver
+      image: image-testbed
       mgmt-ipv4: 172.100.100.10
       labels:
         role: sender
@@ -18,105 +18,116 @@ topology:
         - /home/ozcankaraca/Desktop/mydocument.pdf:/app/mydocument.pdf
       env:
         TARGET_PEERS: 1,2,3,5,7
+        MAIN_CLASS: LectureStudioServer
       ports:
         - "8080:8080"
 
     1:
       kind: linux
-      image: image-superpeer
+      image: image-testbed
       mgmt-ipv4: 172.100.100.11
       env:
         SUPER_PEER: lectureStudioServer
+        MAIN_CLASS: SuperPeer
       labels:
         role: receiver
         group: peer
         
     2:
       kind: linux
-      image: image-peer
+      image: image-testbed
       mgmt-ipv4: 172.100.100.12
       env:
         SUPER_PEER: lectureStudioServer
+        MAIN_CLASS: Peer
       labels:
         role: receiver
         group: peer
         
     3:
       kind: linux
-      image: image-superpeer
+      image: image-testbed
       mgmt-ipv4: 172.100.100.13
       env:
         SUPER_PEER: lectureStudioServer
+        MAIN_CLASS: SuperPeer
       labels:
         role: receiver
         group: peer
         
     4:
       kind: linux
-      image: image-peer
+      image: image-testbed
       mgmt-ipv4: 172.100.100.14
       env:
         SUPER_PEER: 2
+        MAIN_CLASS: Peer
       labels:
         role: receiver
         group: peer
         
     5:
       kind: linux
-      image: image-peer
+      image: image-testbed
       mgmt-ipv4: 172.100.100.15
       env:
         SUPER_PEER: lectureStudioServer
+        MAIN_CLASS: Peer
       labels:
         role: receiver
         group: peer
         
     6:
       kind: linux
-      image: image-peer
+      image: image-testbed
       mgmt-ipv4: 172.100.100.16
       env:
         SUPER_PEER: 3
+        MAIN_CLASS: Peer
       labels:
         role: receiver
         group: peer
         
     7:
       kind: linux
-      image: image-peer
+      image: image-testbed
       mgmt-ipv4: 172.100.100.17
       env:
         SUPER_PEER: lectureStudioServer
+        MAIN_CLASS: Peer
       labels:
         role: receiver
         group: peer
         
     8:
       kind: linux
-      image: image-peer
+      image: image-testbed
       mgmt-ipv4: 172.100.100.18
       env:
         SUPER_PEER: 1
+        MAIN_CLASS: Peer
       labels:
         role: receiver
         group: peer
         
     9:
       kind: linux
-      image: image-peer
+      image: image-testbed
       mgmt-ipv4: 172.100.100.19
       env:
         SUPER_PEER: 1
+        MAIN_CLASS: Peer
       labels:
         role: receiver
         group: peer
         
     10:
       kind: linux
-      image: image-peer
+      image: image-testbed
       mgmt-ipv4: 172.100.100.20
       env:
         SUPER_PEER: 3
+        MAIN_CLASS: Peer
       labels:
         role: receiver
         group: peer
