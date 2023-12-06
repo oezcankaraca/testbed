@@ -28,31 +28,44 @@ public class LectureStudioServer {
     public void start() throws Exception {
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
-
-        try {
-            ServerBootstrap b = new ServerBootstrap();
-            b.group(bossGroup, workerGroup)
-             .channel(NioServerSocketChannel.class)
-             .childHandler(new ChannelInitializer<Channel>() {
-                 @Override
-                 protected void initChannel(Channel ch) {
-                     ch.pipeline().addLast(new FileSenderHandler("/app/mydocument.pdf"));
-                 }
-             })
-             .option(ChannelOption.SO_BACKLOG, 128)
-             .childOption(ChannelOption.SO_KEEPALIVE, true);
-
-            System.out.println("Server binding to Port " + port);
-            ChannelFuture f = b.bind(port).sync();
-            System.out.println("Server bound to Port " + port);
-
-            f.channel().closeFuture().sync();
-
-        } finally {
-            workerGroup.shutdownGracefully();
-            bossGroup.shutdownGracefully();
+    
+        int maxAttempts = 5;
+        int attempts = 0;
+        boolean bound = false;
+    
+        while (!bound && attempts < maxAttempts) {
+            try {
+                ServerBootstrap b = new ServerBootstrap();
+                b.group(bossGroup, workerGroup)
+                 .channel(NioServerSocketChannel.class)
+                 .childHandler(new ChannelInitializer<Channel>() {
+                     @Override
+                     protected void initChannel(Channel ch) {
+                         ch.pipeline().addLast(new FileSenderHandler("/app/mydocument.pdf"));
+                     }
+                 })
+                 .option(ChannelOption.SO_BACKLOG, 128)
+                 .childOption(ChannelOption.SO_KEEPALIVE, true);
+    
+                System.out.println("Attempting to bind the server to Port " + port + ". Attempt: " + (attempts + 1));
+                ChannelFuture f = b.bind(port).sync();
+                System.out.println("Server successfully bound to Port " + port);
+                f.channel().closeFuture().sync();
+                bound = true;
+            } catch (Exception e) {
+                System.out.println("Server binding failed. Retrying in 5 seconds...");
+                Thread.sleep(5000);
+                attempts++;
+            } finally {
+                workerGroup.shutdownGracefully();
+                bossGroup.shutdownGracefully();
+            }
         }
-    }
+    
+        if (!bound) {
+            System.out.println("Server could not be bound after " + maxAttempts + " attempts.");
+        }
+    }    
 
     public static void main(String[] args) throws Exception {
         Thread.sleep(20000);

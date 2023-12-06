@@ -54,8 +54,7 @@ public class Peer {
                     System.out.println("Connection successfully established to: " + port + " and with lecturestudioserver");
                 } catch (Exception e) {
                     attempts++;
-                    System.out.println("Connection failed. Trying again in 5 seconds...");
-                    Thread.sleep(5000); // 5 seconds waiting time between attempts
+                    Thread.sleep(3000); // 3 seconds waiting time between attempts
                 }
             }
             if (!connected) {
@@ -90,7 +89,7 @@ public class Peer {
                     ChannelFuture f = b.connect(serverAddress, port).sync();
                     f.channel().closeFuture().sync();
                     connected = true;  // Connection successful
-                    System.out.println("Connection successfully established to: " + port + " and with Peer " + superPeerHost + ", with IP address: " + serverAddress);
+                    System.out.println("Connection successfully established to: " + port + " and with super peer " + superPeerHost + ", with IP address: " + serverAddress);
                 } catch (Exception e) {
                     attempts++;
                     Thread.sleep(3000); // 3 seconds waiting time between attempts

@@ -17,7 +17,7 @@ topology:
       binds:
         - /home/ozcankaraca/Desktop/mydocument.pdf:/app/mydocument.pdf
       env:
-        TARGET_PEERS: 2,7,13
+        TARGET_PEERS: 1,2,3,5,7,11,13,15,18,22
         MAIN_CLASS: LectureStudioServer
       ports:
         - "8080:8080"
@@ -41,8 +41,8 @@ topology:
         SUPER_PEER: lecturestudioserver
         MAIN_CLASS: SuperPeer
       labels:
-        role: receiver
-        group: peer
+        role: receiver/sender
+        group: superpeer
         
     3:
       kind: linux
@@ -96,8 +96,8 @@ topology:
         SUPER_PEER: lecturestudioserver
         MAIN_CLASS: SuperPeer
       labels:
-        role: receiver
-        group: peer
+        role: receiver/sender
+        group: superpeer
         
     8:
       kind: linux
@@ -162,8 +162,8 @@ topology:
         SUPER_PEER: lecturestudioserver
         MAIN_CLASS: SuperPeer
       labels:
-        role: receiver
-        group: peer
+        role: receiver/sender
+        group: superpeer
         
     14:
       kind: linux

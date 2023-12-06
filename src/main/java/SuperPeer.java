@@ -86,8 +86,7 @@ public class SuperPeer {
                     fileReceived = true;
                 } catch (Exception e) {
                     attempts++;
-                    System.out.println("Connection failed. Trying again in 5 seconds...");
-                    Thread.sleep(5000); // 5 seconds waiting time between attempts
+                    Thread.sleep(3000); // 3 seconds waiting time between attempts
                 }
             }
         } finally {

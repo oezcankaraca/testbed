@@ -41,8 +41,8 @@ topology:
         SUPER_PEER: lecturestudioserver
         MAIN_CLASS: SuperPeer
       labels:
-        role: receiver
-        group: peer
+        role: receiver/sender
+        group: superpeer
         
     3:
       kind: linux
@@ -96,8 +96,8 @@ topology:
         SUPER_PEER: lecturestudioserver
         MAIN_CLASS: SuperPeer
       labels:
-        role: receiver
-        group: peer
+        role: receiver/sender
+        group: superpeer
         
     8:
       kind: linux
@@ -162,8 +162,8 @@ topology:
         SUPER_PEER: lecturestudioserver
         MAIN_CLASS: SuperPeer
       labels:
-        role: receiver
-        group: peer
+        role: receiver/sender
+        group: superpeer
         
     14:
       kind: linux
