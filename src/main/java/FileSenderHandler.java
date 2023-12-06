@@ -13,7 +13,7 @@ public class FileSenderHandler extends SimpleChannelInboundHandler<Object> {
         File file = new File(filePath);
         if (file.exists()) {
             System.out.println("Sending file: " + filePath);
-            // Senden der Datei und Hinzufügen eines ChannelFutureListeners
+            // Send the file and add a ChannelFutureListener
             ctx.writeAndFlush(new DefaultFileRegion(file, 0, file.length())).addListener(new ChannelFutureListener() {
                 @Override
                 public void operationComplete(ChannelFuture future) {
@@ -22,7 +22,7 @@ public class FileSenderHandler extends SimpleChannelInboundHandler<Object> {
                     } else {
                         System.err.println("Error sending file: " + future.cause());
                     }
-                    ctx.close(); // Schließen des Channels nach dem Senden
+                    ctx.close(); // Close the channel after sending
                 }
             });
         } else {
@@ -33,19 +33,19 @@ public class FileSenderHandler extends SimpleChannelInboundHandler<Object> {
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        ctx.close(); // Schließt den Channel, wenn er inaktiv wird
+        ctx.close(); // Close the channel when it becomes inactive
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        System.err.println("Ein Fehler ist aufgetreten: " + cause.getMessage());
+        System.err.println("An error occurred: " + cause.getMessage());
         cause.printStackTrace();
-        ctx.close(); // Schließt den Channel im Fehlerfall
+        ctx.close(); // Close the channel in case of an error
     }
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Object msg) {
-        // Nicht benötigt in diesem Kontext
+        // Not needed in this context
         throw new UnsupportedOperationException("Unimplemented method 'channelRead0'");
     }
 }

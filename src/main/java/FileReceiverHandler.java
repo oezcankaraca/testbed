@@ -14,7 +14,7 @@ public class FileReceiverHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
     public FileReceiverHandler(String outputPath) {
         this.file = new File(outputPath);
-        System.out.println("FileReceiverHandler initialisiert. Ausgabepfad: " + outputPath);
+        // System.out.println("FileReceiverHandler initialized. Output path: " + outputPath);
     }
 
     @Override
@@ -38,7 +38,7 @@ public class FileReceiverHandler extends SimpleChannelInboundHandler<ByteBuf> {
             byte[] bytes = new byte[msg.readableBytes()];
             msg.readBytes(bytes);
             fileOutputStream.write(bytes);
-            totalReceivedBytes += bytes.length; // Aktualisieren der Gesamtanzahl der empfangenen Bytes
+            totalReceivedBytes += bytes.length; // Update the total received bytes count
         } catch (IOException e) {
             System.err.println("Error while writing to file: " + e.getMessage());
             ctx.close();
@@ -51,7 +51,7 @@ public class FileReceiverHandler extends SimpleChannelInboundHandler<ByteBuf> {
         try {
             if (fileOutputStream != null) {
                 fileOutputStream.close();
-                System.out.println("Total received bytes: " + totalReceivedBytes); // Gesamtzahl der empfangenen Bytes ausgeben
+                System.out.println("Total received bytes: " + totalReceivedBytes); // Print the total received bytes
             }
         } catch (IOException e) {
             System.err.println("Error while closing file output stream: " + e.getMessage());
@@ -62,7 +62,7 @@ public class FileReceiverHandler extends SimpleChannelInboundHandler<ByteBuf> {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         closeFileStream();
-        System.err.println("Eine Ausnahme ist aufgetreten: " + cause.getMessage());
+        System.err.println("An exception occurred: " + cause.getMessage());
         ctx.close();
         cause.printStackTrace();
     }
@@ -71,10 +71,10 @@ public class FileReceiverHandler extends SimpleChannelInboundHandler<ByteBuf> {
         try {
             if (fileOutputStream != null) {
                 fileOutputStream.close();
-                System.out.println("Datei-Ausgabestream geschlossen.");
+                System.out.println("File output stream closed.");
             }
         } catch (IOException e) {
-            System.err.println("Fehler beim Schließen des Datei-Ausgabestreams: " + e.getMessage());
+            System.err.println("Error while closing file output stream: " + e.getMessage());
             e.printStackTrace();
         }
     }

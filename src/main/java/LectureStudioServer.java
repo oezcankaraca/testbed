@@ -22,7 +22,7 @@ public class LectureStudioServer {
 
     public LectureStudioServer(int port) {
         this.port = port;
-        System.out.println("LectureStudioServer-Konstruktor aufgerufen mit Port: " + port);
+        System.out.println("LectureStudioServer constructor called with Port: " + port);
     }
 
     public void start() throws Exception {
@@ -42,9 +42,9 @@ public class LectureStudioServer {
              .option(ChannelOption.SO_BACKLOG, 128)
              .childOption(ChannelOption.SO_KEEPALIVE, true);
 
-            System.out.println("Server bindet an Port " + port);
+            System.out.println("Server binding to Port " + port);
             ChannelFuture f = b.bind(port).sync();
-            System.out.println("Server gebunden an Port " + port);
+            System.out.println("Server bound to Port " + port);
 
             f.channel().closeFuture().sync();
 
@@ -56,10 +56,10 @@ public class LectureStudioServer {
 
     public static void main(String[] args) throws Exception {
         Thread.sleep(20000);
-        System.out.println("Main-Methode des LectureStudioServers gestartet.\n");
+        System.out.println("****************Main method of LectureStudioServer started****************\n");
         String peersEnvVar = System.getenv("TARGET_PEERS");
         List<String> myPeers = peersEnvVar != null ? Arrays.asList(peersEnvVar.split(",")) : new ArrayList<>();
-        System.out.println("Name of the containern that get the file from lecturestudioserver");
+        System.out.println("Name of the containers that get the file from lecturestudioserver");
         for (String peer : myPeers) {
             System.out.println("Data is going to be sent to the container p2p-containerlab-topology-" + peer);
         }

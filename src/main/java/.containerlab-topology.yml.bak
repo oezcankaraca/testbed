@@ -17,7 +17,7 @@ topology:
       binds:
         - /home/ozcankaraca/Desktop/mydocument.pdf:/app/mydocument.pdf
       env:
-        TARGET_PEERS: 1,2,3,5,7
+        TARGET_PEERS: 2,7,13
         MAIN_CLASS: LectureStudioServer
       ports:
         - "8080:8080"
