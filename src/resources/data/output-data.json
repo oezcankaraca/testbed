@@ -5,6 +5,21 @@
     },
     {
       "name": "6"
+    },
+    {
+      "name": "12"
+    },
+    {
+      "name": "16"
+    },
+    {
+      "name": "24"
+    },
+    {
+      "name": "38"
+    },
+    {
+      "name": "40"
     }
   ],
   "peer2peer": [
@@ -47,6 +62,166 @@
     {
       "sourceName": "6",
       "targetName": "10"
+    },
+    {
+      "sourceName": "6",
+      "targetName": "11"
+    },
+    {
+      "sourceName": "lectureStudioServer",
+      "targetName": "12"
+    },
+    {
+      "sourceName": "12",
+      "targetName": "13"
+    },
+    {
+      "sourceName": "12",
+      "targetName": "14"
+    },
+    {
+      "sourceName": "12",
+      "targetName": "15"
+    },
+    {
+      "sourceName": "lectureStudioServer",
+      "targetName": "16"
+    },
+    {
+      "sourceName": "16",
+      "targetName": "17"
+    },
+    {
+      "sourceName": "12",
+      "targetName": "18"
+    },
+    {
+      "sourceName": "16",
+      "targetName": "19"
+    },
+    {
+      "sourceName": "16",
+      "targetName": "20"
+    },
+    {
+      "sourceName": "12",
+      "targetName": "21"
+    },
+    {
+      "sourceName": "12",
+      "targetName": "22"
+    },
+    {
+      "sourceName": "12",
+      "targetName": "23"
+    },
+    {
+      "sourceName": "lectureStudioServer",
+      "targetName": "24"
+    },
+    {
+      "sourceName": "24",
+      "targetName": "25"
+    },
+    {
+      "sourceName": "12",
+      "targetName": "26"
+    },
+    {
+      "sourceName": "12",
+      "targetName": "27"
+    },
+    {
+      "sourceName": "16",
+      "targetName": "28"
+    },
+    {
+      "sourceName": "24",
+      "targetName": "29"
+    },
+    {
+      "sourceName": "16",
+      "targetName": "30"
+    },
+    {
+      "sourceName": "24",
+      "targetName": "31"
+    },
+    {
+      "sourceName": "12",
+      "targetName": "32"
+    },
+    {
+      "sourceName": "12",
+      "targetName": "33"
+    },
+    {
+      "sourceName": "16",
+      "targetName": "34"
+    },
+    {
+      "sourceName": "12",
+      "targetName": "35"
+    },
+    {
+      "sourceName": "24",
+      "targetName": "36"
+    },
+    {
+      "sourceName": "16",
+      "targetName": "37"
+    },
+    {
+      "sourceName": "lectureStudioServer",
+      "targetName": "38"
+    },
+    {
+      "sourceName": "38",
+      "targetName": "39"
+    },
+    {
+      "sourceName": "lectureStudioServer",
+      "targetName": "40"
+    },
+    {
+      "sourceName": "40",
+      "targetName": "41"
+    },
+    {
+      "sourceName": "24",
+      "targetName": "42"
+    },
+    {
+      "sourceName": "6",
+      "targetName": "43"
+    },
+    {
+      "sourceName": "16",
+      "targetName": "44"
+    },
+    {
+      "sourceName": "24",
+      "targetName": "45"
+    },
+    {
+      "sourceName": "6",
+      "targetName": "46"
+    },
+    {
+      "sourceName": "40",
+      "targetName": "47"
+    },
+    {
+      "sourceName": "16",
+      "targetName": "48"
+    },
+    {
+      "sourceName": "24",
+      "targetName": "49"
+    },
+    {
+      "sourceName": "24",
+      "targetName": "50"
     }
   ]
 }

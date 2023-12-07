@@ -12,7 +12,6 @@ public class FileSenderHandler extends SimpleChannelInboundHandler<Object> {
     public void channelActive(ChannelHandlerContext ctx) {
         File file = new File(filePath);
         if (file.exists()) {
-            System.out.println("Sending file: " + filePath);
             // Send the file and add a ChannelFutureListener
             ctx.writeAndFlush(new DefaultFileRegion(file, 0, file.length())).addListener(new ChannelFutureListener() {
                 @Override

@@ -17,15 +17,204 @@ topology:
       binds:
         - /home/ozcankaraca/Desktop/mydocument.pdf:/app/mydocument.pdf
       env:
-        TARGET_PEERS: 1,2,3,4,5,6
+        TARGET_PEERS: 1,12,2,24,3,4,5,16,38,6,40
         MAIN_CLASS: LectureStudioServer
       ports:
         - "8080:8080"
 
-    1:
+    44:
       kind: linux
       image: image-testbed
       mgmt-ipv4: 172.100.100.11
+      env:
+        SUPER_PEER: 16
+        MAIN_CLASS: Peer
+      labels:
+        role: receiver
+        group: peer
+
+    45:
+      kind: linux
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.12
+      env:
+        SUPER_PEER: 24
+        MAIN_CLASS: Peer
+      labels:
+        role: receiver
+        group: peer
+
+    46:
+      kind: linux
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.13
+      env:
+        SUPER_PEER: 6
+        MAIN_CLASS: Peer
+      labels:
+        role: receiver
+        group: peer
+
+    47:
+      kind: linux
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.14
+      env:
+        SUPER_PEER: 40
+        MAIN_CLASS: Peer
+      labels:
+        role: receiver
+        group: peer
+
+    48:
+      kind: linux
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.15
+      env:
+        SUPER_PEER: 16
+        MAIN_CLASS: Peer
+      labels:
+        role: receiver
+        group: peer
+
+    49:
+      kind: linux
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.16
+      env:
+        SUPER_PEER: 24
+        MAIN_CLASS: Peer
+      labels:
+        role: receiver
+        group: peer
+
+    50:
+      kind: linux
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.17
+      env:
+        SUPER_PEER: 24
+        MAIN_CLASS: Peer
+      labels:
+        role: receiver
+        group: peer
+
+    10:
+      kind: linux
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.18
+      env:
+        SUPER_PEER: 6
+        MAIN_CLASS: Peer
+      labels:
+        role: receiver
+        group: peer
+
+    11:
+      kind: linux
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.19
+      env:
+        SUPER_PEER: 6
+        MAIN_CLASS: Peer
+      labels:
+        role: receiver
+        group: peer
+
+    12:
+      kind: linux
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.20
+      env:
+        SUPER_PEER: lectureStudioServer
+        TARGET_PEERS: 22,33,23,13,35,14,15,26,27,18,21,32
+        MAIN_CLASS: SuperPeer
+      labels:
+        role: receiver/sender
+        group: superpeer
+
+    13:
+      kind: linux
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.21
+      env:
+        SUPER_PEER: 12
+        MAIN_CLASS: Peer
+      labels:
+        role: receiver
+        group: peer
+
+    14:
+      kind: linux
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.22
+      env:
+        SUPER_PEER: 12
+        MAIN_CLASS: Peer
+      labels:
+        role: receiver
+        group: peer
+
+    15:
+      kind: linux
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.23
+      env:
+        SUPER_PEER: 12
+        MAIN_CLASS: Peer
+      labels:
+        role: receiver
+        group: peer
+
+    16:
+      kind: linux
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.24
+      env:
+        SUPER_PEER: lectureStudioServer
+        TARGET_PEERS: 44,34,37,48,17,28,19,30,20
+        MAIN_CLASS: SuperPeer
+      labels:
+        role: receiver/sender
+        group: superpeer
+
+    17:
+      kind: linux
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.25
+      env:
+        SUPER_PEER: 16
+        MAIN_CLASS: Peer
+      labels:
+        role: receiver
+        group: peer
+
+    18:
+      kind: linux
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.26
+      env:
+        SUPER_PEER: 12
+        MAIN_CLASS: Peer
+      labels:
+        role: receiver
+        group: peer
+
+    19:
+      kind: linux
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.27
+      env:
+        SUPER_PEER: 16
+        MAIN_CLASS: Peer
+      labels:
+        role: receiver
+        group: peer
+
+    1:
+      kind: linux
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.28
       env:
         SUPER_PEER: lectureStudioServer
         MAIN_CLASS: Peer
@@ -36,7 +225,7 @@ topology:
     2:
       kind: linux
       image: image-testbed
-      mgmt-ipv4: 172.100.100.12
+      mgmt-ipv4: 172.100.100.29
       env:
         SUPER_PEER: lectureStudioServer
         MAIN_CLASS: Peer
@@ -47,7 +236,7 @@ topology:
     3:
       kind: linux
       image: image-testbed
-      mgmt-ipv4: 172.100.100.13
+      mgmt-ipv4: 172.100.100.30
       env:
         SUPER_PEER: lectureStudioServer
         MAIN_CLASS: Peer
@@ -58,7 +247,7 @@ topology:
     4:
       kind: linux
       image: image-testbed
-      mgmt-ipv4: 172.100.100.14
+      mgmt-ipv4: 172.100.100.31
       env:
         SUPER_PEER: lectureStudioServer
         MAIN_CLASS: Peer
@@ -69,7 +258,7 @@ topology:
     5:
       kind: linux
       image: image-testbed
-      mgmt-ipv4: 172.100.100.15
+      mgmt-ipv4: 172.100.100.32
       env:
         SUPER_PEER: lectureStudioServer
         TARGET_PEERS: 7
@@ -81,10 +270,10 @@ topology:
     6:
       kind: linux
       image: image-testbed
-      mgmt-ipv4: 172.100.100.16
+      mgmt-ipv4: 172.100.100.33
       env:
         SUPER_PEER: lectureStudioServer
-        TARGET_PEERS: 8,9,10
+        TARGET_PEERS: 11,46,8,9,10,43
         MAIN_CLASS: SuperPeer
       labels:
         role: receiver/sender
@@ -93,7 +282,7 @@ topology:
     7:
       kind: linux
       image: image-testbed
-      mgmt-ipv4: 172.100.100.17
+      mgmt-ipv4: 172.100.100.34
       env:
         SUPER_PEER: 5
         MAIN_CLASS: Peer
@@ -104,7 +293,7 @@ topology:
     8:
       kind: linux
       image: image-testbed
-      mgmt-ipv4: 172.100.100.18
+      mgmt-ipv4: 172.100.100.35
       env:
         SUPER_PEER: 6
         MAIN_CLASS: Peer
@@ -115,7 +304,7 @@ topology:
     9:
       kind: linux
       image: image-testbed
-      mgmt-ipv4: 172.100.100.19
+      mgmt-ipv4: 172.100.100.36
       env:
         SUPER_PEER: 6
         MAIN_CLASS: Peer
@@ -123,10 +312,266 @@ topology:
         role: receiver
         group: peer
 
-    10:
+    20:
       kind: linux
       image: image-testbed
-      mgmt-ipv4: 172.100.100.20
+      mgmt-ipv4: 172.100.100.37
+      env:
+        SUPER_PEER: 16
+        MAIN_CLASS: Peer
+      labels:
+        role: receiver
+        group: peer
+
+    21:
+      kind: linux
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.38
+      env:
+        SUPER_PEER: 12
+        MAIN_CLASS: Peer
+      labels:
+        role: receiver
+        group: peer
+
+    22:
+      kind: linux
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.39
+      env:
+        SUPER_PEER: 12
+        MAIN_CLASS: Peer
+      labels:
+        role: receiver
+        group: peer
+
+    23:
+      kind: linux
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.40
+      env:
+        SUPER_PEER: 12
+        MAIN_CLASS: Peer
+      labels:
+        role: receiver
+        group: peer
+
+    24:
+      kind: linux
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.41
+      env:
+        SUPER_PEER: lectureStudioServer
+        TARGET_PEERS: 45,25,36,49,29,50,31,42
+        MAIN_CLASS: SuperPeer
+      labels:
+        role: receiver/sender
+        group: superpeer
+
+    25:
+      kind: linux
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.42
+      env:
+        SUPER_PEER: 24
+        MAIN_CLASS: Peer
+      labels:
+        role: receiver
+        group: peer
+
+    26:
+      kind: linux
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.43
+      env:
+        SUPER_PEER: 12
+        MAIN_CLASS: Peer
+      labels:
+        role: receiver
+        group: peer
+
+    27:
+      kind: linux
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.44
+      env:
+        SUPER_PEER: 12
+        MAIN_CLASS: Peer
+      labels:
+        role: receiver
+        group: peer
+
+    28:
+      kind: linux
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.45
+      env:
+        SUPER_PEER: 16
+        MAIN_CLASS: Peer
+      labels:
+        role: receiver
+        group: peer
+
+    29:
+      kind: linux
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.46
+      env:
+        SUPER_PEER: 24
+        MAIN_CLASS: Peer
+      labels:
+        role: receiver
+        group: peer
+
+    30:
+      kind: linux
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.47
+      env:
+        SUPER_PEER: 16
+        MAIN_CLASS: Peer
+      labels:
+        role: receiver
+        group: peer
+
+    31:
+      kind: linux
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.48
+      env:
+        SUPER_PEER: 24
+        MAIN_CLASS: Peer
+      labels:
+        role: receiver
+        group: peer
+
+    32:
+      kind: linux
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.49
+      env:
+        SUPER_PEER: 12
+        MAIN_CLASS: Peer
+      labels:
+        role: receiver
+        group: peer
+
+    33:
+      kind: linux
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.50
+      env:
+        SUPER_PEER: 12
+        MAIN_CLASS: Peer
+      labels:
+        role: receiver
+        group: peer
+
+    34:
+      kind: linux
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.51
+      env:
+        SUPER_PEER: 16
+        MAIN_CLASS: Peer
+      labels:
+        role: receiver
+        group: peer
+
+    35:
+      kind: linux
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.52
+      env:
+        SUPER_PEER: 12
+        MAIN_CLASS: Peer
+      labels:
+        role: receiver
+        group: peer
+
+    36:
+      kind: linux
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.53
+      env:
+        SUPER_PEER: 24
+        MAIN_CLASS: Peer
+      labels:
+        role: receiver
+        group: peer
+
+    37:
+      kind: linux
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.54
+      env:
+        SUPER_PEER: 16
+        MAIN_CLASS: Peer
+      labels:
+        role: receiver
+        group: peer
+
+    38:
+      kind: linux
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.55
+      env:
+        SUPER_PEER: lectureStudioServer
+        TARGET_PEERS: 39
+        MAIN_CLASS: SuperPeer
+      labels:
+        role: receiver/sender
+        group: superpeer
+
+    39:
+      kind: linux
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.56
+      env:
+        SUPER_PEER: 38
+        MAIN_CLASS: Peer
+      labels:
+        role: receiver
+        group: peer
+
+    40:
+      kind: linux
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.57
+      env:
+        SUPER_PEER: lectureStudioServer
+        TARGET_PEERS: 47,41
+        MAIN_CLASS: SuperPeer
+      labels:
+        role: receiver/sender
+        group: superpeer
+
+    41:
+      kind: linux
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.58
+      env:
+        SUPER_PEER: 40
+        MAIN_CLASS: Peer
+      labels:
+        role: receiver
+        group: peer
+
+    42:
+      kind: linux
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.59
+      env:
+        SUPER_PEER: 24
+        MAIN_CLASS: Peer
+      labels:
+        role: receiver
+        group: peer
+
+    43:
+      kind: linux
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.60
       env:
         SUPER_PEER: 6
         MAIN_CLASS: Peer

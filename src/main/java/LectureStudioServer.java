@@ -32,6 +32,7 @@ public class LectureStudioServer {
         int maxAttempts = 100;
         int attempts = 0;
         boolean bound = false;
+        long startTime = System.currentTimeMillis(); // Start time for binding attempts
     
         while (!bound && attempts < maxAttempts) {
             try {
@@ -53,18 +54,26 @@ public class LectureStudioServer {
                 f.channel().closeFuture().sync();
                 bound = true;
             } catch (Exception e) {
-                Thread.sleep(5000);
+                Thread.sleep(1000); // 1 seconds waiting time between attempts
                 attempts++;
             } finally {
-                workerGroup.shutdownGracefully();
-                bossGroup.shutdownGracefully();
+                if (bound) {
+                    workerGroup.shutdownGracefully();
+                    bossGroup.shutdownGracefully();
+                }
             }
         }
     
-        if (!bound) {
+        long duration = System.currentTimeMillis() - startTime; // Total duration of binding attempts
+    
+        if (bound) {
+            System.out.println("Server successfully bound to Port " + port + " in " + duration / 1000 + " seconds after " + attempts + " attempts.");
+        } else {
             System.out.println("Server could not be bound after " + maxAttempts + " attempts.");
+            workerGroup.shutdownGracefully();
+            bossGroup.shutdownGracefully();
         }
-    }    
+    }        
 
     public static void main(String[] args) throws Exception {
         Thread.sleep(20000);

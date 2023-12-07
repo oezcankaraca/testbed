@@ -20,7 +20,7 @@ public class Peer {
 
     public Peer(int port) {
         this.port = port;
-        if(port == 8080) {
+        if (port == 8080) {
             System.out.println("Peer constructor called with lectureStudioServer and " + port);
         } else if (port == 9090) {
             System.out.println("Peer constructor called with superPeer and " + port);
@@ -36,34 +36,42 @@ public class Peer {
                     .handler(new ChannelInitializer<Channel>() {
                         @Override
                         protected void initChannel(Channel ch) {
-                            ch.pipeline().addLast(new FileReceiverHandler("/app/receivedMydocumentFromLectureStudioServer.pdf"));
+                            ch.pipeline().addLast(
+                                    new FileReceiverHandler("/app/receivedMydocumentFromLectureStudioServer.pdf"));
                         }
                     })
                     .option(ChannelOption.SO_KEEPALIVE, true);
-    
+
             int maxAttempts = 100; // Maximum number of connection attempts
-            int attempts = 0;    // Current number of attempts
+            int attempts = 0; // Current number of attempts
             boolean connected = false;
-    
+            long startTime = System.currentTimeMillis(); // Start time for connection attempts
+
             while (!connected && attempts < maxAttempts) {
                 try {
                     System.out.println("Attempting to connect to lecturestudioserver. Attempt: " + (attempts + 1));
                     ChannelFuture f = b.connect("172.100.100.10", port).sync();
                     f.channel().closeFuture().sync();
-                    connected = true;  // Connection successful
-                    System.out.println("Connection successfully established to: " + port + " and with lecturestudioserver");
+                    connected = true; // Connection successful
                 } catch (Exception e) {
                     attempts++;
-                    Thread.sleep(3000); // 3 seconds waiting time between attempts
+                    Thread.sleep(1000); // 1 second waiting time between attempts
                 }
             }
-            if (!connected) {
+
+            long duration = System.currentTimeMillis() - startTime; // Total duration of connection attempts
+
+            if (connected) {
+                System.out
+                        .println("Connection successfully established to: " + port + " and with lecturestudioserver in "
+                                + duration / 1000 + " seconds after " + attempts + " attempts.");
+            } else {
                 System.out.println("Connection could not be established after " + maxAttempts + " attempts.");
             }
         } finally {
             workerGroup.shutdownGracefully();
         }
-    }    
+    }
 
     public void startSuperPeer(String serverAddress, String superPeerHost) throws Exception {
         EventLoopGroup workerGroup = new NioEventLoopGroup();
@@ -78,31 +86,38 @@ public class Peer {
                         }
                     })
                     .option(ChannelOption.SO_KEEPALIVE, true);
-    
-            int maxAttempts = 5; // Maximum number of connection attempts
-            int attempts = 0;    // Current number of attempts
+
+            int maxAttempts = 100; // Maximum number of connection attempts
+            int attempts = 0; // Current number of attempts
             boolean connected = false;
-    
+            long startTime = System.currentTimeMillis(); // Start time for connection attempts
+
             while (!connected && attempts < maxAttempts) {
                 try {
                     System.out.println("Attempting to connect to: " + serverAddress + " Attempt: " + (attempts + 1));
                     ChannelFuture f = b.connect(serverAddress, port).sync();
                     f.channel().closeFuture().sync();
-                    connected = true;  // Connection successful
-                    System.out.println("Connection successfully established to: " + port + " and with super peer " + superPeerHost + ", with IP address: " + serverAddress);
+                    connected = true; // Connection successful
                 } catch (Exception e) {
                     attempts++;
-                    Thread.sleep(3000); // 3 seconds waiting time between attempts
+                    Thread.sleep(1000); // 1 second waiting time between attempts
                 }
             }
-            if (!connected) {
+
+            long duration = System.currentTimeMillis() - startTime; // Total duration of connection attempts
+
+            if (connected) {
+                System.out.println("Connection successfully established to: " + port + " and with super peer "
+                        + superPeerHost + ", with IP address: " + serverAddress + " in " + duration / 1000
+                        + " seconds after " + attempts + " attempts.");
+            } else {
                 System.out.println("Connection could not be established after " + maxAttempts + " attempts.");
             }
         } finally {
             workerGroup.shutdownGracefully();
         }
     }
-    
+
     public static void main(String[] args) throws Exception {
         Thread.sleep(20000);
         System.out.println("****************Main method of Peer started****************\n");
@@ -114,8 +129,7 @@ public class Peer {
         if (superPeerHost.equals("lectureStudioServer")) {
             System.out.println("Super peer of this peer is lecturestudioserver");
             new Peer(portLectureServerStudio).startLectureStudioServer();
-        } 
-        else {
+        } else {
             InetAddress inetAddress = InetAddress.getByName("p2p-containerlab-topology-" + superPeerHost);
             serverAddress = inetAddress.getHostAddress(); // Get the IP address from the
 
