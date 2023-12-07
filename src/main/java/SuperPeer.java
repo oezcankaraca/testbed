@@ -4,6 +4,11 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -111,7 +116,11 @@ public class SuperPeer {
         int clientPort = 8080;
         String filePathToSend = "/app/receivedMydocumentFromLectureStudioServer.pdf";
         String filePathToReceive = "/app/receivedMydocumentFromLectureStudioServer.pdf";
-
+        String peersEnvVar = System.getenv("TARGET_PEERS");
+        List<String> myPeers = peersEnvVar != null ? Arrays.asList(peersEnvVar.split(",")) : new ArrayList<>();
+        for (String peer : myPeers) {
+            System.out.println("Data is going to be sent to the container p2p-containerlab-topology-" + peer);
+        }
         SuperPeer superPeer = new SuperPeer(serverPort, clientPort, filePathToSend, filePathToReceive);
 
         Thread clientThread = new Thread(() -> {

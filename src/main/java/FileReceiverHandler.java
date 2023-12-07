@@ -22,7 +22,7 @@ public class FileReceiverHandler extends SimpleChannelInboundHandler<ByteBuf> {
         try {
             if (!file.exists()) {
                 file.createNewFile();
-                System.out.println("File created: " + file.getAbsolutePath());
+                System.out.println("\nFile created: " + file.getAbsolutePath());
             }
             fileOutputStream = new FileOutputStream(file);
         } catch (IOException e) {
@@ -47,11 +47,13 @@ public class FileReceiverHandler extends SimpleChannelInboundHandler<ByteBuf> {
     }
 
     @Override
-    public void channelInactive(ChannelHandlerContext ctx) {
+    public void channelInactive(ChannelHandlerContext ctx) throws InterruptedException {
         try {
             if (fileOutputStream != null) {
                 fileOutputStream.close();
-                System.out.println("Total received bytes: " + totalReceivedBytes); // Print the total received bytes
+                Thread.sleep(1000);
+                System.out.println("\nData received!");
+                System.out.println("Total received bytes: " + totalReceivedBytes + "\n"); // Print the total received bytes
             }
         } catch (IOException e) {
             System.err.println("Error while closing file output stream: " + e.getMessage());
@@ -71,7 +73,6 @@ public class FileReceiverHandler extends SimpleChannelInboundHandler<ByteBuf> {
         try {
             if (fileOutputStream != null) {
                 fileOutputStream.close();
-                System.out.println("File output stream closed.");
             }
         } catch (IOException e) {
             System.err.println("Error while closing file output stream: " + e.getMessage());

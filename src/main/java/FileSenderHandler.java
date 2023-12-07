@@ -16,8 +16,9 @@ public class FileSenderHandler extends SimpleChannelInboundHandler<Object> {
             // Send the file and add a ChannelFutureListener
             ctx.writeAndFlush(new DefaultFileRegion(file, 0, file.length())).addListener(new ChannelFutureListener() {
                 @Override
-                public void operationComplete(ChannelFuture future) {
+                public void operationComplete(ChannelFuture future) throws InterruptedException {
                     if (future.isSuccess()) {
+                        Thread.sleep(1000);
                         System.out.println("File sent successfully: " + filePath);
                     } else {
                         System.err.println("Error sending file: " + future.cause());

@@ -32,6 +32,7 @@ topology:
       labels:
         role: receiver
         group: peer
+
     2:
       kind: linux
       image: image-testbed
@@ -42,6 +43,7 @@ topology:
       labels:
         role: receiver
         group: peer
+
     3:
       kind: linux
       image: image-testbed
@@ -52,6 +54,7 @@ topology:
       labels:
         role: receiver
         group: peer
+
     4:
       kind: linux
       image: image-testbed
@@ -62,26 +65,31 @@ topology:
       labels:
         role: receiver
         group: peer
+
     5:
       kind: linux
       image: image-testbed
       mgmt-ipv4: 172.100.100.15
       env:
         SUPER_PEER: lectureStudioServer
+        TARGET_PEERS: 7
         MAIN_CLASS: SuperPeer
       labels:
         role: receiver/sender
         group: superpeer
+
     6:
       kind: linux
       image: image-testbed
       mgmt-ipv4: 172.100.100.16
       env:
         SUPER_PEER: lectureStudioServer
+        TARGET_PEERS: 8,9,10
         MAIN_CLASS: SuperPeer
       labels:
         role: receiver/sender
         group: superpeer
+
     7:
       kind: linux
       image: image-testbed
@@ -92,6 +100,7 @@ topology:
       labels:
         role: receiver
         group: peer
+
     8:
       kind: linux
       image: image-testbed
@@ -102,6 +111,7 @@ topology:
       labels:
         role: receiver
         group: peer
+
     9:
       kind: linux
       image: image-testbed
@@ -112,6 +122,7 @@ topology:
       labels:
         role: receiver
         group: peer
+
     10:
       kind: linux
       image: image-testbed
@@ -122,3 +133,4 @@ topology:
       labels:
         role: receiver
         group: peer
+

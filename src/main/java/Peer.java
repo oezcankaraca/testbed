@@ -112,11 +112,14 @@ public class Peer {
         String serverAddress = null;
 
         if (superPeerHost.equals("lectureStudioServer")) {
+            System.out.println("Super peer of this peer is lecturestudioserver");
             new Peer(portLectureServerStudio).startLectureStudioServer();
         } 
         else {
             InetAddress inetAddress = InetAddress.getByName("p2p-containerlab-topology-" + superPeerHost);
             serverAddress = inetAddress.getHostAddress(); // Get the IP address from the
+
+            System.out.println("Super peer of this peer is " + superPeerHost + "\n");
             new Peer(portSuperPeer).startSuperPeer(serverAddress, superPeerHost);
         }
 
