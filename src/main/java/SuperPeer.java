@@ -30,33 +30,43 @@ public class SuperPeer {
     }
 
     public void startServer() throws Exception {
-        while (!fileReceived) {
+        int maxAttempts = 100; // Maximum number of connection attempts
+        int attempts = 0;    // Current number of attempts
+    
+        while (!fileReceived && attempts < maxAttempts) {
+            System.out.println("Waiting for the file to be received. Attempt: " + (attempts + 1));
             Thread.sleep(1000); // Wait until the file is received
+            attempts++;
         }
-        System.out.println("Starting server on Port " + serverPort);
-        EventLoopGroup bossGroup = new NioEventLoopGroup();
-        EventLoopGroup workerGroup = new NioEventLoopGroup();
-
-        try {
-            ServerBootstrap b = new ServerBootstrap();
-            b.group(bossGroup, workerGroup)
-             .channel(NioServerSocketChannel.class)
-             .childHandler(new ChannelInitializer<Channel>() {
-                 @Override
-                 protected void initChannel(Channel ch) {
-                     ch.pipeline().addLast(new FileSenderHandler(filePathToSend));
-                 }
-             })
-             .option(ChannelOption.SO_BACKLOG, 128)
-             .childOption(ChannelOption.SO_KEEPALIVE, true);
-
-            ChannelFuture f = b.bind(serverPort).sync();
-            f.channel().closeFuture().sync();
-        } finally {
-            workerGroup.shutdownGracefully();
-            bossGroup.shutdownGracefully();
+    
+        if (fileReceived) {
+            System.out.println("Starting server on Port " + serverPort);
+            EventLoopGroup bossGroup = new NioEventLoopGroup();
+            EventLoopGroup workerGroup = new NioEventLoopGroup();
+    
+            try {
+                ServerBootstrap b = new ServerBootstrap();
+                b.group(bossGroup, workerGroup)
+                    .channel(NioServerSocketChannel.class)
+                    .childHandler(new ChannelInitializer<Channel>() {
+                        @Override
+                        protected void initChannel(Channel ch) {
+                            ch.pipeline().addLast(new FileSenderHandler(filePathToSend));
+                        }
+                    })
+                    .option(ChannelOption.SO_BACKLOG, 128)
+                    .childOption(ChannelOption.SO_KEEPALIVE, true);
+    
+                ChannelFuture f = b.bind(serverPort).sync();
+                f.channel().closeFuture().sync();
+            } finally {
+                workerGroup.shutdownGracefully();
+                bossGroup.shutdownGracefully();
+            }
+        } else {
+            System.out.println("File was not received after " + maxAttempts + " attempts. Server not started.");
         }
-    }
+    }    
 
     public void startClient() throws Exception {
         EventLoopGroup workerGroup = new NioEventLoopGroup();
@@ -73,7 +83,7 @@ public class SuperPeer {
              })
              .option(ChannelOption.SO_KEEPALIVE, true);
     
-            int maxAttempts = 5; // Maximum number of connection attempts
+            int maxAttempts = 100; // Maximum number of connection attempts
             int attempts = 0;    // Current number of attempts
             boolean connected = false;
     

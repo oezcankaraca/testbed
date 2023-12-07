@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class YMLGenerator {
-    private static final String pathToYAMLFile = "/home/ozcankaraca/Desktop/testbed/src/resources/data/containerlab-topology.yml";
+    private static final String pathToYAMLFile = "/home/ozcankaraca/Desktop/testbed/src/main/java/containerlab-topology.yml";
     private static final String subnet = "172.100.100.";
     private int nextIp = 11; // Startet nach der festgelegten IP des lecturestudioservers
     private HashMap<String, Set<String>> superPeerToPeersMap = new HashMap<>();

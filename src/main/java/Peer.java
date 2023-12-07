@@ -20,7 +20,7 @@ public class Peer {
 
     public Peer(int port) {
         this.port = port;
-        if(port == 808) {
+        if(port == 8080) {
             System.out.println("Peer constructor called with lectureStudioServer and " + port);
         } else if (port == 9090) {
             System.out.println("Peer constructor called with superPeer and " + port);
@@ -41,7 +41,7 @@ public class Peer {
                     })
                     .option(ChannelOption.SO_KEEPALIVE, true);
     
-            int maxAttempts = 5; // Maximum number of connection attempts
+            int maxAttempts = 100; // Maximum number of connection attempts
             int attempts = 0;    // Current number of attempts
             boolean connected = false;
     
@@ -111,7 +111,7 @@ public class Peer {
         String superPeerHost = System.getenv("SUPER_PEER");
         String serverAddress = null;
 
-        if (superPeerHost.equals("lecturestudioserver")) {
+        if (superPeerHost.equals("lectureStudioServer")) {
             new Peer(portLectureServerStudio).startLectureStudioServer();
         } 
         else {

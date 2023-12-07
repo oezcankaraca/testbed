@@ -29,7 +29,7 @@ public class LectureStudioServer {
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
     
-        int maxAttempts = 5;
+        int maxAttempts = 100;
         int attempts = 0;
         boolean bound = false;
     
