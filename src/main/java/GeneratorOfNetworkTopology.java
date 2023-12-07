@@ -9,12 +9,12 @@ import java.util.Collections;
 import java.util.List;
 
 public class GeneratorOfNetworkTopology extends CSVReaderUtils {
-    private static final int numberOfPeers = 10; // The number of peers to include in the network
+    private static final int numberOfPeers = 100; // The number of peers to include in the network
 
     public static void main(String[] args) {
-        String pathToCSV = "/home/ozcankaraca/Desktop/master-thesis-okaraca/testbed/src/resources/data/fixed-broadband-speeds-august-2019-data-25.csv";
-        String pathToNetworkStatistics = "/home/ozcankaraca/Desktop/master-thesis-okaraca/testbed/src/resources/results/network-statistics.txt";
-        String pathToInputData = "/home/ozcankaraca/Desktop/master-thesis-okaraca/testbed/src/resources/data/input-data.json";
+        String pathToCSV = "/home/ozcankaraca/Desktop/testbed/src/resources/data/fixed-broadband-speeds-august-2019-data-25.csv";
+        String pathToNetworkStatistics = "/home/ozcankaraca/Desktop/testbed/src/resources/results/network-statistics.txt";
+        String pathToInputData = "/home/ozcankaraca/Desktop/testbed/src/resources/data/input-data.json";
 
         readCsvDataAndWriteToFile(pathToCSV, pathToNetworkStatistics);
 
