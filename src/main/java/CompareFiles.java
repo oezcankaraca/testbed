@@ -4,7 +4,7 @@ import java.security.*;
 public class CompareFiles {
 
     public static void main(String[] args) {
-        final int numberOfContainers = 10; // Oder die Anzahl der Container, die Sie überprüfen möchten
+        final int numberOfContainers = 10; // Number of containers to be checked
         final String baseContainerName = "p2p-containerlab-topology-";
         final String specialContainerName = "p2p-containerlab-topology-lecturestudioserver";
         final String[] containerPaths = {
@@ -12,27 +12,36 @@ public class CompareFiles {
             "/app/receivedMydocumentFromLectureStudioServer.pdf",
             "/app/receivedMydocumentFromSuperPeer.pdf"
         };
-        final String SOURCE_FILE_DIR = "/home/ozcankaraca/Desktop/mydocument.pdf"; // Lokalen Dateipfad anpassen
+        final String SOURCE_FILE_DIR = "/home/ozcankaraca/Desktop/mydocument.pdf"; // Adjust local file path
+
+        boolean allHashesMatch = true;
 
         try {
             String originalHash = calculateFileHash(SOURCE_FILE_DIR);
             System.out.println("Original File Hash: " + originalHash);
 
-            // Prüfe speziellen Container
-            checkAndCompareHashes(specialContainerName, containerPaths, originalHash);
+            // Check special container
+            allHashesMatch &= checkAndCompareHashes(specialContainerName, containerPaths, originalHash);
 
-            // Prüfe die restlichen Container
+            // Check the remaining containers
             for (int i = 1; i <= numberOfContainers; i++) {
                 String containerName = baseContainerName + i;
-                checkAndCompareHashes(containerName, containerPaths, originalHash);
+                allHashesMatch &= checkAndCompareHashes(containerName, containerPaths, originalHash);
+            }
+
+            if (allHashesMatch) {
+                System.out.println("All containers have the same file based on the hash values.");
+            } else {
+                System.out.println("Not all containers have the same file based on the hash values.");
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private static void checkAndCompareHashes(String containerName, String[] containerPaths, String originalHash) throws IOException, InterruptedException {
+    private static boolean checkAndCompareHashes(String containerName, String[] containerPaths, String originalHash) throws IOException, InterruptedException {
         boolean fileExists = false;
+        boolean containerHashMatches = true;
         for (String containerPath : containerPaths) {
             if (doesFileExistInContainer(containerName, containerPath)) {
                 fileExists = true;
@@ -43,14 +52,17 @@ public class CompareFiles {
                     System.out.println("The hash values match for: " + containerPath);
                 } else {
                     System.out.println("Hash values do not match for: " + containerPath);
+                    containerHashMatches = false;
                 }
-                break; // Beendet die Schleife nach dem Finden der ersten vorhandenen Datei
+                break; // Stop the loop after finding the first existing file
             }
         }
 
         if (!fileExists) {
-            System.out.println("Keine der Dateien wurde im Container " + containerName + " gefunden.");
+            System.out.println("None of the files were found in the container " + containerName);
+            return false;
         }
+        return containerHashMatches;
     }
 
     private static boolean doesFileExistInContainer(String containerName, String containerFilePath) throws IOException, InterruptedException {
