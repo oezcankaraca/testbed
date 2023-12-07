@@ -76,7 +76,7 @@ public class LectureStudioServer {
     }        
 
     public static void main(String[] args) throws Exception {
-        Thread.sleep(20000);
+        Thread.sleep(10000);
         System.out.println("****************Main method of LectureStudioServer started****************\n");
         String peersEnvVar = System.getenv("TARGET_PEERS");
         List<String> myPeers = peersEnvVar != null ? Arrays.asList(peersEnvVar.split(",")) : new ArrayList<>();
