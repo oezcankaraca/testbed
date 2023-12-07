@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class GeneratorOfNetworkTopology extends CSVReaderUtils {
-    private static final int numberOfPeers = 150; // The number of peers to include in the network
+    private static final int numberOfPeers = 50; // The number of peers to include in the network
 
     public static void main(String[] args) {
         String pathToCSV = "/home/ozcankaraca/Desktop/testbed/src/resources/data/fixed-broadband-speeds-august-2019-data-25.csv";
