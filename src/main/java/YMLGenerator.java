@@ -1,130 +1,127 @@
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.*;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class YMLGenerator {
-
-    private NetworkConfigParser networkConfigParser;
-    private static final String pathToYAMLFile = "/home/ozcankaraca/Desktop/master-thesis-okaraca/testbed/src/resources/data/containerlab-topology.yml";
+    private static final String pathToYAMLFile = "/home/ozcankaraca/Desktop/testbed/src/resources/data/containerlab-topology.yml";
+    private static final String subnet = "172.100.100.";
+    private int nextIp = 11; // Startet nach der festgelegten IP des lecturestudioservers
+    private HashMap<String, Set<String>> superPeerToPeersMap = new HashMap<>();
 
     public YMLGenerator(String configFilePath) throws IOException {
-        this.networkConfigParser = new NetworkConfigParser(configFilePath);
+        readAndProcessOutputFile(); // Diese Methode wird beim Instanziieren der Klasse aufgerufen
     }
 
     public void generateTopologyFile(boolean includeExtraNodes) throws IOException {
-            List<String> superpeerNames = networkConfigParser.getSuperpeerNames();
-            List<NetworkConfigParser.PeerConnection> peerConnections = networkConfigParser.getPeerConnections();
-            Map<String, List<String>> superpeerConnections = networkConfigParser.getSuperpeerConnections();
-        
-            try (FileWriter fw = new FileWriter(pathToYAMLFile)) {
-                fw.write("name: containerlab-topology\n");
-                fw.write("prefix: p2p\n\n");
-                fw.write("topology:\n");
-                fw.write("  nodes:\n");
-        
-                // Definieren Sie den lectureStudioServer-Knoten mit Umgebungsvariablen für Ziel-Peers
-                fw.write("    lecturestudioserver:\n");
-                fw.write("      kind: linux\n");
-                fw.write("      image: image-lecturestudioserver\n");
-                fw.write("      labels:\n");
-                fw.write("        role: sender\n");
-                fw.write("        group: server\n");
-                fw.write("      binds:\n");
-                fw.write("        - /home/ozcankaraca/Desktop/mydocument.pdf:/app/mydocument.pdf\n");
-                fw.write("      env:\n");
-                // Hier fügen wir die Ziel-Peers als Umgebungsvariable hinzu
-                fw.write("        TARGET_PEERS: " + getTargetsForLectureStudioServer(peerConnections) + "\n");
-                fw.write("      exec:\n");
-                fw.write("        - sleep 15\n");
-                fw.write("      cmd: java -cp /app LectureStudioServer\n\n");
-
-            // Definieren Sie die SuperPeer-Knoten
-            for (String superpeerName : superpeerNames) {
-                List<String> connectedPeers = superpeerConnections.get(superpeerName);
-                String peersAsEnvVar = String.join(",", connectedPeers);
-
-                fw.write("    " + superpeerName + ":\n");
-                fw.write("      kind: linux\n");
-                fw.write("      image: image-superpeer\n");
-                fw.write("      env:\n");
-                fw.write("        TARGET_PEERS: " + peersAsEnvVar + "\n");
-                fw.write("      labels:\n");
-                fw.write("        role: relaysender\n");
-                fw.write("        group: superpeer\n");
-                fw.write("      cmd: java -cp /app SuperPeer\n\n");
+        Set<String> targetPeersForLectureStudioServer = new HashSet<>();
+        Set<String> allPeers = new HashSet<>();
+        Set<String> superpeerNames = superPeerToPeersMap.keySet();
+    
+        // Sammeln Sie alle Peers und die Zielpeers für den lectureStudioServer
+        for (Map.Entry<String, Set<String>> entry : superPeerToPeersMap.entrySet()) {
+            if ("lectureStudioServer".equals(entry.getKey())) {
+                targetPeersForLectureStudioServer.addAll(entry.getValue());
             }
-
-            // Definieren Sie die Peer-Knoten und weisen Sie jedem Peer seinen SuperPeer zu
-            peerConnections.stream()
-                    .forEach(peerConnection -> {
-                        String peerName = peerConnection.getTargetName();
-                        String superpeerName = peerConnection.getSourceName(); // Dies setzt voraus, dass die Quelle
-                                                                               // immer der SuperPeer ist
-
-                        if (!superpeerNames.contains(peerName) && !peerName.equals("lectureStudioServer")) {
-                            try {
-                                fw.write("    " + peerName + ":\n");
-                                fw.write("      kind: linux\n");
-                                fw.write("      image: image-peer\n");
-                                fw.write("      env:\n");
-                                fw.write("        SUPER_PEER: " + superpeerName + "\n"); // Setzen der Umgebungsvariable
-                                                                                         // SUPER_PEER
-                                fw.write("      labels:\n");
-                                fw.write("        role: receiver\n");
-                                fw.write("        group: peer\n");
-                                fw.write("      cmd: java -cp /app Peer\n\n");
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-
+            allPeers.addAll(entry.getValue());
+        }
+    
+        try (FileWriter fw = new FileWriter(pathToYAMLFile)) {
+            fw.write("name: containerlab-topology\n");
+            fw.write("prefix: p2p\n\n");
+            fw.write("mgmt:\n");
+            fw.write("  network: fixedips\n");
+            fw.write("  ipv4-subnet: " + subnet + "0/24\n\n");
+            fw.write("topology:\n");
+            fw.write("  nodes:\n");
+    
+            // Definieren des lectureStudioServer-Knotens
+            fw.write("    lecturestudioserver:\n");
+            fw.write("      kind: linux\n");
+            fw.write("      image: image-testbed\n");
+            fw.write("      mgmt-ipv4: 172.100.100.10\n");
+            fw.write("      labels:\n");
+            fw.write("        role: sender\n");
+            fw.write("        group: server\n");
+            fw.write("      binds:\n");
+            fw.write("        - /home/ozcankaraca/Desktop/mydocument.pdf:/app/mydocument.pdf\n");
+            fw.write("      env:\n");
+            fw.write("        TARGET_PEERS: " + String.join(",", targetPeersForLectureStudioServer) + "\n");
+            fw.write("        MAIN_CLASS: LectureStudioServer\n");
+            fw.write("      ports:\n");
+            fw.write("        - \"8080:8080\"\n\n");
+    
+            // Definieren der restlichen Peers
+            for (String peerName : allPeers) {
+                if (!"lectureStudioServer".equals(peerName)) {
+                    String superPeer = determineSuperPeerForPeer(peerName);
+                    String mainClass = superpeerNames.contains(peerName) ? "SuperPeer" : "Peer";
+                    String role = superpeerNames.contains(peerName) ? "receiver/sender" : "receiver";
+    
+                    fw.write("    " + peerName + ":\n");
+                    fw.write("      kind: linux\n");
+                    fw.write("      image: image-testbed\n");
+                    fw.write("      mgmt-ipv4: " + generateRandomIP() + "\n");
+                    fw.write("      env:\n");
+                    fw.write("        SUPER_PEER: " + superPeer + "\n");
+                    fw.write("        MAIN_CLASS: " + mainClass + "\n");
+                    fw.write("      labels:\n");
+                    fw.write("        role: " + role + "\n");
+                    fw.write("        group: " + (mainClass.equals("SuperPeer") ? "superpeer" : "peer") + "\n");
+                }
+            }
+    
             if (!includeExtraNodes) {
                 appendExtraNodes(fw);
             }
-            /**
-             * // Verbindungen zwischen lectureStudioServer und SuperPeers
-             * fw.write("\n links:\n");
-             * for (NetworkConfigParser.PeerConnection connection : peerConnections) {
-             * if (connection.getSourceName().equals("lectureStudioServer")
-             * && superpeerNames.contains(connection.getTargetName())) {
-             * fw.write(" - endpoints: [\"" + connection.getSourceName() + ":eth1\", \""
-             * + connection.getTargetName() + ":eth1\"]\n");
-             * }
-             * }
-             */
-            /**
-             * // Verbindungen zwischen SuperPeers und Peers
-             * for (Map.Entry<String, List<String>> entry : superpeerConnections.entrySet())
-             * {
-             * for (String peer : entry.getValue()) {
-             * fw.write(" - endpoints: [\"" + entry.getKey() + ":eth1\", \"" + peer +
-             * ":eth1\"]\n");
-             * }
-             * }
-             */
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("An error occurred while generating the topology YAML file.");
         }
+    }    
+
+    private String determineSuperPeerForPeer(String peerName) {
+        for (Map.Entry<String, Set<String>> entry : superPeerToPeersMap.entrySet()) {
+            // Wenn der aktuelle Peer in der Liste der verbundenen Peers eines Superpeers enthalten ist,
+            // wird dieser Superpeer als SUPER_PEER des Peers zurückgegeben.
+            if (entry.getValue().contains(peerName)) {
+                return entry.getKey();
+            }
+        }
+        // Wenn der Peer in keiner der Listen enthalten ist, ist der Standard-SuperPeer der lecturestudioserver.
+        return "lecturestudioserver";
+    }
+    
+
+    private String generateRandomIP() {
+        String ip = subnet + nextIp;
+        nextIp++;
+        return ip;
     }
 
-    private String getTargetsForLectureStudioServer(List<NetworkConfigParser.PeerConnection> peerConnections) {
-    return peerConnections.stream()
-            .filter(connection -> connection.getSourceName().equals("lectureStudioServer"))
-            .map(NetworkConfigParser.PeerConnection::getTargetName)
-            .collect(Collectors.joining(","));
-}
+    private void readAndProcessOutputFile() {
+        ObjectMapper mapper = new ObjectMapper();
+        String pathToOutputFile = "/home/ozcankaraca/Desktop/testbed/src/resources/data/output-data.json";
+    
+        try {
+            JsonNode rootNode = mapper.readTree(new File(pathToOutputFile));
+            JsonNode peer2peerNode = rootNode.path("peer2peer");
+    
+            for (JsonNode connection : peer2peerNode) {
+                String sourceName = connection.path("sourceName").asText();
+                String targetName = connection.path("targetName").asText();
+    
+                superPeerToPeersMap.putIfAbsent(sourceName, new HashSet<>());
+                superPeerToPeersMap.get(sourceName).add(targetName);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-    /**
-     * Appends the configurations for additional tools (Prometheus, Cadvisor, and
-     * Grafana) to the topology YML.
-     *
-     * @param fw FileWriter instance used to write configurations to the YML file.
-     * @throws IOException If any IO operation fails.
-     */
     private void appendExtraNodes(FileWriter fw) throws IOException {
         // Configuration for the prometheus tool
         fw.write("\n    prometheus:\n");
@@ -158,7 +155,7 @@ public class YMLGenerator {
 
     public static void main(String[] args) {
         try {
-            String pathToOutputData = "/home/ozcankaraca/Desktop/master-thesis-okaraca/testbed/src/resources/data/output-data.json";
+            String pathToOutputData = "/home/ozcankaraca/Desktop/testbed/src/resources/data/output-data.json";
             YMLGenerator generator = new YMLGenerator(pathToOutputData);
             boolean includeExtraNodes = true; // Diese Variable sollte basierend auf Ihren Kriterien festgelegt werden.
 

@@ -28,8 +28,8 @@ public class ConnectionAnalysis {
     }
 
     public static void main(String[] args) throws IOException {
-        String pathToInputData = "/home/ozcankaraca/Desktop/master-thesis-okaraca/testbed/src/resources/data/input-data.json"; // Replace with the actual path to your JSON file
-        PrintStream pathToInputInfo = new PrintStream("/home/ozcankaraca/Desktop/master-thesis-okaraca/testbed/src/resources/results/input-info.txt");
+        String pathToInputData = "/home/ozcankaraca/Desktop/testbed/src/resources/data/input-data.json"; // Replace with the actual path to your JSON file
+        PrintStream pathToInputInfo = new PrintStream("/home/ozcankaraca/Desktop/testbed/src/resources/results/input-info.txt");
         System.setOut(pathToInputInfo);
 
         String content = new String(Files.readAllBytes(Paths.get(pathToInputData)));

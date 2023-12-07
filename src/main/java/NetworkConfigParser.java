@@ -107,7 +107,7 @@ public class NetworkConfigParser {
 
     // Hauptmethode für Konsolenausgaben
     public static void main(String[] args) throws IOException {
-        String pathToOutputData = "/home/ozcankaraca/Desktop/master-thesis-okaraca/testbed/src/resources/data/output-data.json";
+        String pathToOutputData = "/home/ozcankaraca/Desktop/testbed/src/resources/data/output-data.json";
         NetworkConfigParser parser = new NetworkConfigParser(pathToOutputData);
         
         // Informationen über Superpeers sammeln und ausgeben

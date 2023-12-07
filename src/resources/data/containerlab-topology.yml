@@ -1,11 +1,16 @@
 name: containerlab-topology
 prefix: p2p
 
+mgmt:
+  network: fixedips
+  ipv4-subnet: 172.100.100.0/24
+
 topology:
   nodes:
     lecturestudioserver:
       kind: linux
-      image: image-lecturestudioserver
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.10
       labels:
         role: sender
         group: server
@@ -13,107 +18,107 @@ topology:
         - /home/ozcankaraca/Desktop/mydocument.pdf:/app/mydocument.pdf
       env:
         TARGET_PEERS: 1,2,3,4,5,6
-      exec:
-        - sleep 15
-      cmd: java -cp /app LectureStudioServer
-
-    5:
-      kind: linux
-      image: image-superpeer
-      env:
-        TARGET_PEERS: 7
-      labels:
-        role: relaysender
-        group: superpeer
-      cmd: java -cp /app SuperPeer
-
-    6:
-      kind: linux
-      image: image-superpeer
-      env:
-        TARGET_PEERS: 8,9,10
-      labels:
-        role: relaysender
-        group: superpeer
-      cmd: java -cp /app SuperPeer
+        MAIN_CLASS: LectureStudioServer
+      ports:
+        - "8080:8080"
 
     1:
       kind: linux
-      image: image-peer
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.11
       env:
         SUPER_PEER: lectureStudioServer
+        MAIN_CLASS: Peer
       labels:
         role: receiver
         group: peer
-      cmd: java -cp /app Peer
-
     2:
       kind: linux
-      image: image-peer
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.12
       env:
         SUPER_PEER: lectureStudioServer
+        MAIN_CLASS: Peer
       labels:
         role: receiver
         group: peer
-      cmd: java -cp /app Peer
-
     3:
       kind: linux
-      image: image-peer
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.13
       env:
         SUPER_PEER: lectureStudioServer
+        MAIN_CLASS: Peer
       labels:
         role: receiver
         group: peer
-      cmd: java -cp /app Peer
-
     4:
       kind: linux
-      image: image-peer
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.14
       env:
         SUPER_PEER: lectureStudioServer
+        MAIN_CLASS: Peer
       labels:
         role: receiver
         group: peer
-      cmd: java -cp /app Peer
-
+    5:
+      kind: linux
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.15
+      env:
+        SUPER_PEER: lectureStudioServer
+        MAIN_CLASS: SuperPeer
+      labels:
+        role: receiver/sender
+        group: superpeer
+    6:
+      kind: linux
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.16
+      env:
+        SUPER_PEER: lectureStudioServer
+        MAIN_CLASS: SuperPeer
+      labels:
+        role: receiver/sender
+        group: superpeer
     7:
       kind: linux
-      image: image-peer
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.17
       env:
         SUPER_PEER: 5
+        MAIN_CLASS: Peer
       labels:
         role: receiver
         group: peer
-      cmd: java -cp /app Peer
-
     8:
       kind: linux
-      image: image-peer
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.18
       env:
         SUPER_PEER: 6
+        MAIN_CLASS: Peer
       labels:
         role: receiver
         group: peer
-      cmd: java -cp /app Peer
-
     9:
       kind: linux
-      image: image-peer
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.19
       env:
         SUPER_PEER: 6
+        MAIN_CLASS: Peer
       labels:
         role: receiver
         group: peer
-      cmd: java -cp /app Peer
-
     10:
       kind: linux
-      image: image-peer
+      image: image-testbed
+      mgmt-ipv4: 172.100.100.20
       env:
         SUPER_PEER: 6
+        MAIN_CLASS: Peer
       labels:
         role: receiver
         group: peer
-      cmd: java -cp /app Peer
-
