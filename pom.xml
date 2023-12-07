@@ -81,6 +81,40 @@
     <artifactId>log4j</artifactId>
     <version>1.2.17</version>
 </dependency>
+<!-- Docker Java API -->
+<dependency>
+    <groupId>com.github.docker-java</groupId>
+    <artifactId>docker-java-core</artifactId>
+    <version>3.2.8</version> <!-- oder die Version, die Sie verwenden -->
+</dependency>
+
+<!-- JAX-RS API -->
+<dependency>
+    <groupId>javax.ws.rs</groupId>
+    <artifactId>javax.ws.rs-api</artifactId>
+    <version>2.1.1</version>
+</dependency>
+
+<!-- Jersey Client für JAX-RS Implementierung -->
+<dependency>
+    <groupId>org.glassfish.jersey.core</groupId>
+    <artifactId>jersey-client</artifactId>
+    <version>2.32</version>
+</dependency>
+
+<!-- Jersey Common -->
+<dependency>
+    <groupId>org.glassfish.jersey.core</groupId>
+    <artifactId>jersey-common</artifactId>
+    <version>2.32</version>
+</dependency>
+
+<!-- HTTP Transport Connector für Jersey Client -->
+<dependency>
+    <groupId>org.glassfish.jersey.connectors</groupId>
+    <artifactId>jersey-apache-connector</artifactId>
+    <version>2.32</version>
+</dependency>
   </dependencies>
 <build>
     <plugins>
