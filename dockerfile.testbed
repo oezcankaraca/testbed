@@ -9,9 +9,9 @@ RUN mvn package
 
 FROM openjdk:17-slim AS runtime
 
-# Installieren von jq
+# Installieren von jq, iproute2 und iputils-ping
 RUN apt-get update && \
-    apt-get install -y jq && \
+    apt-get install -y jq iproute2 iputils-ping && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
