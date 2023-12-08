@@ -50,8 +50,6 @@ public class YMLGenerator {
             fw.write("      labels:\n");
             fw.write("        role: sender\n");
             fw.write("        group: server\n");
-            fw.write("      binds:\n");
-            fw.write("        - /home/ozcankaraca/Desktop/mydocument.pdf:/app/mydocument.pdf\n");
             fw.write("      env:\n");
 
             String targetPeers = String.join(",",
@@ -61,6 +59,19 @@ public class YMLGenerator {
             fw.write("        TARGET_PEERS: " + targetPeers + "\n");
             fw.write("        TARGET_PEERS_IP: " + targetPeersIps + "\n");
             fw.write("        MAIN_CLASS: LectureStudioServer\n");
+            fw.write("      binds:\n");
+            fw.write("        - /home/ozcankaraca/Desktop/mydocument.pdf:/app/mydocument.pdf\n");
+            fw.write(
+                    "        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json\n");
+            fw.write(
+                    "        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connection-details.sh:/app/connection-details.sh\n");
+
+            // Exec Befehle hinzufügen
+            fw.write("      exec:\n");
+            fw.write("        - echo \"Waiting for 5 seconds...\"\n");
+            fw.write("        - sleep 5\n");
+            fw.write("        - chmod +x /app/connection-details.sh\n");
+            fw.write("        - ./connection-details.sh\n");
             fw.write("      ports:\n");
             fw.write("        - \"8080:8080\"\n\n");
 
@@ -90,7 +101,12 @@ public class YMLGenerator {
                 fw.write("        MAIN_CLASS: " + mainClass + "\n");
                 fw.write("      labels:\n");
                 fw.write("        role: " + role + "\n");
-                fw.write("        group: " + (mainClass.equals("SuperPeer") ? "superpeer" : "peer") + "\n\n");
+                fw.write("        group: " + (mainClass.equals("SuperPeer") ? "superpeer" : "peer") + "\n");
+
+                // Hinzufügen von binds und exec für lectureStudioServer und SuperPeers
+                if (superpeerNames.contains(peerName)) {
+                    appendBindsAndExec(fw);
+                }
             }
 
             if (!includeExtraNodes) {
@@ -100,6 +116,22 @@ public class YMLGenerator {
             e.printStackTrace();
             System.out.println("An error occurred while generating the topology YAML file.");
         }
+    }
+
+    private void appendBindsAndExec(FileWriter fw) throws IOException {
+        // Binds hinzufügen
+        fw.write("      binds:\n");
+        fw.write(
+                "        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json\n");
+        fw.write(
+                "        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connection-details.sh:/app/connection-details.sh\n");
+
+        // Exec Befehle hinzufügen
+        fw.write("      exec:\n");
+        fw.write("        - echo \"Waiting for 5 seconds...\"\n");
+        fw.write("        - sleep 5\n");
+        fw.write("        - chmod +x /app/connection-details.sh\n");
+        fw.write("        - ./connection-details.sh\n");
     }
 
     private String generateNextIP() {

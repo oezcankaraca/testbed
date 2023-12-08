@@ -14,22 +14,22 @@ topology:
       labels:
         role: sender
         group: server
-      binds:
-        - /home/ozcankaraca/Desktop/mydocument.pdf:/app/mydocument.pdf
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connection-details.sh:/app/connection-details.sh
       env:
         SOURCE_PEER: lectureStudioServer
         TARGET_PEERS: 1,12,2,24,3,4,5,16,38,6,40
         TARGET_PEERS_IP: 172.100.100.28,172.100.100.20,172.100.100.29,172.100.100.41,172.100.100.30,172.100.100.31,172.100.100.32,172.100.100.24,172.100.100.55,172.100.100.33,172.100.100.57
         MAIN_CLASS: LectureStudioServer
-      ports:
-        - "8080:8080"
+      binds:
+        - /home/ozcankaraca/Desktop/mydocument.pdf:/app/mydocument.pdf
+        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
+        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connection-details.sh:/app/connection-details.sh
       exec:
         - echo "Waiting for 5 seconds..."
         - sleep 5
         - chmod +x /app/connection-details.sh
-        - ./connection-details.sh > connection-details.txt 2>&1
+        - ./connection-details.sh
+      ports:
+        - "8080:8080"
 
     44:
       kind: linux
@@ -41,7 +41,6 @@ topology:
       labels:
         role: receiver
         group: peer
-
     45:
       kind: linux
       image: image-testbed
@@ -52,7 +51,6 @@ topology:
       labels:
         role: receiver
         group: peer
-
     46:
       kind: linux
       image: image-testbed
@@ -63,7 +61,6 @@ topology:
       labels:
         role: receiver
         group: peer
-
     47:
       kind: linux
       image: image-testbed
@@ -74,7 +71,6 @@ topology:
       labels:
         role: receiver
         group: peer
-
     48:
       kind: linux
       image: image-testbed
@@ -85,7 +81,6 @@ topology:
       labels:
         role: receiver
         group: peer
-
     49:
       kind: linux
       image: image-testbed
@@ -96,7 +91,6 @@ topology:
       labels:
         role: receiver
         group: peer
-
     50:
       kind: linux
       image: image-testbed
@@ -107,7 +101,6 @@ topology:
       labels:
         role: receiver
         group: peer
-
     10:
       kind: linux
       image: image-testbed
@@ -118,7 +111,6 @@ topology:
       labels:
         role: receiver
         group: peer
-
     11:
       kind: linux
       image: image-testbed
@@ -129,7 +121,6 @@ topology:
       labels:
         role: receiver
         group: peer
-
     12:
       kind: linux
       image: image-testbed
@@ -143,7 +134,14 @@ topology:
       labels:
         role: receiver/sender
         group: superpeer
-
+      binds:
+        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
+        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connection-details.sh:/app/connection-details.sh
+      exec:
+        - echo "Waiting for 5 seconds..."
+        - sleep 5
+        - chmod +x /app/connection-details.sh
+        - ./connection-details.sh
     13:
       kind: linux
       image: image-testbed
@@ -154,7 +152,6 @@ topology:
       labels:
         role: receiver
         group: peer
-
     14:
       kind: linux
       image: image-testbed
@@ -165,7 +162,6 @@ topology:
       labels:
         role: receiver
         group: peer
-
     15:
       kind: linux
       image: image-testbed
@@ -176,7 +172,6 @@ topology:
       labels:
         role: receiver
         group: peer
-
     16:
       kind: linux
       image: image-testbed
@@ -190,7 +185,14 @@ topology:
       labels:
         role: receiver/sender
         group: superpeer
-
+      binds:
+        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
+        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connection-details.sh:/app/connection-details.sh
+      exec:
+        - echo "Waiting for 5 seconds..."
+        - sleep 5
+        - chmod +x /app/connection-details.sh
+        - ./connection-details.sh
     17:
       kind: linux
       image: image-testbed
@@ -201,7 +203,6 @@ topology:
       labels:
         role: receiver
         group: peer
-
     18:
       kind: linux
       image: image-testbed
@@ -212,7 +213,6 @@ topology:
       labels:
         role: receiver
         group: peer
-
     19:
       kind: linux
       image: image-testbed
@@ -223,7 +223,6 @@ topology:
       labels:
         role: receiver
         group: peer
-
     1:
       kind: linux
       image: image-testbed
@@ -234,7 +233,6 @@ topology:
       labels:
         role: receiver
         group: peer
-
     2:
       kind: linux
       image: image-testbed
@@ -245,7 +243,6 @@ topology:
       labels:
         role: receiver
         group: peer
-
     3:
       kind: linux
       image: image-testbed
@@ -256,7 +253,6 @@ topology:
       labels:
         role: receiver
         group: peer
-
     4:
       kind: linux
       image: image-testbed
@@ -267,7 +263,6 @@ topology:
       labels:
         role: receiver
         group: peer
-
     5:
       kind: linux
       image: image-testbed
@@ -281,7 +276,14 @@ topology:
       labels:
         role: receiver/sender
         group: superpeer
-
+      binds:
+        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
+        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connection-details.sh:/app/connection-details.sh
+      exec:
+        - echo "Waiting for 5 seconds..."
+        - sleep 5
+        - chmod +x /app/connection-details.sh
+        - ./connection-details.sh
     6:
       kind: linux
       image: image-testbed
@@ -295,7 +297,14 @@ topology:
       labels:
         role: receiver/sender
         group: superpeer
-
+      binds:
+        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
+        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connection-details.sh:/app/connection-details.sh
+      exec:
+        - echo "Waiting for 5 seconds..."
+        - sleep 5
+        - chmod +x /app/connection-details.sh
+        - ./connection-details.sh
     7:
       kind: linux
       image: image-testbed
@@ -306,7 +315,6 @@ topology:
       labels:
         role: receiver
         group: peer
-
     8:
       kind: linux
       image: image-testbed
@@ -317,7 +325,6 @@ topology:
       labels:
         role: receiver
         group: peer
-
     9:
       kind: linux
       image: image-testbed
@@ -328,7 +335,6 @@ topology:
       labels:
         role: receiver
         group: peer
-
     20:
       kind: linux
       image: image-testbed
@@ -339,7 +345,6 @@ topology:
       labels:
         role: receiver
         group: peer
-
     21:
       kind: linux
       image: image-testbed
@@ -350,7 +355,6 @@ topology:
       labels:
         role: receiver
         group: peer
-
     22:
       kind: linux
       image: image-testbed
@@ -361,7 +365,6 @@ topology:
       labels:
         role: receiver
         group: peer
-
     23:
       kind: linux
       image: image-testbed
@@ -372,7 +375,6 @@ topology:
       labels:
         role: receiver
         group: peer
-
     24:
       kind: linux
       image: image-testbed
@@ -386,7 +388,14 @@ topology:
       labels:
         role: receiver/sender
         group: superpeer
-
+      binds:
+        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
+        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connection-details.sh:/app/connection-details.sh
+      exec:
+        - echo "Waiting for 5 seconds..."
+        - sleep 5
+        - chmod +x /app/connection-details.sh
+        - ./connection-details.sh
     25:
       kind: linux
       image: image-testbed
@@ -397,7 +406,6 @@ topology:
       labels:
         role: receiver
         group: peer
-
     26:
       kind: linux
       image: image-testbed
@@ -408,7 +416,6 @@ topology:
       labels:
         role: receiver
         group: peer
-
     27:
       kind: linux
       image: image-testbed
@@ -419,7 +426,6 @@ topology:
       labels:
         role: receiver
         group: peer
-
     28:
       kind: linux
       image: image-testbed
@@ -430,7 +436,6 @@ topology:
       labels:
         role: receiver
         group: peer
-
     29:
       kind: linux
       image: image-testbed
@@ -441,7 +446,6 @@ topology:
       labels:
         role: receiver
         group: peer
-
     30:
       kind: linux
       image: image-testbed
@@ -452,7 +456,6 @@ topology:
       labels:
         role: receiver
         group: peer
-
     31:
       kind: linux
       image: image-testbed
@@ -463,7 +466,6 @@ topology:
       labels:
         role: receiver
         group: peer
-
     32:
       kind: linux
       image: image-testbed
@@ -474,7 +476,6 @@ topology:
       labels:
         role: receiver
         group: peer
-
     33:
       kind: linux
       image: image-testbed
@@ -485,7 +486,6 @@ topology:
       labels:
         role: receiver
         group: peer
-
     34:
       kind: linux
       image: image-testbed
@@ -496,7 +496,6 @@ topology:
       labels:
         role: receiver
         group: peer
-
     35:
       kind: linux
       image: image-testbed
@@ -507,7 +506,6 @@ topology:
       labels:
         role: receiver
         group: peer
-
     36:
       kind: linux
       image: image-testbed
@@ -518,7 +516,6 @@ topology:
       labels:
         role: receiver
         group: peer
-
     37:
       kind: linux
       image: image-testbed
@@ -529,7 +526,6 @@ topology:
       labels:
         role: receiver
         group: peer
-
     38:
       kind: linux
       image: image-testbed
@@ -543,7 +539,14 @@ topology:
       labels:
         role: receiver/sender
         group: superpeer
-
+      binds:
+        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
+        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connection-details.sh:/app/connection-details.sh
+      exec:
+        - echo "Waiting for 5 seconds..."
+        - sleep 5
+        - chmod +x /app/connection-details.sh
+        - ./connection-details.sh
     39:
       kind: linux
       image: image-testbed
@@ -554,7 +557,6 @@ topology:
       labels:
         role: receiver
         group: peer
-
     40:
       kind: linux
       image: image-testbed
@@ -568,7 +570,14 @@ topology:
       labels:
         role: receiver/sender
         group: superpeer
-
+      binds:
+        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
+        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connection-details.sh:/app/connection-details.sh
+      exec:
+        - echo "Waiting for 5 seconds..."
+        - sleep 5
+        - chmod +x /app/connection-details.sh
+        - ./connection-details.sh
     41:
       kind: linux
       image: image-testbed
@@ -579,7 +588,6 @@ topology:
       labels:
         role: receiver
         group: peer
-
     42:
       kind: linux
       image: image-testbed
@@ -590,7 +598,6 @@ topology:
       labels:
         role: receiver
         group: peer
-
     43:
       kind: linux
       image: image-testbed
@@ -601,4 +608,3 @@ topology:
       labels:
         role: receiver
         group: peer
-
