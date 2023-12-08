@@ -79,7 +79,7 @@ public class CSVReaderUtils {
                     Double packetLoss = Double.parseDouble(nextLine[indexPacketLoss]);
 
                     PeerStats stats = new PeerStats(maximumUploadSpeed, maximumDownloadSpeed, latency, packetLoss);
-                    String peerId = peerIndex <= numberOfPeers ? String.valueOf(peerIndex) : "lecturestudioserver";
+                    String peerId = peerIndex <= numberOfPeers ? String.valueOf(peerIndex) : "lectureStudioServer";
 
                     peerStatsMap.put(peerId, stats);
                     writer.write(peerId + ": ");
@@ -110,7 +110,7 @@ public class CSVReaderUtils {
         System.out.println("Network statistics have been written to the file: " + pathToNetworkStatistics);
 
         // Beispiel, um die Daten einer bestimmten Peer zu erhalten
-        String peerToRetrieve = "lecturestudioserver"; // Peer ID als String
+        String peerToRetrieve = "lectureStudioServer"; // Peer ID als String
         PeerStats stats = getPeerStats(peerToRetrieve);
         if (stats != null) {
             System.out.println("Data for Peer " + peerToRetrieve + ": " + stats);

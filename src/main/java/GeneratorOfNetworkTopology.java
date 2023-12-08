@@ -30,7 +30,7 @@ public class GeneratorOfNetworkTopology extends CSVReaderUtils {
         JsonArray peersArray = new JsonArray();
 
         for (int i = 0; i <= numberOfPeers; i++) {
-            String peerId = i == 0 ? "lecturestudioserver" : String.valueOf(i);
+            String peerId = i == 0 ? "lectureStudioServer" : String.valueOf(i);
             PeerStats stats = getPeerStats(peerId);
 
             JsonObject peerObject = new JsonObject();
