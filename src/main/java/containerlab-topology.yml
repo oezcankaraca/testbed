@@ -17,6 +17,7 @@ topology:
       binds:
         - /home/ozcankaraca/Desktop/mydocument.pdf:/app/mydocument.pdf
       env:
+        SOURCE_PEER: lecturestudioserver
         TARGET_PEERS: 1,12,2,24,3,4,5,16,38,6,40
         MAIN_CLASS: LectureStudioServer
       ports:
@@ -127,6 +128,7 @@ topology:
       mgmt-ipv4: 172.100.100.20
       env:
         SUPER_PEER: lectureStudioServer
+        SOURCE_PEER: 12
         TARGET_PEERS: 22,33,23,13,35,14,15,26,27,18,21,32
         MAIN_CLASS: SuperPeer
       labels:
@@ -172,6 +174,7 @@ topology:
       mgmt-ipv4: 172.100.100.24
       env:
         SUPER_PEER: lectureStudioServer
+        SOURCE_PEER: 16
         TARGET_PEERS: 44,34,37,48,17,28,19,30,20
         MAIN_CLASS: SuperPeer
       labels:
@@ -261,6 +264,7 @@ topology:
       mgmt-ipv4: 172.100.100.32
       env:
         SUPER_PEER: lectureStudioServer
+        SOURCE_PEER: 5
         TARGET_PEERS: 7
         MAIN_CLASS: SuperPeer
       labels:
@@ -273,6 +277,7 @@ topology:
       mgmt-ipv4: 172.100.100.33
       env:
         SUPER_PEER: lectureStudioServer
+        SOURCE_PEER: 6
         TARGET_PEERS: 11,46,8,9,10,43
         MAIN_CLASS: SuperPeer
       labels:
@@ -362,6 +367,7 @@ topology:
       mgmt-ipv4: 172.100.100.41
       env:
         SUPER_PEER: lectureStudioServer
+        SOURCE_PEER: 24
         TARGET_PEERS: 45,25,36,49,29,50,31,42
         MAIN_CLASS: SuperPeer
       labels:
@@ -517,6 +523,7 @@ topology:
       mgmt-ipv4: 172.100.100.55
       env:
         SUPER_PEER: lectureStudioServer
+        SOURCE_PEER: 38
         TARGET_PEERS: 39
         MAIN_CLASS: SuperPeer
       labels:
@@ -540,6 +547,7 @@ topology:
       mgmt-ipv4: 172.100.100.57
       env:
         SUPER_PEER: lectureStudioServer
+        SOURCE_PEER: 40
         TARGET_PEERS: 47,41
         MAIN_CLASS: SuperPeer
       labels:
@@ -579,3 +587,28 @@ topology:
         role: receiver
         group: peer
 
+
+    prometheus:
+      kind: linux
+      image: p2p-prometheus
+      binds:
+       - /home/ozcankaraca/Desktop/p2pjava/src/resources/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      ports:
+        - "9090:9090"
+
+    cadvisor:
+      kind: linux
+      image: p2p-cadvisor
+      binds:
+        - /:/rootfs:ro
+        - /var/run:/var/run:ro
+        - /sys:/sys:ro
+        - /var/snap/docker/common/var-lib-docker/:/var/lib/docker:ro
+      ports:
+        - "8080:8080"
+
+    grafana:
+      kind: linux
+      image: p2p-grafana
+      ports:
+       - "3000:3000"

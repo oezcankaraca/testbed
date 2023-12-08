@@ -16,6 +16,7 @@ public class NetworkStatisticsYML extends CSVReaderUtils {
         String pathToCSV = "/home/ozcankaraca/Desktop/testbed/src/resources/data/fixed-broadband-speeds-august-2019-data-25.csv";
         String pathToNetworkStatistics = "/home/ozcankaraca/Desktop/testbed/src/resources/results/network-statistics.txt";
         int numberOfPeers = 50; 
+
         // Lesen Sie zuerst die CSV-Daten und schreiben Sie sie in eine Datei
         readCsvDataAndWriteToFile(pathToCSV, pathToNetworkStatistics, numberOfPeers);
 
@@ -29,6 +30,9 @@ public class NetworkStatisticsYML extends CSVReaderUtils {
             // Schritt 2: Peer-Infos in eine Datei schreiben
             writePeerInfosToFile(peerIds, pathToPeerInfoFile);
 
+            // Schritt 3: Schreiben der Verbindungseigenschaften in die Datei
+            writeConnectionPropertiesToFile(outputData, pathToPeerInfoFile);
+
             System.out.println("Peer information has been saved to the file: " + pathToPeerInfoFile);
         } catch (IOException e) {
             e.printStackTrace();
@@ -36,7 +40,6 @@ public class NetworkStatisticsYML extends CSVReaderUtils {
     }
 
     private static void extractPeerIdsFromJson(JsonObject outputData, Set<String> peerIds) {
-        // Extrahieren Sie Peer-IDs aus "superpeers" und "peer2peer"
         JsonArray superPeers = outputData.getAsJsonArray("superpeers");
         JsonArray peer2peer = outputData.getAsJsonArray("peer2peer");
 
@@ -55,16 +58,37 @@ public class NetworkStatisticsYML extends CSVReaderUtils {
     private static void writePeerInfosToFile(Set<String> peerIds, String filePath) throws IOException {
         try (FileWriter writer = new FileWriter(filePath)) {
             for (String peerId : peerIds) {
-                PeerStats stats = CSVReaderUtils.getPeerStats(peerId);
+                PeerStats stats = getPeerStats(peerId);
                 if (stats != null) {
-                    // Schreiben Sie nur die Informationen der Peers, die in der JSON-Ausgabedatei auftauchen
                     writer.write(peerId + ": " + stats.toString() + "\n");
                 } else {
-                    // Fügt eine Nachricht hinzu, falls für einen Peer keine Daten gefunden wurden
                     writer.write("Keine Daten gefunden für Peer " + peerId + "\n");
                 }
             }
         }
     }
-    
+
+    private static void writeConnectionPropertiesToFile(JsonObject outputData, String filePath) throws IOException {
+        try (FileWriter writer = new FileWriter(filePath, true)) { // Append mode
+            JsonArray peer2peer = outputData.getAsJsonArray("peer2peer");
+
+            for (JsonElement connectionElement : peer2peer) {
+                JsonObject connectionObj = connectionElement.getAsJsonObject();
+                String sourceName = connectionObj.get("sourceName").getAsString();
+                String targetName = connectionObj.get("targetName").getAsString();
+
+                PeerStats sourceStats = getPeerStats(sourceName);
+                PeerStats targetStats = getPeerStats(targetName);
+
+                int bandwidth = Math.min((int) (sourceStats.maxUpload * 1000), (int) (targetStats.maxDownload * 1000)); // Bandbreite in Kbps
+                double latency = sourceStats.latency + targetStats.latency;
+                double packetLoss = sourceStats.packetLoss + targetStats.packetLoss;
+
+                writer.write("\nVerbindung zwischen " + sourceName + " und " + targetName + ":\n");
+                writer.write("  Bandbreite: " + bandwidth + " Kbps\n");
+                writer.write("  Latenz: " + latency + " ms\n");
+                writer.write("  Paketverlust: " + packetLoss + "%\n");
+            }
+        }
+    }
 }

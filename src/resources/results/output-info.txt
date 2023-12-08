@@ -49,3 +49,253 @@ lectureStudioServer: Max Upload: 9.21 Mbps, Max Download: 29.15 Mbps, Latency: 1
 41: Max Upload: 50.15 Mbps, Max Download: 306.44 Mbps, Latency: 5.45 ms, Packet Loss: 0.0011%
 42: Max Upload: 50.16 Mbps, Max Download: 293.22 Mbps, Latency: 5.68 ms, Packet Loss: 0.0006%
 43: Max Upload: 8.57 Mbps, Max Download: 37.00 Mbps, Latency: 9.00 ms, Packet Loss: 0.0006%
+
+Verbindung zwischen lectureStudioServer und 1:
+  Bandbreite: 1080 Kbps
+  Latenz: 57.15223672 ms
+  Paketverlust: 0.0037%
+
+Verbindung zwischen lectureStudioServer und 2:
+  Bandbreite: 2749 Kbps
+  Latenz: 36.18679108 ms
+  Paketverlust: 0.0044%
+
+Verbindung zwischen lectureStudioServer und 3:
+  Bandbreite: 1845 Kbps
+  Latenz: 42.17240941 ms
+  Paketverlust: 0.0037%
+
+Verbindung zwischen lectureStudioServer und 4:
+  Bandbreite: 3922 Kbps
+  Latenz: 47.91186639 ms
+  Paketverlust: 0.0038%
+
+Verbindung zwischen lectureStudioServer und 5:
+  Bandbreite: 4886 Kbps
+  Latenz: 37.64949423 ms
+  Paketverlust: 0.0039000000000000003%
+
+Verbindung zwischen lectureStudioServer und 6:
+  Bandbreite: 7815 Kbps
+  Latenz: 45.34466843 ms
+  Paketverlust: 0.0037%
+
+Verbindung zwischen 5 und 7:
+  Bandbreite: 992 Kbps
+  Latenz: 47.71010175 ms
+  Paketverlust: 0.002%
+
+Verbindung zwischen 6 und 8:
+  Bandbreite: 859 Kbps
+  Latenz: 40.77479444 ms
+  Paketverlust: 4.0E-4%
+
+Verbindung zwischen 6 und 9:
+  Bandbreite: 859 Kbps
+  Latenz: 38.73063104 ms
+  Paketverlust: 0.001%
+
+Verbindung zwischen 6 und 10:
+  Bandbreite: 859 Kbps
+  Latenz: 55.471613989999994 ms
+  Paketverlust: 0.001%
+
+Verbindung zwischen 6 und 11:
+  Bandbreite: 859 Kbps
+  Latenz: 41.88543136 ms
+  Paketverlust: 0.0015%
+
+Verbindung zwischen lectureStudioServer und 12:
+  Bandbreite: 9209 Kbps
+  Latenz: 20.78221187 ms
+  Paketverlust: 0.0037%
+
+Verbindung zwischen 12 und 13:
+  Bandbreite: 1085 Kbps
+  Latenz: 25.108656420000003 ms
+  Paketverlust: 3.0000000000000003E-4%
+
+Verbindung zwischen 12 und 14:
+  Bandbreite: 1085 Kbps
+  Latenz: 16.41008172 ms
+  Paketverlust: 0.0015%
+
+Verbindung zwischen 12 und 15:
+  Bandbreite: 1085 Kbps
+  Latenz: 21.79821554 ms
+  Paketverlust: 4.0E-4%
+
+Verbindung zwischen lectureStudioServer und 16:
+  Bandbreite: 9209 Kbps
+  Latenz: 33.0536578 ms
+  Paketverlust: 0.0051%
+
+Verbindung zwischen 16 und 17:
+  Bandbreite: 7598 Kbps
+  Latenz: 37.686136149999996 ms
+  Paketverlust: 0.0059%
+
+Verbindung zwischen 12 und 18:
+  Bandbreite: 1085 Kbps
+  Latenz: 25.6772749 ms
+  Paketverlust: 5.0E-4%
+
+Verbindung zwischen 16 und 19:
+  Bandbreite: 7598 Kbps
+  Latenz: 39.84342238 ms
+  Paketverlust: 0.0018000000000000002%
+
+Verbindung zwischen 16 und 20:
+  Bandbreite: 7598 Kbps
+  Latenz: 43.81894724 ms
+  Paketverlust: 0.0022%
+
+Verbindung zwischen 12 und 21:
+  Bandbreite: 1085 Kbps
+  Latenz: 26.313061689999998 ms
+  Paketverlust: 9.0E-4%
+
+Verbindung zwischen 12 und 22:
+  Bandbreite: 1085 Kbps
+  Latenz: 13.61218388 ms
+  Paketverlust: 4.0E-4%
+
+Verbindung zwischen 12 und 23:
+  Bandbreite: 1085 Kbps
+  Latenz: 26.4133931 ms
+  Paketverlust: 3.0000000000000003E-4%
+
+Verbindung zwischen lectureStudioServer und 24:
+  Bandbreite: 9209 Kbps
+  Latenz: 36.24292525 ms
+  Paketverlust: 0.0038%
+
+Verbindung zwischen 24 und 25:
+  Bandbreite: 9285 Kbps
+  Latenz: 37.49340565 ms
+  Paketverlust: 7.999999999999999E-4%
+
+Verbindung zwischen 12 und 26:
+  Bandbreite: 1085 Kbps
+  Latenz: 24.08724461 ms
+  Paketverlust: 0.0015%
+
+Verbindung zwischen 12 und 27:
+  Bandbreite: 1085 Kbps
+  Latenz: 23.577959489999998 ms
+  Paketverlust: 0.001%
+
+Verbindung zwischen 16 und 28:
+  Bandbreite: 7598 Kbps
+  Latenz: 28.66438437 ms
+  Paketverlust: 0.0023%
+
+Verbindung zwischen 24 und 29:
+  Bandbreite: 9285 Kbps
+  Latenz: 34.012618610000004 ms
+  Paketverlust: 0.0045%
+
+Verbindung zwischen 16 und 30:
+  Bandbreite: 7598 Kbps
+  Latenz: 36.265010939999996 ms
+  Paketverlust: 0.0017000000000000001%
+
+Verbindung zwischen 24 und 31:
+  Bandbreite: 9285 Kbps
+  Latenz: 24.82565112 ms
+  Paketverlust: 5.0E-4%
+
+Verbindung zwischen 12 und 32:
+  Bandbreite: 1085 Kbps
+  Latenz: 19.29113174 ms
+  Paketverlust: 0.0019%
+
+Verbindung zwischen 12 und 33:
+  Bandbreite: 1085 Kbps
+  Latenz: 18.50282657 ms
+  Paketverlust: 6.000000000000001E-4%
+
+Verbindung zwischen 16 und 34:
+  Bandbreite: 7598 Kbps
+  Latenz: 30.4825321 ms
+  Paketverlust: 0.0027%
+
+Verbindung zwischen 12 und 35:
+  Bandbreite: 1085 Kbps
+  Latenz: 14.971791080000001 ms
+  Paketverlust: 4.0E-4%
+
+Verbindung zwischen 24 und 36:
+  Bandbreite: 9285 Kbps
+  Latenz: 28.82584036 ms
+  Paketverlust: 6.0E-4%
+
+Verbindung zwischen 16 und 37:
+  Bandbreite: 7598 Kbps
+  Latenz: 26.921902940000003 ms
+  Paketverlust: 0.0021000000000000003%
+
+Verbindung zwischen lectureStudioServer und 38:
+  Bandbreite: 9209 Kbps
+  Latenz: 21.23967199 ms
+  Paketverlust: 0.0039000000000000003%
+
+Verbindung zwischen 38 und 39:
+  Bandbreite: 20815 Kbps
+  Latenz: 14.52939568 ms
+  Paketverlust: 4.0E-4%
+
+Verbindung zwischen lectureStudioServer und 40:
+  Bandbreite: 9209 Kbps
+  Latenz: 22.03492988 ms
+  Paketverlust: 0.0105%
+
+Verbindung zwischen 40 und 41:
+  Bandbreite: 20771 Kbps
+  Latenz: 12.34697264 ms
+  Paketverlust: 0.0081%
+
+Verbindung zwischen 24 und 42:
+  Bandbreite: 9285 Kbps
+  Latenz: 26.78747056 ms
+  Paketverlust: 9.0E-4%
+
+Verbindung zwischen 6 und 43:
+  Bandbreite: 859 Kbps
+  Latenz: 39.20442896 ms
+  Paketverlust: 7.999999999999999E-4%
+
+Verbindung zwischen 16 und 44:
+  Bandbreite: 7598 Kbps
+  Latenz: 27.191323160000003 ms
+  Paketverlust: 0.0019%
+
+Verbindung zwischen 24 und 45:
+  Bandbreite: 9285 Kbps
+  Latenz: 31.32938771 ms
+  Paketverlust: 5.0E-4%
+
+Verbindung zwischen 6 und 46:
+  Bandbreite: 859 Kbps
+  Latenz: 48.17606298 ms
+  Paketverlust: 4.0E-4%
+
+Verbindung zwischen 40 und 47:
+  Bandbreite: 17325 Kbps
+  Latenz: 27.70611247 ms
+  Paketverlust: 0.013000000000000001%
+
+Verbindung zwischen 16 und 48:
+  Bandbreite: 7598 Kbps
+  Latenz: 23.50002469 ms
+  Paketverlust: 0.0024000000000000002%
+
+Verbindung zwischen 24 und 49:
+  Bandbreite: 9285 Kbps
+  Latenz: 46.29066769 ms
+  Paketverlust: 5.0E-4%
+
+Verbindung zwischen 24 und 50:
+  Bandbreite: 9285 Kbps
+  Latenz: 28.29624897 ms
+  Paketverlust: 0.0012%

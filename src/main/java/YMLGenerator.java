@@ -19,14 +19,15 @@ public class YMLGenerator {
     public void generateTopologyFile(boolean includeExtraNodes) throws IOException {
         Set<String> allPeers = new HashSet<>();
         Set<String> superpeerNames = superPeerToPeersMap.keySet();
-    
-        // Sammeln Sie alle Peers und die Zielpeers für jeden SuperPeer einschließlich des lectureStudioServers
+
+        // Sammeln Sie alle Peers und die Zielpeers für jeden SuperPeer einschließlich
+        // des lectureStudioServers
         Map<String, Set<String>> targetPeersMap = new HashMap<>();
         for (Map.Entry<String, Set<String>> entry : superPeerToPeersMap.entrySet()) {
             targetPeersMap.put(entry.getKey(), entry.getValue());
             allPeers.addAll(entry.getValue());
         }
-    
+
         try (FileWriter fw = new FileWriter(pathToYAMLFile)) {
             fw.write("name: containerlab-topology\n");
             fw.write("prefix: p2p\n\n");
@@ -35,7 +36,7 @@ public class YMLGenerator {
             fw.write("  ipv4-subnet: " + subnet + "0/24\n\n");
             fw.write("topology:\n");
             fw.write("  nodes:\n");
-    
+
             // Definieren des lectureStudioServer-Knotens
             fw.write("    lecturestudioserver:\n");
             fw.write("      kind: linux\n");
@@ -47,19 +48,20 @@ public class YMLGenerator {
             fw.write("      binds:\n");
             fw.write("        - /home/ozcankaraca/Desktop/mydocument.pdf:/app/mydocument.pdf\n");
             fw.write("      env:\n");
-            // Setzen der TARGET_PEERS für lectureStudioServer
+            // Setzen der TARGET_PEERS und SOURCE_PEER für lectureStudioServer
             String targetPeers = String.join(",", targetPeersMap.getOrDefault("lectureStudioServer", new HashSet<>()));
+            fw.write("        SOURCE_PEER: lecturestudioserver\n");
             fw.write("        TARGET_PEERS: " + targetPeers + "\n");
             fw.write("        MAIN_CLASS: LectureStudioServer\n");
             fw.write("      ports:\n");
             fw.write("        - \"8080:8080\"\n\n");
-    
+
             // Definieren der SuperPeers und Peers
             for (String peerName : allPeers) {
                 String superPeer = determineSuperPeerForPeer(peerName);
                 String mainClass = superpeerNames.contains(peerName) ? "SuperPeer" : "Peer";
                 String role = superpeerNames.contains(peerName) ? "receiver/sender" : "receiver";
-    
+
                 fw.write("    " + peerName + ":\n");
                 fw.write("      kind: linux\n");
                 fw.write("      image: image-testbed\n");
@@ -68,35 +70,38 @@ public class YMLGenerator {
                 fw.write("        SUPER_PEER: " + superPeer + "\n");
                 if (mainClass.equals("SuperPeer")) {
                     targetPeers = String.join(",", targetPeersMap.getOrDefault(peerName, new HashSet<>()));
-                    fw.write("        TARGET_PEERS: " + targetPeers + "\n");
+                    fw.write("        SOURCE_PEER: " + peerName + "\n");
+                    fw.write("        TARGET_PEERS: " + targetPeers + "\n"); 
                 }
                 fw.write("        MAIN_CLASS: " + mainClass + "\n");
                 fw.write("      labels:\n");
                 fw.write("        role: " + role + "\n");
                 fw.write("        group: " + (mainClass.equals("SuperPeer") ? "superpeer" : "peer") + "\n\n");
             }
-    
-            if (!includeExtraNodes) {
+
+            if (includeExtraNodes) { // Hier wurde ein Fehler korrigiert: if (!includeExtraNodes) wurde zu if
+                                     // (includeExtraNodes)
                 appendExtraNodes(fw);
             }
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("An error occurred while generating the topology YAML file.");
         }
-    }       
+    }
 
     private String determineSuperPeerForPeer(String peerName) {
         for (Map.Entry<String, Set<String>> entry : superPeerToPeersMap.entrySet()) {
-            // Wenn der aktuelle Peer in der Liste der verbundenen Peers eines Superpeers enthalten ist,
+            // Wenn der aktuelle Peer in der Liste der verbundenen Peers eines Superpeers
+            // enthalten ist,
             // wird dieser Superpeer als SUPER_PEER des Peers zurückgegeben.
             if (entry.getValue().contains(peerName)) {
                 return entry.getKey();
             }
         }
-        // Wenn der Peer in keiner der Listen enthalten ist, ist der Standard-SuperPeer der lecturestudioserver.
+        // Wenn der Peer in keiner der Listen enthalten ist, ist der Standard-SuperPeer
+        // der lecturestudioserver.
         return "lecturestudioserver";
     }
-    
 
     private String generateRandomIP() {
         String ip = subnet + nextIp;
@@ -107,15 +112,15 @@ public class YMLGenerator {
     private void readAndProcessOutputFile() {
         ObjectMapper mapper = new ObjectMapper();
         String pathToOutputFile = "/home/ozcankaraca/Desktop/testbed/src/resources/data/output-data.json";
-    
+
         try {
             JsonNode rootNode = mapper.readTree(new File(pathToOutputFile));
             JsonNode peer2peerNode = rootNode.path("peer2peer");
-    
+
             for (JsonNode connection : peer2peerNode) {
                 String sourceName = connection.path("sourceName").asText();
                 String targetName = connection.path("targetName").asText();
-    
+
                 superPeerToPeersMap.putIfAbsent(sourceName, new HashSet<>());
                 superPeerToPeersMap.get(sourceName).add(targetName);
             }
