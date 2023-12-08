@@ -1,0 +1,352 @@
+[
+  {
+    "sourceName": "lectureStudioServer",
+    "targetName": "1",
+    "bandwidth": 1080,
+    "latency": 57.15223672,
+    "loss": 0.0037
+  },
+  {
+    "sourceName": "lectureStudioServer",
+    "targetName": "2",
+    "bandwidth": 2749,
+    "latency": 36.18679108,
+    "loss": 0.0044
+  },
+  {
+    "sourceName": "lectureStudioServer",
+    "targetName": "3",
+    "bandwidth": 1845,
+    "latency": 42.17240941,
+    "loss": 0.0037
+  },
+  {
+    "sourceName": "lectureStudioServer",
+    "targetName": "4",
+    "bandwidth": 3922,
+    "latency": 47.91186639,
+    "loss": 0.0038
+  },
+  {
+    "sourceName": "lectureStudioServer",
+    "targetName": "5",
+    "bandwidth": 4886,
+    "latency": 37.64949423,
+    "loss": 0.0039000000000000003
+  },
+  {
+    "sourceName": "lectureStudioServer",
+    "targetName": "6",
+    "bandwidth": 7815,
+    "latency": 45.34466843,
+    "loss": 0.0037
+  },
+  {
+    "sourceName": "5",
+    "targetName": "7",
+    "bandwidth": 992,
+    "latency": 47.71010175,
+    "loss": 0.002
+  },
+  {
+    "sourceName": "6",
+    "targetName": "8",
+    "bandwidth": 859,
+    "latency": 40.77479444,
+    "loss": 4.0E-4
+  },
+  {
+    "sourceName": "6",
+    "targetName": "9",
+    "bandwidth": 859,
+    "latency": 38.73063104,
+    "loss": 0.001
+  },
+  {
+    "sourceName": "6",
+    "targetName": "10",
+    "bandwidth": 859,
+    "latency": 55.471613989999994,
+    "loss": 0.001
+  },
+  {
+    "sourceName": "6",
+    "targetName": "11",
+    "bandwidth": 859,
+    "latency": 41.88543136,
+    "loss": 0.0015
+  },
+  {
+    "sourceName": "lectureStudioServer",
+    "targetName": "12",
+    "bandwidth": 9209,
+    "latency": 20.78221187,
+    "loss": 0.0037
+  },
+  {
+    "sourceName": "12",
+    "targetName": "13",
+    "bandwidth": 1085,
+    "latency": 25.108656420000003,
+    "loss": 3.0000000000000003E-4
+  },
+  {
+    "sourceName": "12",
+    "targetName": "14",
+    "bandwidth": 1085,
+    "latency": 16.41008172,
+    "loss": 0.0015
+  },
+  {
+    "sourceName": "12",
+    "targetName": "15",
+    "bandwidth": 1085,
+    "latency": 21.79821554,
+    "loss": 4.0E-4
+  },
+  {
+    "sourceName": "lectureStudioServer",
+    "targetName": "16",
+    "bandwidth": 9209,
+    "latency": 33.0536578,
+    "loss": 0.0051
+  },
+  {
+    "sourceName": "16",
+    "targetName": "17",
+    "bandwidth": 7598,
+    "latency": 37.686136149999996,
+    "loss": 0.0059
+  },
+  {
+    "sourceName": "12",
+    "targetName": "18",
+    "bandwidth": 1085,
+    "latency": 25.6772749,
+    "loss": 5.0E-4
+  },
+  {
+    "sourceName": "16",
+    "targetName": "19",
+    "bandwidth": 7598,
+    "latency": 39.84342238,
+    "loss": 0.0018000000000000002
+  },
+  {
+    "sourceName": "16",
+    "targetName": "20",
+    "bandwidth": 7598,
+    "latency": 43.81894724,
+    "loss": 0.0022
+  },
+  {
+    "sourceName": "12",
+    "targetName": "21",
+    "bandwidth": 1085,
+    "latency": 26.313061689999998,
+    "loss": 9.0E-4
+  },
+  {
+    "sourceName": "12",
+    "targetName": "22",
+    "bandwidth": 1085,
+    "latency": 13.61218388,
+    "loss": 4.0E-4
+  },
+  {
+    "sourceName": "12",
+    "targetName": "23",
+    "bandwidth": 1085,
+    "latency": 26.4133931,
+    "loss": 3.0000000000000003E-4
+  },
+  {
+    "sourceName": "lectureStudioServer",
+    "targetName": "24",
+    "bandwidth": 9209,
+    "latency": 36.24292525,
+    "loss": 0.0038
+  },
+  {
+    "sourceName": "24",
+    "targetName": "25",
+    "bandwidth": 9285,
+    "latency": 37.49340565,
+    "loss": 7.999999999999999E-4
+  },
+  {
+    "sourceName": "12",
+    "targetName": "26",
+    "bandwidth": 1085,
+    "latency": 24.08724461,
+    "loss": 0.0015
+  },
+  {
+    "sourceName": "12",
+    "targetName": "27",
+    "bandwidth": 1085,
+    "latency": 23.577959489999998,
+    "loss": 0.001
+  },
+  {
+    "sourceName": "16",
+    "targetName": "28",
+    "bandwidth": 7598,
+    "latency": 28.66438437,
+    "loss": 0.0023
+  },
+  {
+    "sourceName": "24",
+    "targetName": "29",
+    "bandwidth": 9285,
+    "latency": 34.012618610000004,
+    "loss": 0.0045
+  },
+  {
+    "sourceName": "16",
+    "targetName": "30",
+    "bandwidth": 7598,
+    "latency": 36.265010939999996,
+    "loss": 0.0017000000000000001
+  },
+  {
+    "sourceName": "24",
+    "targetName": "31",
+    "bandwidth": 9285,
+    "latency": 24.82565112,
+    "loss": 5.0E-4
+  },
+  {
+    "sourceName": "12",
+    "targetName": "32",
+    "bandwidth": 1085,
+    "latency": 19.29113174,
+    "loss": 0.0019
+  },
+  {
+    "sourceName": "12",
+    "targetName": "33",
+    "bandwidth": 1085,
+    "latency": 18.50282657,
+    "loss": 6.000000000000001E-4
+  },
+  {
+    "sourceName": "16",
+    "targetName": "34",
+    "bandwidth": 7598,
+    "latency": 30.4825321,
+    "loss": 0.0027
+  },
+  {
+    "sourceName": "12",
+    "targetName": "35",
+    "bandwidth": 1085,
+    "latency": 14.971791080000001,
+    "loss": 4.0E-4
+  },
+  {
+    "sourceName": "24",
+    "targetName": "36",
+    "bandwidth": 9285,
+    "latency": 28.82584036,
+    "loss": 6.0E-4
+  },
+  {
+    "sourceName": "16",
+    "targetName": "37",
+    "bandwidth": 7598,
+    "latency": 26.921902940000003,
+    "loss": 0.0021000000000000003
+  },
+  {
+    "sourceName": "lectureStudioServer",
+    "targetName": "38",
+    "bandwidth": 9209,
+    "latency": 21.23967199,
+    "loss": 0.0039000000000000003
+  },
+  {
+    "sourceName": "38",
+    "targetName": "39",
+    "bandwidth": 20815,
+    "latency": 14.52939568,
+    "loss": 4.0E-4
+  },
+  {
+    "sourceName": "lectureStudioServer",
+    "targetName": "40",
+    "bandwidth": 9209,
+    "latency": 22.03492988,
+    "loss": 0.0105
+  },
+  {
+    "sourceName": "40",
+    "targetName": "41",
+    "bandwidth": 20771,
+    "latency": 12.34697264,
+    "loss": 0.0081
+  },
+  {
+    "sourceName": "24",
+    "targetName": "42",
+    "bandwidth": 9285,
+    "latency": 26.78747056,
+    "loss": 9.0E-4
+  },
+  {
+    "sourceName": "6",
+    "targetName": "43",
+    "bandwidth": 859,
+    "latency": 39.20442896,
+    "loss": 7.999999999999999E-4
+  },
+  {
+    "sourceName": "16",
+    "targetName": "44",
+    "bandwidth": 7598,
+    "latency": 27.191323160000003,
+    "loss": 0.0019
+  },
+  {
+    "sourceName": "24",
+    "targetName": "45",
+    "bandwidth": 9285,
+    "latency": 31.32938771,
+    "loss": 5.0E-4
+  },
+  {
+    "sourceName": "6",
+    "targetName": "46",
+    "bandwidth": 859,
+    "latency": 48.17606298,
+    "loss": 4.0E-4
+  },
+  {
+    "sourceName": "40",
+    "targetName": "47",
+    "bandwidth": 17325,
+    "latency": 27.70611247,
+    "loss": 0.013000000000000001
+  },
+  {
+    "sourceName": "16",
+    "targetName": "48",
+    "bandwidth": 7598,
+    "latency": 23.50002469,
+    "loss": 0.0024000000000000002
+  },
+  {
+    "sourceName": "24",
+    "targetName": "49",
+    "bandwidth": 9285,
+    "latency": 46.29066769,
+    "loss": 5.0E-4
+  },
+  {
+    "sourceName": "24",
+    "targetName": "50",
+    "bandwidth": 9285,
+    "latency": 28.29624897,
+    "loss": 0.0012
+  }
+]

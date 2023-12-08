@@ -7,7 +7,7 @@ mgmt:
 
 topology:
   nodes:
-    lecturestudioserver:
+    lectureStudioServer:
       kind: linux
       image: image-testbed
       mgmt-ipv4: 172.100.100.10
@@ -17,7 +17,9 @@ topology:
       binds:
         - /home/ozcankaraca/Desktop/mydocument.pdf:/app/mydocument.pdf
       env:
+        SOURCE_PEER: lectureStudioServer
         TARGET_PEERS: 1,12,2,24,3,4,5,16,38,6,40
+        TARGET_PEERS_IP: 172.100.100.28,172.100.100.20,172.100.100.29,172.100.100.41,172.100.100.30,172.100.100.31,172.100.100.32,172.100.100.24,172.100.100.55,172.100.100.33,172.100.100.57
         MAIN_CLASS: LectureStudioServer
       ports:
         - "8080:8080"
@@ -127,7 +129,9 @@ topology:
       mgmt-ipv4: 172.100.100.20
       env:
         SUPER_PEER: lectureStudioServer
+        SOURCE_PEER: 12
         TARGET_PEERS: 22,33,23,13,35,14,15,26,27,18,21,32
+        TARGET_PEERS_IP: 172.100.100.39,172.100.100.50,172.100.100.40,172.100.100.21,172.100.100.52,172.100.100.22,172.100.100.23,172.100.100.43,172.100.100.44,172.100.100.26,172.100.100.38,172.100.100.49
         MAIN_CLASS: SuperPeer
       labels:
         role: receiver/sender
@@ -172,7 +176,9 @@ topology:
       mgmt-ipv4: 172.100.100.24
       env:
         SUPER_PEER: lectureStudioServer
+        SOURCE_PEER: 16
         TARGET_PEERS: 44,34,37,48,17,28,19,30,20
+        TARGET_PEERS_IP: 172.100.100.11,172.100.100.51,172.100.100.54,172.100.100.15,172.100.100.25,172.100.100.45,172.100.100.27,172.100.100.47,172.100.100.37
         MAIN_CLASS: SuperPeer
       labels:
         role: receiver/sender
@@ -261,7 +267,9 @@ topology:
       mgmt-ipv4: 172.100.100.32
       env:
         SUPER_PEER: lectureStudioServer
+        SOURCE_PEER: 5
         TARGET_PEERS: 7
+        TARGET_PEERS_IP: 172.100.100.34
         MAIN_CLASS: SuperPeer
       labels:
         role: receiver/sender
@@ -273,7 +281,9 @@ topology:
       mgmt-ipv4: 172.100.100.33
       env:
         SUPER_PEER: lectureStudioServer
+        SOURCE_PEER: 6
         TARGET_PEERS: 11,46,8,9,10,43
+        TARGET_PEERS_IP: 172.100.100.19,172.100.100.13,172.100.100.35,172.100.100.36,172.100.100.18,172.100.100.60
         MAIN_CLASS: SuperPeer
       labels:
         role: receiver/sender
@@ -362,7 +372,9 @@ topology:
       mgmt-ipv4: 172.100.100.41
       env:
         SUPER_PEER: lectureStudioServer
+        SOURCE_PEER: 24
         TARGET_PEERS: 45,25,36,49,29,50,31,42
+        TARGET_PEERS_IP: 172.100.100.12,172.100.100.42,172.100.100.53,172.100.100.16,172.100.100.46,172.100.100.17,172.100.100.48,172.100.100.59
         MAIN_CLASS: SuperPeer
       labels:
         role: receiver/sender
@@ -517,7 +529,9 @@ topology:
       mgmt-ipv4: 172.100.100.55
       env:
         SUPER_PEER: lectureStudioServer
+        SOURCE_PEER: 38
         TARGET_PEERS: 39
+        TARGET_PEERS_IP: 172.100.100.56
         MAIN_CLASS: SuperPeer
       labels:
         role: receiver/sender
@@ -540,7 +554,9 @@ topology:
       mgmt-ipv4: 172.100.100.57
       env:
         SUPER_PEER: lectureStudioServer
+        SOURCE_PEER: 40
         TARGET_PEERS: 47,41
+        TARGET_PEERS_IP: 172.100.100.14,172.100.100.58
         MAIN_CLASS: SuperPeer
       labels:
         role: receiver/sender

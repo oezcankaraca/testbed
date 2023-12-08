@@ -1,3 +1,5 @@
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -12,7 +14,7 @@ public class NetworkStatisticsYML extends CSVReaderUtils {
 
     public static void main(String[] args) {
         String pathToJsonOutput = "/home/ozcankaraca/Desktop/testbed/src/resources/results/output-data.json";
-        String pathToPeerInfoFile = "/home/ozcankaraca/Desktop/testbed/src/resources/results/output-info.txt";
+        String pathToPeerInfoFile = "/home/ozcankaraca/Desktop/testbed/src/resources/results/output-info.json";
         String pathToCSV = "/home/ozcankaraca/Desktop/testbed/src/resources/data/fixed-broadband-speeds-august-2019-data-25.csv";
         String pathToNetworkStatistics = "/home/ozcankaraca/Desktop/testbed/src/resources/results/network-statistics.txt";
         int numberOfPeers = 50; 
@@ -69,26 +71,35 @@ public class NetworkStatisticsYML extends CSVReaderUtils {
     }
 
     private static void writeConnectionPropertiesToFile(JsonObject outputData, String filePath) throws IOException {
-        try (FileWriter writer = new FileWriter(filePath, true)) { // Append mode
-            JsonArray peer2peer = outputData.getAsJsonArray("peer2peer");
+    JsonArray connectionsArray = new JsonArray();
 
-            for (JsonElement connectionElement : peer2peer) {
-                JsonObject connectionObj = connectionElement.getAsJsonObject();
-                String sourceName = connectionObj.get("sourceName").getAsString();
-                String targetName = connectionObj.get("targetName").getAsString();
+    JsonArray peer2peer = outputData.getAsJsonArray("peer2peer");
+    for (JsonElement connectionElement : peer2peer) {
+        JsonObject connectionObj = connectionElement.getAsJsonObject();
+        String sourceName = connectionObj.get("sourceName").getAsString();
+        String targetName = connectionObj.get("targetName").getAsString();
 
-                PeerStats sourceStats = getPeerStats(sourceName);
-                PeerStats targetStats = getPeerStats(targetName);
+        PeerStats sourceStats = getPeerStats(sourceName);
+        PeerStats targetStats = getPeerStats(targetName);
 
-                int bandwidth = Math.min((int) (sourceStats.maxUpload * 1000), (int) (targetStats.maxDownload * 1000)); // Bandbreite in Kbps
-                double latency = sourceStats.latency + targetStats.latency;
-                double packetLoss = sourceStats.packetLoss + targetStats.packetLoss;
+        int bandwidth = Math.min((int) (sourceStats.maxUpload * 1000), (int) (targetStats.maxDownload * 1000)); // Bandbreite in Kbps
+        double latency = sourceStats.latency + targetStats.latency;
+        double packetLoss = sourceStats.packetLoss + targetStats.packetLoss;
 
-                writer.write("\nVerbindung zwischen " + sourceName + " und " + targetName + ":\n");
-                writer.write("  Bandbreite: " + bandwidth + " Kbps\n");
-                writer.write("  Latenz: " + latency + " ms\n");
-                writer.write("  Paketverlust: " + packetLoss + "%\n");
-            }
-        }
+        JsonObject connectionJson = new JsonObject();
+        connectionJson.addProperty("sourceName", sourceName);
+        connectionJson.addProperty("targetName", targetName);
+        connectionJson.addProperty("bandwidth", bandwidth);
+        connectionJson.addProperty("latency", latency);
+        connectionJson.addProperty("loss", packetLoss);
+
+        connectionsArray.add(connectionJson);
+    }
+
+    // Schreiben des JSON-Arrays in eine Datei
+    try (FileWriter writer = new FileWriter(filePath)) {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        gson.toJson(connectionsArray, writer);
+    }
     }
 }
