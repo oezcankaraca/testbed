@@ -16,12 +16,11 @@ public class GeneratorOfNetworkTopology extends CSVReaderUtils {
         String pathToNetworkStatistics = "/home/ozcankaraca/Desktop/testbed/src/resources/results/network-statistics.txt";
         String pathToInputData = "/home/ozcankaraca/Desktop/testbed/src/resources/data/input-data.json";
 
-        readCsvDataAndWriteToFile(pathToCSV, pathToNetworkStatistics);
+        readCsvDataAndWriteToFile(pathToCSV, pathToNetworkStatistics, numberOfPeers);
 
         JsonObject inputDataObject = generateInputDataObject();
 
         generateInputDataJsonFile(inputDataObject, pathToInputData);
-
     }
 
     private static JsonObject generateInputDataObject() {
@@ -30,30 +29,19 @@ public class GeneratorOfNetworkTopology extends CSVReaderUtils {
         inputDataObject.addProperty("filesize", 5000);
         JsonArray peersArray = new JsonArray();
 
-        List<Double> maxDownloadSpeedList = new ArrayList<>();
-        List<Double> maxUploadSpeedList = new ArrayList<>();
+        for (int i = 0; i <= numberOfPeers; i++) {
+            String peerId = i == 0 ? "lecturestudioserver" : String.valueOf(i);
+            PeerStats stats = getPeerStats(peerId);
 
-        for (Double[] stats : CSVReaderUtils.networkStatsList) {
-            maxUploadSpeedList.add(stats[0]);
-            maxDownloadSpeedList.add(stats[1]);
-        }
-
-        for (int i = 0; i <= numberOfPeers; i++) { // Jetzt inkludieren wir den Server als Peer 0
             JsonObject peerObject = new JsonObject();
-            peerObject.addProperty("name", i == 0 ? "lectureStudioServer" : String.valueOf(i));
+            peerObject.addProperty("name", peerId);
 
-            Double[] stats = CSVReaderUtils.networkStatsList.get(i);
-            // Konvertieren Sie die max Download- und Upload-Geschwindigkeiten von Mbps zu
-            // Kbps und runden Sie zur nächsten Ganzzahl
-            
-            int maxUploadKbps = (int) (stats[0] * 1000);
-            int maxDownloadKbps = (int) (stats[1] * 1000);
+            int maxUploadKbps = (int) (stats.maxUpload * 1000);
+            int maxDownloadKbps = (int) (stats.maxDownload * 1000);
 
-            // Setzen Sie die Geschwindigkeiten in Kbps als Ganzzahleigenschaften
             peerObject.addProperty("maxDownload", maxDownloadKbps);
             peerObject.addProperty("maxUpload", maxUploadKbps);
 
-            // Fügen Sie das Peer-Objekt zum peersArray hinzu
             peersArray.add(peerObject);
         }
 
@@ -79,48 +67,48 @@ public class GeneratorOfNetworkTopology extends CSVReaderUtils {
     
                     connection.addProperty("sourceName", sourceName);
                     connection.addProperty("targetName", targetName);
-
+    
                     // Retrieve the specific stats for source and target peers
-                    Double[] sourceStats = CSVReaderUtils.networkStatsList.get(sourceIndex);
-                    Double[] targetStats = CSVReaderUtils.networkStatsList.get(targetIndex);
-
+                    PeerStats sourceStats = getPeerStats(sourceName);
+                    PeerStats targetStats = getPeerStats(targetName);
+    
                     // Convert the bandwidth from Mbps to Kbps and take the minimum of the two peers
-                    int connectionBandwidthKbps = (int) (Math.min(sourceStats[0] * 1000, targetStats[1] * 1000));
-
+                    int connectionBandwidthKbps = (int) (Math.min(sourceStats.maxUpload * 1000, targetStats.maxDownload * 1000));
+    
                     // Sum the latencies and take the maximum of the packet losses of the two peers
-                    double connectionLatency = sourceStats[4] + targetStats[4];
-                    double connectionLoss = Math.max(sourceStats[5], targetStats[5]);
-
+                    double connectionLatency = sourceStats.latency + targetStats.latency;
+                    double connectionLoss = Math.max(sourceStats.packetLoss, targetStats.packetLoss);
+    
                     // Format the latency and loss
                     String formattedLatency = String.format("%.2f", connectionLatency);
                     String formattedLoss = String.format("%.4f", connectionLoss);
-
+    
                     // Set the properties for the connection object
                     connection.addProperty("bandwidth", connectionBandwidthKbps); // Store as integer Kbps
                     connection.addProperty("latency", formattedLatency);
                     connection.addProperty("loss", formattedLoss);
-
+    
                     // Add the connection object to the JSON array
                     connectionsArray.add(connection);
                 }
             }
         }
-
-        // Convert JsonArray to a list of JsonElements
-        List<JsonElement> connectionList = new ArrayList<>();
-        connectionsArray.forEach(connectionList::add);
-
+    
         // Shuffle the list
-        Collections.shuffle(connectionList);
-
-        // Clear the original JsonArray and add the shuffled elements back
-        connectionsArray = new JsonArray();
-        for (JsonElement connectionElement : connectionList) {
-            connectionsArray.add(connectionElement);
+        List<JsonElement> connectionList = new ArrayList<>();
+        for (JsonElement elem : connectionsArray) {
+            connectionList.add(elem);
         }
-
-        return connectionsArray;
-    }
+        Collections.shuffle(connectionList);
+    
+        // Clear the original JsonArray and add the shuffled elements back
+        JsonArray shuffledArray = new JsonArray();
+        for (JsonElement connectionElement : connectionList) {
+            shuffledArray.add(connectionElement);
+        }
+    
+        return shuffledArray;
+    }    
 
     private static void generateInputDataJsonFile(JsonObject jsonObject, String filePath) {
         try (FileWriter file = new FileWriter(filePath)) {
