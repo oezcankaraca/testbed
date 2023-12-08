@@ -16,6 +16,8 @@ topology:
         group: server
       binds:
         - /home/ozcankaraca/Desktop/mydocument.pdf:/app/mydocument.pdf
+        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
+        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connection-details.sh:/app/connection-details.sh
       env:
         SOURCE_PEER: lectureStudioServer
         TARGET_PEERS: 1,12,2,24,3,4,5,16,38,6,40
@@ -23,6 +25,11 @@ topology:
         MAIN_CLASS: LectureStudioServer
       ports:
         - "8080:8080"
+      exec:
+        - echo "Waiting for 5 seconds..."
+        - sleep 5
+        - chmod +x /app/connection-details.sh
+        - ./connection-details.sh > connection-details.txt 2>&1
 
     44:
       kind: linux

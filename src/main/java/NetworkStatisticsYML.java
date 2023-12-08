@@ -14,7 +14,7 @@ public class NetworkStatisticsYML extends CSVReaderUtils {
 
     public static void main(String[] args) {
         String pathToJsonOutput = "/home/ozcankaraca/Desktop/testbed/src/resources/results/output-data.json";
-        String pathToPeerInfoFile = "/home/ozcankaraca/Desktop/testbed/src/resources/results/output-info.json";
+        String pathToPeerInfoFile = "/home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json";
         String pathToCSV = "/home/ozcankaraca/Desktop/testbed/src/resources/data/fixed-broadband-speeds-august-2019-data-25.csv";
         String pathToNetworkStatistics = "/home/ozcankaraca/Desktop/testbed/src/resources/results/network-statistics.txt";
         int numberOfPeers = 50; 

@@ -7,7 +7,12 @@ COPY src ./src
 
 RUN mvn package
 
-FROM openjdk:17 AS runtime
+FROM openjdk:17-slim AS runtime
+
+# Installieren von jq
+RUN apt-get update && \
+    apt-get install -y jq && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
@@ -16,3 +21,4 @@ COPY --from=build /app/target/demo-1.0-SNAPSHOT-jar-with-dependencies.jar /app/
 ENV MAIN_CLASS=SuperPeer
 
 ENTRYPOINT ["sh", "-c", "java -cp demo-1.0-SNAPSHOT-jar-with-dependencies.jar $MAIN_CLASS"]
+
