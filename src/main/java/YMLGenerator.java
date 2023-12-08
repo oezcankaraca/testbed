@@ -28,7 +28,7 @@ public class YMLGenerator {
         }
 
         for (String peerName : allPeers) {
-            if (!peerName.equals("lectureStudioServer")) { // Überspringen des lecturestudioservers
+            if (!peerName.equals("lectureStudioServer")) {
                 peerNameToIpMap.put(peerName, generateNextIP());
             }
         }
@@ -42,11 +42,11 @@ public class YMLGenerator {
             fw.write("topology:\n");
             fw.write("  nodes:\n");
 
-            // Definieren des lectureStudioServer-Knotens
+            // lectureStudioServer Knoten
             fw.write("    lectureStudioServer:\n");
             fw.write("      kind: linux\n");
             fw.write("      image: image-testbed\n");
-            fw.write("      mgmt-ipv4: 172.100.100.10\n"); // Feste IP für den lecturestudioserver
+            fw.write("      mgmt-ipv4: 172.100.100.10\n");
             fw.write("      labels:\n");
             fw.write("        role: sender\n");
             fw.write("        group: server\n");
@@ -60,27 +60,27 @@ public class YMLGenerator {
             fw.write("        TARGET_PEERS_IP: " + targetPeersIps + "\n");
             fw.write("        MAIN_CLASS: LectureStudioServer\n");
             fw.write("      binds:\n");
-            fw.write("        - /home/ozcankaraca/Desktop/mydocument.pdf:/app/mydocument.pdf\n");
+            fw.write(
+                    "        - /home/ozcankaraca/Desktop/mydocument.pdf:/app/mydocument.pdf\n");
             fw.write(
                     "        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json\n");
             fw.write(
-                    "        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connection-details.sh:/app/connection-details.sh\n");
-
-            // Exec Befehle hinzufügen
+                    "        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-source.sh:/app/connections-source.sh\n");
             fw.write("      exec:\n");
             fw.write("        - echo \"Waiting for 5 seconds...\"\n");
             fw.write("        - sleep 5\n");
-            fw.write("        - chmod +x /app/connection-details.sh\n");
-            fw.write("        - ./connection-details.sh\n");
+            fw.write("        - chmod +x /app/connections-source.sh\n");
+            fw.write("        - ./connections-source.sh\n");
+
             fw.write("      ports:\n");
             fw.write("        - \"8080:8080\"\n\n");
 
-            // Definieren der SuperPeers und Peers
-            // Definieren der SuperPeers und Peers
+            // SuperPeers und Peers
             for (String peerName : allPeers) {
                 if (peerName.equals("lectureStudioServer")) {
-                    continue; // Überspringen der Konfiguration für den lecturestudioserver
+                    continue;
                 }
+
                 String superPeer = determineSuperPeerForPeer(peerName);
                 String mainClass = superpeerNames.contains(peerName) ? "SuperPeer" : "Peer";
                 String role = superpeerNames.contains(peerName) ? "receiver/sender" : "receiver";
@@ -103,10 +103,9 @@ public class YMLGenerator {
                 fw.write("        role: " + role + "\n");
                 fw.write("        group: " + (mainClass.equals("SuperPeer") ? "superpeer" : "peer") + "\n");
 
-                // Hinzufügen von binds und exec für lectureStudioServer und SuperPeers
-                if (superpeerNames.contains(peerName)) {
-                    appendBindsAndExec(fw);
-                }
+                // Binds und Exec für alle Knoten
+                boolean isSuperPeer = superpeerNames.contains(peerName);
+                appendBindsAndExec(fw, isSuperPeer);
             }
 
             if (!includeExtraNodes) {
@@ -118,20 +117,29 @@ public class YMLGenerator {
         }
     }
 
-    private void appendBindsAndExec(FileWriter fw) throws IOException {
-        // Binds hinzufügen
+    private void appendBindsAndExec(FileWriter fw, boolean isSuperPeer) throws IOException {
         fw.write("      binds:\n");
         fw.write(
                 "        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json\n");
-        fw.write(
-                "        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connection-details.sh:/app/connection-details.sh\n");
 
-        // Exec Befehle hinzufügen
-        fw.write("      exec:\n");
-        fw.write("        - echo \"Waiting for 5 seconds...\"\n");
-        fw.write("        - sleep 5\n");
-        fw.write("        - chmod +x /app/connection-details.sh\n");
-        fw.write("        - ./connection-details.sh\n");
+        if (isSuperPeer) {
+            fw.write(
+                    "        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-source.sh:/app/connections-source.sh\n");
+            fw.write("      exec:\n");
+            fw.write("        - echo \"Waiting for 5 seconds...\"\n");
+            fw.write("        - sleep 5\n");
+            fw.write("        - chmod +x /app/connections-source.sh\n");
+            fw.write("        - ./connections-source.sh\n");
+        } else {
+            fw.write(
+                    "        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh\n");
+            fw.write("      exec:\n");
+            fw.write("        - echo \"Waiting for 5 seconds...\"\n");
+            fw.write("        - sleep 5\n");
+            fw.write("        - chmod +x /app/connections-target.sh\n");
+            fw.write("        - ./connections-target.sh\n");
+        }
+
     }
 
     private String generateNextIP() {
@@ -147,9 +155,6 @@ public class YMLGenerator {
 
     private String determineSuperPeerForPeer(String peerName) {
         for (Map.Entry<String, Set<String>> entry : superPeerToPeersMap.entrySet()) {
-            // Wenn der aktuelle Peer in der Liste der verbundenen Peers eines Superpeers
-            // enthalten ist,
-            // wird dieser Superpeer als SUPER_PEER des Peers zurückgegeben.
             if (entry.getValue().contains(peerName)) {
                 return entry.getKey();
             }
