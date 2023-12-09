@@ -22,11 +22,13 @@ public class YMLGenerator {
         Set<String> allPeers = new HashSet<>();
         Set<String> superpeerNames = superPeerToPeersMap.keySet();
 
+        // Hinzufügen aller Peers (einschließlich SuperPeers) zu allPeers
         for (String superPeer : superPeerToPeersMap.keySet()) {
             allPeers.add(superPeer);
             allPeers.addAll(superPeerToPeersMap.get(superPeer));
         }
 
+        // Zuweisung von IP-Adressen für alle Peers außer lectureStudioServer
         for (String peerName : allPeers) {
             if (!peerName.equals("lectureStudioServer")) {
                 peerNameToIpMap.put(peerName, generateNextIP());
@@ -42,7 +44,7 @@ public class YMLGenerator {
             fw.write("topology:\n");
             fw.write("  nodes:\n");
 
-            // lectureStudioServer Knoten
+            // Definieren des lectureStudioServer-Knotens
             fw.write("    lectureStudioServer:\n");
             fw.write("      kind: linux\n");
             fw.write("      image: image-testbed\n");
@@ -50,18 +52,8 @@ public class YMLGenerator {
             fw.write("      labels:\n");
             fw.write("        role: sender\n");
             fw.write("        group: server\n");
-            fw.write("      env:\n");
-
-            String targetPeers = String.join(",",
-                    superPeerToPeersMap.getOrDefault("lectureStudioServer", new HashSet<>()));
-            String targetPeersIps = getTargetPeersIps(superPeerToPeersMap.get("lectureStudioServer"));
-            fw.write("        SOURCE_PEER: lectureStudioServer\n");
-            fw.write("        TARGET_PEERS: " + targetPeers + "\n");
-            fw.write("        TARGET_PEERS_IP: " + targetPeersIps + "\n");
-            fw.write("        MAIN_CLASS: LectureStudioServer\n");
             fw.write("      binds:\n");
-            fw.write(
-                    "        - /home/ozcankaraca/Desktop/mydocument.pdf:/app/mydocument.pdf\n");
+            fw.write("        - /home/ozcankaraca/Desktop/mydocument.pdf:/app/mydocument.pdf\n");
             fw.write(
                     "        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json\n");
             fw.write(
@@ -71,41 +63,60 @@ public class YMLGenerator {
             fw.write("        - sleep 5\n");
             fw.write("        - chmod +x /app/connections-source.sh\n");
             fw.write("        - ./connections-source.sh\n");
+            fw.write("      env:\n");
 
+            String targetPeers = String.join(",",
+                    superPeerToPeersMap.getOrDefault("lectureStudioServer", new HashSet<>()));
+            String targetPeersIpsLecture = getTargetPeersIps(superPeerToPeersMap.get("lectureStudioServer"));
+            fw.write("        SOURCE_PEER: lectureStudioServer\n");
+            fw.write("        TARGET_PEERS: " + targetPeers + "\n");
+            fw.write("        TARGET_PEERS_IP: " + targetPeersIpsLecture + "\n");
+            fw.write("        MAIN_CLASS: LectureStudioServer\n");
             fw.write("      ports:\n");
             fw.write("        - \"8080:8080\"\n\n");
 
-            // SuperPeers und Peers
+            // Erstellen von Knoten für die anderen Peers
             for (String peerName : allPeers) {
                 if (peerName.equals("lectureStudioServer")) {
                     continue;
                 }
 
-                String superPeer = determineSuperPeerForPeer(peerName);
-                String mainClass = superpeerNames.contains(peerName) ? "SuperPeer" : "Peer";
-                String role = superpeerNames.contains(peerName) ? "receiver/sender" : "receiver";
+                boolean isNormalPeer = !superpeerNames.contains(peerName);
+                String mainClass = isNormalPeer ? "Peer" : "SuperPeer";
+                String role = isNormalPeer ? "receiver" : "receiver/sender";
 
                 fw.write("    " + peerName + ":\n");
                 fw.write("      kind: linux\n");
                 fw.write("      image: image-testbed\n");
                 fw.write("      mgmt-ipv4: " + peerNameToIpMap.get(peerName) + "\n");
-                fw.write("      env:\n");
-                fw.write("        SUPER_PEER: " + superPeer + "\n");
-                if (mainClass.equals("SuperPeer")) {
-                    targetPeers = String.join(",", superPeerToPeersMap.getOrDefault(peerName, new HashSet<>()));
-                    targetPeersIps = getTargetPeersIps(superPeerToPeersMap.get(peerName));
-                    fw.write("        SOURCE_PEER: " + peerName + "\n");
-                    fw.write("        TARGET_PEERS: " + targetPeers + "\n");
-                    fw.write("        TARGET_PEERS_IP: " + targetPeersIps + "\n");
-                }
-                fw.write("        MAIN_CLASS: " + mainClass + "\n");
                 fw.write("      labels:\n");
                 fw.write("        role: " + role + "\n");
-                fw.write("        group: " + (mainClass.equals("SuperPeer") ? "superpeer" : "peer") + "\n");
+                fw.write("        group: " + mainClass.toLowerCase() + "\n");
+
+                // Umgekehrte Logik für normale Peers
+                if (isNormalPeer) {
+                    Set<String> connectedTargets = findAllConnectedSuperPeersAndLectureStudioServer(peerName);
+                    String targetPeersString = String.join(",", connectedTargets);
+                    String targetPeersIps = getTargetPeersIps(connectedTargets, true); // Anpassung hier
+
+                    fw.write("      env:\n");
+                    fw.write("        SOURCE_PEER: " + peerName + "\n");
+                    fw.write("        TARGET_PEERS: " + targetPeersString + "\n");
+                    fw.write("        TARGET_PEERS_IP: " + targetPeersIps + "\n");
+                } else {
+                    // Umgebungsvariablen für SuperPeers
+                    targetPeers = String.join(",", superPeerToPeersMap.getOrDefault(peerName, new HashSet<>()));
+                    String targetPeersIpsSuperPeer = getTargetPeersIps(superPeerToPeersMap.get(peerName), false);
+
+                    fw.write("      env:\n");
+                    fw.write("        SUPER_PEER: " + "lectureStudioServer" + "\n");
+                    fw.write("        SOURCE_PEER: " + peerName + "\n");
+                    fw.write("        TARGET_PEERS: " + targetPeers + "\n");
+                    fw.write("        TARGET_PEERS_IP: " + targetPeersIpsSuperPeer + "\n");
+                }
 
                 // Binds und Exec für alle Knoten
-                boolean isSuperPeer = superpeerNames.contains(peerName);
-                appendBindsAndExec(fw, isSuperPeer);
+                appendBindsAndExec(fw, isNormalPeer);
             }
 
             if (!includeExtraNodes) {
@@ -117,6 +128,27 @@ public class YMLGenerator {
         }
     }
 
+    private String getTargetPeersIps(Set<String> targetPeers, boolean isNormalPeer) {
+        return String.join(",",
+                targetPeers.stream()
+                        .map(peerName -> peerName.equals("lectureStudioServer") && isNormalPeer ? "172.100.100.10"
+                                : peerNameToIpMap.getOrDefault(peerName, "unknown"))
+                        .collect(Collectors.toList()));
+    }
+
+    private Set<String> findAllConnectedSuperPeersAndLectureStudioServer(String normalPeer) {
+        Set<String> connectedPeers = new HashSet<>();
+        for (Map.Entry<String, Set<String>> entry : superPeerToPeersMap.entrySet()) {
+            if (entry.getValue().contains(normalPeer)) {
+                connectedPeers.add(entry.getKey());
+            }
+        }
+        if (superPeerToPeersMap.getOrDefault("lectureStudioServer", Collections.emptySet()).contains(normalPeer)) {
+            connectedPeers.add("lectureStudioServer");
+        }
+        return connectedPeers;
+    }
+
     private void appendBindsAndExec(FileWriter fw, boolean isSuperPeer) throws IOException {
         fw.write("      binds:\n");
         fw.write(
@@ -124,20 +156,20 @@ public class YMLGenerator {
 
         if (isSuperPeer) {
             fw.write(
-                    "        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-source.sh:/app/connections-source.sh\n");
-            fw.write("      exec:\n");
-            fw.write("        - echo \"Waiting for 5 seconds...\"\n");
-            fw.write("        - sleep 5\n");
-            fw.write("        - chmod +x /app/connections-source.sh\n");
-            fw.write("        - ./connections-source.sh\n");
-        } else {
-            fw.write(
                     "        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh\n");
             fw.write("      exec:\n");
             fw.write("        - echo \"Waiting for 5 seconds...\"\n");
             fw.write("        - sleep 5\n");
             fw.write("        - chmod +x /app/connections-target.sh\n");
             fw.write("        - ./connections-target.sh\n");
+        } else {
+            fw.write(
+                    "        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-source.sh:/app/connections-source.sh\n");
+            fw.write("      exec:\n");
+            fw.write("        - echo \"Waiting for 5 seconds...\"\n");
+            fw.write("        - sleep 5\n");
+            fw.write("        - chmod +x /app/connections-source.sh\n");
+            fw.write("        - ./connections-source.sh\n");
         }
 
     }
@@ -151,15 +183,6 @@ public class YMLGenerator {
     private String getTargetPeersIps(Set<String> targetPeers) {
         return String.join(",", targetPeers.stream().map(peerName -> peerNameToIpMap.getOrDefault(peerName, "unknown"))
                 .collect(Collectors.toList()));
-    }
-
-    private String determineSuperPeerForPeer(String peerName) {
-        for (Map.Entry<String, Set<String>> entry : superPeerToPeersMap.entrySet()) {
-            if (entry.getValue().contains(peerName)) {
-                return entry.getKey();
-            }
-        }
-        return "lectureStudioServer";
     }
 
     private void readAndProcessOutputFile() {
