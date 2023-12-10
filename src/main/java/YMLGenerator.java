@@ -13,6 +13,7 @@ public class YMLGenerator {
     private int nextIp = 11;
     private HashMap<String, Set<String>> superPeerToPeersMap = new HashMap<>();
     private Map<String, String> peerNameToIpMap = new HashMap<>();
+    private Map<String, Integer> interfaceCounter = new HashMap<>();
 
     public YMLGenerator(String configFilePath) throws IOException {
         readAndProcessOutputFile();
@@ -122,10 +123,55 @@ public class YMLGenerator {
             if (!includeExtraNodes) {
                 appendExtraNodes(fw);
             }
+
+            // [Code zum Schreiben des Anfangs der YAML-Datei und der Peer-Knoten]
+
+            fw.write("  links:\n");
+
+            // Eindeutige Verbindung für jeden Peer in TARGET_PEERS des lectureStudioServer
+            Set<String> uniqueConnections = new HashSet<>();
+
+            // Erzeugen der Links für lectureStudioServer zu seinen Peers
+            Set<String> lectureStudioPeers = superPeerToPeersMap.getOrDefault("lectureStudioServer", new HashSet<>());
+            for (String peer : lectureStudioPeers) {
+                if (!uniqueConnections.contains(peer)) {
+                    String lectureStudioInterface = assignInterface("lectureStudioServer");
+                    String peerInterface = assignInterface(peer);
+                    fw.write("    - endpoints: [\"lectureStudioServer:" + lectureStudioInterface + "\", \"" + peer + ":"
+                            + peerInterface + "\"]\n");
+                    uniqueConnections.add(peer);
+                }
+            }
+
+            // Erzeugen der Links für SuperPeers zu ihren verbundenen Peers
+            for (String superPeer : superpeerNames) {
+                Set<String> connectedPeers = superPeerToPeersMap.getOrDefault(superPeer, new HashSet<>());
+                for (String peer : connectedPeers) {
+                    if (!uniqueConnections.contains(peer)) {
+                        String superPeerInterface = assignInterface(superPeer);
+                        String peerInterface = assignInterface(peer);
+                        fw.write("    - endpoints: [\"" + superPeer + ":" + superPeerInterface + "\", \"" + peer + ":"
+                                + peerInterface + "\"]\n");
+                        uniqueConnections.add(peer);
+                    }
+                }
+            }
+
+            // [Weiterer Code zum Hinzufügen von zusätzlichen Knoten, falls erforderlich]
+
+            // Schließen der FileWriter-Instanz
+            fw.close();
+
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("An error occurred while generating the topology YAML file.");
         }
+    }
+
+    private String assignInterface(String nodeName) {
+        int count = interfaceCounter.getOrDefault(nodeName, 1);
+        interfaceCounter.put(nodeName, count + 1);
+        return "eth" + count;
     }
 
     private String getTargetPeersIps(Set<String> targetPeers, boolean isNormalPeer) {
