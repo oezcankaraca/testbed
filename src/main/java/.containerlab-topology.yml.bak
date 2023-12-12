@@ -3,1039 +3,135 @@ prefix: p2p
 
 mgmt:
   network: fixedips
-  ipv4-subnet: 172.100.100.0/24
-
 topology:
   nodes:
     lectureStudioServer:
       kind: linux
       image: image-testbed
-      mgmt-ipv4: 172.100.100.10
       labels:
         role: sender
         group: server
       binds:
         - /home/ozcankaraca/Desktop/mydocument.pdf:/app/mydocument.pdf
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-source.sh:/app/connections-source.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-source.sh
-        - ./connections-source.sh
       env:
         SOURCE_PEER: lectureStudioServer
-        TARGET_PEERS: 1,12,2,24,3,4,5,16,38,6,40
-        TARGET_PEERS_IP: 172.100.100.28,172.100.100.20,172.100.100.29,172.100.100.41,172.100.100.30,172.100.100.31,172.100.100.32,172.100.100.24,172.100.100.55,172.100.100.33,172.100.100.57
+        TARGET_PEERS: 1,2,3,4,5,6
         MAIN_CLASS: LectureStudioServer
       ports:
         - "8080:8080"
 
-    44:
-      kind: linux
-      image: image-testbed
-      mgmt-ipv4: 172.100.100.11
-      labels:
-        role: receiver
-        group: peer
-      env:
-        SOURCE_PEER: 44
-        TARGET_PEERS: 16
-        TARGET_PEERS_IP: 172.100.100.24
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
-    45:
-      kind: linux
-      image: image-testbed
-      mgmt-ipv4: 172.100.100.12
-      labels:
-        role: receiver
-        group: peer
-      env:
-        SOURCE_PEER: 45
-        TARGET_PEERS: 24
-        TARGET_PEERS_IP: 172.100.100.41
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
-    46:
-      kind: linux
-      image: image-testbed
-      mgmt-ipv4: 172.100.100.13
-      labels:
-        role: receiver
-        group: peer
-      env:
-        SOURCE_PEER: 46
-        TARGET_PEERS: 6
-        TARGET_PEERS_IP: 172.100.100.33
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
-    47:
-      kind: linux
-      image: image-testbed
-      mgmt-ipv4: 172.100.100.14
-      labels:
-        role: receiver
-        group: peer
-      env:
-        SOURCE_PEER: 47
-        TARGET_PEERS: 40
-        TARGET_PEERS_IP: 172.100.100.57
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
-    48:
-      kind: linux
-      image: image-testbed
-      mgmt-ipv4: 172.100.100.15
-      labels:
-        role: receiver
-        group: peer
-      env:
-        SOURCE_PEER: 48
-        TARGET_PEERS: 16
-        TARGET_PEERS_IP: 172.100.100.24
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
-    49:
-      kind: linux
-      image: image-testbed
-      mgmt-ipv4: 172.100.100.16
-      labels:
-        role: receiver
-        group: peer
-      env:
-        SOURCE_PEER: 49
-        TARGET_PEERS: 24
-        TARGET_PEERS_IP: 172.100.100.41
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
-    50:
-      kind: linux
-      image: image-testbed
-      mgmt-ipv4: 172.100.100.17
-      labels:
-        role: receiver
-        group: peer
-      env:
-        SOURCE_PEER: 50
-        TARGET_PEERS: 24
-        TARGET_PEERS_IP: 172.100.100.41
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
-    10:
-      kind: linux
-      image: image-testbed
-      mgmt-ipv4: 172.100.100.18
-      labels:
-        role: receiver
-        group: peer
-      env:
-        SOURCE_PEER: 10
-        TARGET_PEERS: 6
-        TARGET_PEERS_IP: 172.100.100.33
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
-    11:
-      kind: linux
-      image: image-testbed
-      mgmt-ipv4: 172.100.100.19
-      labels:
-        role: receiver
-        group: peer
-      env:
-        SOURCE_PEER: 11
-        TARGET_PEERS: 6
-        TARGET_PEERS_IP: 172.100.100.33
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
-    12:
-      kind: linux
-      image: image-testbed
-      mgmt-ipv4: 172.100.100.20
-      labels:
-        role: receiver/sender
-        group: superpeer
-      env:
-        SUPER_PEER: lectureStudioServer
-        SOURCE_PEER: 12
-        TARGET_PEERS: 22,33,23,13,35,14,15,26,27,18,21,32
-        TARGET_PEERS_IP: 172.100.100.39,172.100.100.50,172.100.100.40,172.100.100.21,172.100.100.52,172.100.100.22,172.100.100.23,172.100.100.43,172.100.100.44,172.100.100.26,172.100.100.38,172.100.100.49
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-source.sh:/app/connections-source.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-source.sh
-        - ./connections-source.sh
-    13:
-      kind: linux
-      image: image-testbed
-      mgmt-ipv4: 172.100.100.21
-      labels:
-        role: receiver
-        group: peer
-      env:
-        SOURCE_PEER: 13
-        TARGET_PEERS: 12
-        TARGET_PEERS_IP: 172.100.100.20
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
-    14:
-      kind: linux
-      image: image-testbed
-      mgmt-ipv4: 172.100.100.22
-      labels:
-        role: receiver
-        group: peer
-      env:
-        SOURCE_PEER: 14
-        TARGET_PEERS: 12
-        TARGET_PEERS_IP: 172.100.100.20
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
-    15:
-      kind: linux
-      image: image-testbed
-      mgmt-ipv4: 172.100.100.23
-      labels:
-        role: receiver
-        group: peer
-      env:
-        SOURCE_PEER: 15
-        TARGET_PEERS: 12
-        TARGET_PEERS_IP: 172.100.100.20
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
-    16:
-      kind: linux
-      image: image-testbed
-      mgmt-ipv4: 172.100.100.24
-      labels:
-        role: receiver/sender
-        group: superpeer
-      env:
-        SUPER_PEER: lectureStudioServer
-        SOURCE_PEER: 16
-        TARGET_PEERS: 44,34,37,48,17,28,19,30,20
-        TARGET_PEERS_IP: 172.100.100.11,172.100.100.51,172.100.100.54,172.100.100.15,172.100.100.25,172.100.100.45,172.100.100.27,172.100.100.47,172.100.100.37
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-source.sh:/app/connections-source.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-source.sh
-        - ./connections-source.sh
-    17:
-      kind: linux
-      image: image-testbed
-      mgmt-ipv4: 172.100.100.25
-      labels:
-        role: receiver
-        group: peer
-      env:
-        SOURCE_PEER: 17
-        TARGET_PEERS: 16
-        TARGET_PEERS_IP: 172.100.100.24
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
-    18:
-      kind: linux
-      image: image-testbed
-      mgmt-ipv4: 172.100.100.26
-      labels:
-        role: receiver
-        group: peer
-      env:
-        SOURCE_PEER: 18
-        TARGET_PEERS: 12
-        TARGET_PEERS_IP: 172.100.100.20
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
-    19:
-      kind: linux
-      image: image-testbed
-      mgmt-ipv4: 172.100.100.27
-      labels:
-        role: receiver
-        group: peer
-      env:
-        SOURCE_PEER: 19
-        TARGET_PEERS: 16
-        TARGET_PEERS_IP: 172.100.100.24
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
     1:
       kind: linux
       image: image-testbed
-      mgmt-ipv4: 172.100.100.28
+      env:
+        SUPER_PEER: lectureStudioServer
+        MAIN_CLASS: Peer
       labels:
         role: receiver
         group: peer
-      env:
-        SOURCE_PEER: 1
-        TARGET_PEERS: lectureStudioServer
-        TARGET_PEERS_IP: 172.100.100.10
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
+
     2:
       kind: linux
       image: image-testbed
-      mgmt-ipv4: 172.100.100.29
+      env:
+        SUPER_PEER: lectureStudioServer
+        MAIN_CLASS: Peer
       labels:
         role: receiver
         group: peer
-      env:
-        SOURCE_PEER: 2
-        TARGET_PEERS: lectureStudioServer
-        TARGET_PEERS_IP: 172.100.100.10
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
+
     3:
       kind: linux
       image: image-testbed
-      mgmt-ipv4: 172.100.100.30
+      env:
+        SUPER_PEER: lectureStudioServer
+        MAIN_CLASS: Peer
       labels:
         role: receiver
         group: peer
-      env:
-        SOURCE_PEER: 3
-        TARGET_PEERS: lectureStudioServer
-        TARGET_PEERS_IP: 172.100.100.10
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
+
     4:
       kind: linux
       image: image-testbed
-      mgmt-ipv4: 172.100.100.31
+      env:
+        SUPER_PEER: lectureStudioServer
+        MAIN_CLASS: Peer
       labels:
         role: receiver
         group: peer
-      env:
-        SOURCE_PEER: 4
-        TARGET_PEERS: lectureStudioServer
-        TARGET_PEERS_IP: 172.100.100.10
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
+
     5:
       kind: linux
       image: image-testbed
-      mgmt-ipv4: 172.100.100.32
-      labels:
-        role: receiver/sender
-        group: superpeer
       env:
         SUPER_PEER: lectureStudioServer
         SOURCE_PEER: 5
         TARGET_PEERS: 7
-        TARGET_PEERS_IP: 172.100.100.34
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-source.sh:/app/connections-source.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-source.sh
-        - ./connections-source.sh
+        MAIN_CLASS: SuperPeer
+      labels:
+        role: receiver/sender
+        group: superpeer
+
     6:
       kind: linux
       image: image-testbed
-      mgmt-ipv4: 172.100.100.33
-      labels:
-        role: receiver/sender
-        group: superpeer
       env:
         SUPER_PEER: lectureStudioServer
         SOURCE_PEER: 6
-        TARGET_PEERS: 11,46,8,9,10,43
-        TARGET_PEERS_IP: 172.100.100.19,172.100.100.13,172.100.100.35,172.100.100.36,172.100.100.18,172.100.100.60
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-source.sh:/app/connections-source.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-source.sh
-        - ./connections-source.sh
+        TARGET_PEERS: 8,9,10
+        MAIN_CLASS: SuperPeer
+      labels:
+        role: receiver/sender
+        group: superpeer
+
     7:
       kind: linux
       image: image-testbed
-      mgmt-ipv4: 172.100.100.34
+      env:
+        SUPER_PEER: 5
+        MAIN_CLASS: Peer
       labels:
         role: receiver
         group: peer
-      env:
-        SOURCE_PEER: 7
-        TARGET_PEERS: 5
-        TARGET_PEERS_IP: 172.100.100.32
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
+
     8:
       kind: linux
       image: image-testbed
-      mgmt-ipv4: 172.100.100.35
+      env:
+        SUPER_PEER: 6
+        MAIN_CLASS: Peer
       labels:
         role: receiver
         group: peer
-      env:
-        SOURCE_PEER: 8
-        TARGET_PEERS: 6
-        TARGET_PEERS_IP: 172.100.100.33
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
+
     9:
       kind: linux
       image: image-testbed
-      mgmt-ipv4: 172.100.100.36
+      env:
+        SUPER_PEER: 6
+        MAIN_CLASS: Peer
       labels:
         role: receiver
         group: peer
-      env:
-        SOURCE_PEER: 9
-        TARGET_PEERS: 6
-        TARGET_PEERS_IP: 172.100.100.33
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
-    20:
+
+    10:
       kind: linux
       image: image-testbed
-      mgmt-ipv4: 172.100.100.37
+      env:
+        SUPER_PEER: 6
+        MAIN_CLASS: Peer
       labels:
         role: receiver
         group: peer
-      env:
-        SOURCE_PEER: 20
-        TARGET_PEERS: 16
-        TARGET_PEERS_IP: 172.100.100.24
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
-    21:
-      kind: linux
-      image: image-testbed
-      mgmt-ipv4: 172.100.100.38
-      labels:
-        role: receiver
-        group: peer
-      env:
-        SOURCE_PEER: 21
-        TARGET_PEERS: 12
-        TARGET_PEERS_IP: 172.100.100.20
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
-    22:
-      kind: linux
-      image: image-testbed
-      mgmt-ipv4: 172.100.100.39
-      labels:
-        role: receiver
-        group: peer
-      env:
-        SOURCE_PEER: 22
-        TARGET_PEERS: 12
-        TARGET_PEERS_IP: 172.100.100.20
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
-    23:
-      kind: linux
-      image: image-testbed
-      mgmt-ipv4: 172.100.100.40
-      labels:
-        role: receiver
-        group: peer
-      env:
-        SOURCE_PEER: 23
-        TARGET_PEERS: 12
-        TARGET_PEERS_IP: 172.100.100.20
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
-    24:
-      kind: linux
-      image: image-testbed
-      mgmt-ipv4: 172.100.100.41
-      labels:
-        role: receiver/sender
-        group: superpeer
-      env:
-        SUPER_PEER: lectureStudioServer
-        SOURCE_PEER: 24
-        TARGET_PEERS: 45,25,36,49,29,50,31,42
-        TARGET_PEERS_IP: 172.100.100.12,172.100.100.42,172.100.100.53,172.100.100.16,172.100.100.46,172.100.100.17,172.100.100.48,172.100.100.59
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-source.sh:/app/connections-source.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-source.sh
-        - ./connections-source.sh
-    25:
-      kind: linux
-      image: image-testbed
-      mgmt-ipv4: 172.100.100.42
-      labels:
-        role: receiver
-        group: peer
-      env:
-        SOURCE_PEER: 25
-        TARGET_PEERS: 24
-        TARGET_PEERS_IP: 172.100.100.41
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
-    26:
-      kind: linux
-      image: image-testbed
-      mgmt-ipv4: 172.100.100.43
-      labels:
-        role: receiver
-        group: peer
-      env:
-        SOURCE_PEER: 26
-        TARGET_PEERS: 12
-        TARGET_PEERS_IP: 172.100.100.20
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
-    27:
-      kind: linux
-      image: image-testbed
-      mgmt-ipv4: 172.100.100.44
-      labels:
-        role: receiver
-        group: peer
-      env:
-        SOURCE_PEER: 27
-        TARGET_PEERS: 12
-        TARGET_PEERS_IP: 172.100.100.20
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
-    28:
-      kind: linux
-      image: image-testbed
-      mgmt-ipv4: 172.100.100.45
-      labels:
-        role: receiver
-        group: peer
-      env:
-        SOURCE_PEER: 28
-        TARGET_PEERS: 16
-        TARGET_PEERS_IP: 172.100.100.24
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
-    29:
-      kind: linux
-      image: image-testbed
-      mgmt-ipv4: 172.100.100.46
-      labels:
-        role: receiver
-        group: peer
-      env:
-        SOURCE_PEER: 29
-        TARGET_PEERS: 24
-        TARGET_PEERS_IP: 172.100.100.41
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
-    30:
-      kind: linux
-      image: image-testbed
-      mgmt-ipv4: 172.100.100.47
-      labels:
-        role: receiver
-        group: peer
-      env:
-        SOURCE_PEER: 30
-        TARGET_PEERS: 16
-        TARGET_PEERS_IP: 172.100.100.24
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
-    31:
-      kind: linux
-      image: image-testbed
-      mgmt-ipv4: 172.100.100.48
-      labels:
-        role: receiver
-        group: peer
-      env:
-        SOURCE_PEER: 31
-        TARGET_PEERS: 24
-        TARGET_PEERS_IP: 172.100.100.41
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
-    32:
-      kind: linux
-      image: image-testbed
-      mgmt-ipv4: 172.100.100.49
-      labels:
-        role: receiver
-        group: peer
-      env:
-        SOURCE_PEER: 32
-        TARGET_PEERS: 12
-        TARGET_PEERS_IP: 172.100.100.20
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
-    33:
-      kind: linux
-      image: image-testbed
-      mgmt-ipv4: 172.100.100.50
-      labels:
-        role: receiver
-        group: peer
-      env:
-        SOURCE_PEER: 33
-        TARGET_PEERS: 12
-        TARGET_PEERS_IP: 172.100.100.20
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
-    34:
-      kind: linux
-      image: image-testbed
-      mgmt-ipv4: 172.100.100.51
-      labels:
-        role: receiver
-        group: peer
-      env:
-        SOURCE_PEER: 34
-        TARGET_PEERS: 16
-        TARGET_PEERS_IP: 172.100.100.24
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
-    35:
-      kind: linux
-      image: image-testbed
-      mgmt-ipv4: 172.100.100.52
-      labels:
-        role: receiver
-        group: peer
-      env:
-        SOURCE_PEER: 35
-        TARGET_PEERS: 12
-        TARGET_PEERS_IP: 172.100.100.20
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
-    36:
-      kind: linux
-      image: image-testbed
-      mgmt-ipv4: 172.100.100.53
-      labels:
-        role: receiver
-        group: peer
-      env:
-        SOURCE_PEER: 36
-        TARGET_PEERS: 24
-        TARGET_PEERS_IP: 172.100.100.41
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
-    37:
-      kind: linux
-      image: image-testbed
-      mgmt-ipv4: 172.100.100.54
-      labels:
-        role: receiver
-        group: peer
-      env:
-        SOURCE_PEER: 37
-        TARGET_PEERS: 16
-        TARGET_PEERS_IP: 172.100.100.24
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
-    38:
-      kind: linux
-      image: image-testbed
-      mgmt-ipv4: 172.100.100.55
-      labels:
-        role: receiver/sender
-        group: superpeer
-      env:
-        SUPER_PEER: lectureStudioServer
-        SOURCE_PEER: 38
-        TARGET_PEERS: 39
-        TARGET_PEERS_IP: 172.100.100.56
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-source.sh:/app/connections-source.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-source.sh
-        - ./connections-source.sh
-    39:
-      kind: linux
-      image: image-testbed
-      mgmt-ipv4: 172.100.100.56
-      labels:
-        role: receiver
-        group: peer
-      env:
-        SOURCE_PEER: 39
-        TARGET_PEERS: 38
-        TARGET_PEERS_IP: 172.100.100.55
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
-    40:
-      kind: linux
-      image: image-testbed
-      mgmt-ipv4: 172.100.100.57
-      labels:
-        role: receiver/sender
-        group: superpeer
-      env:
-        SUPER_PEER: lectureStudioServer
-        SOURCE_PEER: 40
-        TARGET_PEERS: 47,41
-        TARGET_PEERS_IP: 172.100.100.14,172.100.100.58
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-source.sh:/app/connections-source.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-source.sh
-        - ./connections-source.sh
-    41:
-      kind: linux
-      image: image-testbed
-      mgmt-ipv4: 172.100.100.58
-      labels:
-        role: receiver
-        group: peer
-      env:
-        SOURCE_PEER: 41
-        TARGET_PEERS: 40
-        TARGET_PEERS_IP: 172.100.100.57
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
-    42:
-      kind: linux
-      image: image-testbed
-      mgmt-ipv4: 172.100.100.59
-      labels:
-        role: receiver
-        group: peer
-      env:
-        SOURCE_PEER: 42
-        TARGET_PEERS: 24
-        TARGET_PEERS_IP: 172.100.100.41
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
-    43:
-      kind: linux
-      image: image-testbed
-      mgmt-ipv4: 172.100.100.60
-      labels:
-        role: receiver
-        group: peer
-      env:
-        SOURCE_PEER: 43
-        TARGET_PEERS: 6
-        TARGET_PEERS_IP: 172.100.100.33
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
+
   links:
-    - endpoints: ["lectureStudioServer:eth1", "1:eth1"]
-    - endpoints: ["lectureStudioServer:eth2", "12:eth1"]
-    - endpoints: ["lectureStudioServer:eth3", "2:eth1"]
-    - endpoints: ["lectureStudioServer:eth4", "24:eth1"]
-    - endpoints: ["lectureStudioServer:eth5", "3:eth1"]
-    - endpoints: ["lectureStudioServer:eth6", "4:eth1"]
-    - endpoints: ["lectureStudioServer:eth7", "5:eth1"]
-    - endpoints: ["lectureStudioServer:eth8", "16:eth1"]
-    - endpoints: ["lectureStudioServer:eth9", "38:eth1"]
-    - endpoints: ["lectureStudioServer:eth10", "6:eth1"]
-    - endpoints: ["lectureStudioServer:eth11", "40:eth1"]
-    - endpoints: ["12:eth2", "22:eth1"]
-    - endpoints: ["12:eth3", "33:eth1"]
-    - endpoints: ["12:eth4", "23:eth1"]
-    - endpoints: ["12:eth5", "13:eth1"]
-    - endpoints: ["12:eth6", "35:eth1"]
-    - endpoints: ["12:eth7", "14:eth1"]
-    - endpoints: ["12:eth8", "15:eth1"]
-    - endpoints: ["12:eth9", "26:eth1"]
-    - endpoints: ["12:eth10", "27:eth1"]
-    - endpoints: ["12:eth11", "18:eth1"]
-    - endpoints: ["12:eth12", "21:eth1"]
-    - endpoints: ["12:eth13", "32:eth1"]
-    - endpoints: ["24:eth2", "45:eth1"]
-    - endpoints: ["24:eth3", "25:eth1"]
-    - endpoints: ["24:eth4", "36:eth1"]
-    - endpoints: ["24:eth5", "49:eth1"]
-    - endpoints: ["24:eth6", "29:eth1"]
-    - endpoints: ["24:eth7", "50:eth1"]
-    - endpoints: ["24:eth8", "31:eth1"]
-    - endpoints: ["24:eth9", "42:eth1"]
-    - endpoints: ["5:eth2", "7:eth1"]
-    - endpoints: ["16:eth2", "44:eth1"]
-    - endpoints: ["16:eth3", "34:eth1"]
-    - endpoints: ["16:eth4", "37:eth1"]
-    - endpoints: ["16:eth5", "48:eth1"]
-    - endpoints: ["16:eth6", "17:eth1"]
-    - endpoints: ["16:eth7", "28:eth1"]
-    - endpoints: ["16:eth8", "19:eth1"]
-    - endpoints: ["16:eth9", "30:eth1"]
-    - endpoints: ["16:eth10", "20:eth1"]
-    - endpoints: ["38:eth2", "39:eth1"]
-    - endpoints: ["6:eth2", "11:eth1"]
-    - endpoints: ["6:eth3", "46:eth1"]
-    - endpoints: ["6:eth4", "8:eth1"]
-    - endpoints: ["6:eth5", "9:eth1"]
-    - endpoints: ["6:eth6", "10:eth1"]
-    - endpoints: ["6:eth7", "43:eth1"]
-    - endpoints: ["40:eth2", "47:eth1"]
-    - endpoints: ["40:eth3", "41:eth1"]
+    - endpoints: [lectureStudioServer:eth1, 1:eth1]
+    - endpoints: [lectureStudioServer:eth2, 2:eth1]
+    - endpoints: [lectureStudioServer:eth3, 3:eth1]
+    - endpoints: [lectureStudioServer:eth4, 4:eth1]
+    - endpoints: [lectureStudioServer:eth5, 5:eth1]
+    - endpoints: [lectureStudioServer:eth6, 6:eth1]
+    - endpoints: [5:eth2, 7:eth1]
+    - endpoints: [6:eth2, 8:eth1]
+    - endpoints: [6:eth3, 9:eth1]
+    - endpoints: [6:eth4, 10:eth1]
