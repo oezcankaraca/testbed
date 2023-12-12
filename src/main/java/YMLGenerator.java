@@ -18,7 +18,7 @@ public class YMLGenerator {
     private static Map<String, String> peerEnvVariables = new HashMap<>();
 
     public YMLGenerator(String configFilePath) throws IOException {
-        readAndProcessOutputFile(); // Diese Methode wird beim Instanziieren der Klasse aufgerufen
+        readAndProcessOutputFile();
     }
 
     public void generateTopologyFile(boolean includeExtraNodes) throws IOException {
@@ -43,20 +43,6 @@ public class YMLGenerator {
             fw.write("    lectureStudioServer:\n");
             fw.write("      kind: linux\n");
             fw.write("      image: image-testbed\n");
-            fw.write("      labels:\n");
-            fw.write("        role: sender\n");
-            fw.write("        group: server\n");
-            fw.write("      binds:\n");
-            fw.write("        - /home/ozcankaraca/Desktop/mydocument.pdf:/app/mydocument.pdf\n");
-            fw.write(
-                    "        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json\n");
-            fw.write(
-                    "        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-source.sh:/app/connections-source.sh\n");
-            fw.write("      exec:\n");
-            fw.write("        - echo \"Waiting for 5 seconds...\"\n");
-            fw.write("        - sleep 5\n");
-            fw.write("        - chmod +x /app/connections-source.sh\n");
-            fw.write("        - ./connections-source.sh\n");
             fw.write("      env:\n");
 
             Set<String> lectureStudioPeers = superPeerToPeersMap.getOrDefault("lectureStudioServer", new HashSet<>());
@@ -66,6 +52,21 @@ public class YMLGenerator {
                 fw.write("        " + entry.getKey() + ": " + entry.getValue() + "\n");
             }
             fw.write("        MAIN_CLASS: LectureStudioServer\n");
+            fw.write("      labels:\n");
+            fw.write("        role: sender\n");
+            fw.write("        group: server\n");
+            fw.write("      binds:\n");
+            fw.write("        - /home/ozcankaraca/Desktop/mydocument.pdf:/app/mydocument.pdf\n");
+            fw.write(
+                    "        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json\n");
+            fw.write(
+                    "        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connection-details.sh:/app/connection-details.sh\n");
+            fw.write("      exec:\n");
+            fw.write("        - echo \"Waiting for 5 seconds...\"\n");
+            fw.write("        - sleep 5\n");
+            fw.write("        - chmod +x /app/connection-details.sh\n");
+            fw.write("        - ./connection-details.sh\n");
+
             fw.write("      ports:\n");
             fw.write("        - \"8080:8080\"\n\n");
 
@@ -107,15 +108,13 @@ public class YMLGenerator {
                 fw.write("        role: " + role + "\n");
                 fw.write("        group: " + (mainClass.equals("SuperPeer") ? "superpeer" : "peer") + "\n");
                 // Binds und Exec für alle Knoten
-                 appendBindsAndExec(fw, isNormalPeer);
+                appendBindsAndExec(fw, isNormalPeer);
             }
 
             fw.write("  links:\n");
             for (String link : linkInformation) {
                 fw.write("    - endpoints: [" + link + "]\n");
             }
-
-             
 
             if (!includeExtraNodes) {
                 appendExtraNodes(fw);
@@ -159,28 +158,18 @@ public class YMLGenerator {
     }
 
     private void appendBindsAndExec(FileWriter fw, boolean isSuperPeer) throws IOException {
-        fw.write("      binds:\n");
-        fw.write(
-                "        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json\n");
-
-        if (isSuperPeer) {
+        if (!isSuperPeer) {
+            fw.write("      binds:\n");
             fw.write(
-                    "        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh\n");
+                    "        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json\n");
+            fw.write(
+                    "        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connection-details.sh:/app/connection-details.sh\n");
             fw.write("      exec:\n");
             fw.write("        - echo \"Waiting for 5 seconds...\"\n");
             fw.write("        - sleep 5\n");
-            fw.write("        - chmod +x /app/connections-target.sh\n");
-            fw.write("        - ./connections-target.sh\n");
-        } else {
-            fw.write(
-                    "        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-source.sh:/app/connections-source.sh\n");
-            fw.write("      exec:\n");
-            fw.write("        - echo \"Waiting for 5 seconds...\"\n");
-            fw.write("        - sleep 5\n");
-            fw.write("        - chmod +x /app/connections-source.sh\n");
-            fw.write("        - ./connections-source.sh\n");
+            fw.write("        - chmod +x /app/connection-details.sh\n");
+            fw.write("        - ./connection-details.sh\n");
         }
-
     }
 
     private static String generateIpAddress(int connectionCounter, boolean isFirstNode) {
@@ -199,7 +188,7 @@ public class YMLGenerator {
             String node1Ip = generateIpAddress(connectionCounter, true);
             String node2Ip = generateIpAddress(connectionCounter, false);
 
-            String envVariableValue = node1Details[1] + ";" + node1Ip + ", " + node2Ip;
+            String envVariableValue = node1Details[1] + ":" + node1Ip + ", " + node2Details[0] + ":" + node2Ip;
             peerEnvVariables.put(node2Details[0], node2Ip);
 
             if (node1Details[0].equals("lectureStudioServer")) {

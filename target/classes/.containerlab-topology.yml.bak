@@ -8,28 +8,28 @@ topology:
     lectureStudioServer:
       kind: linux
       image: image-testbed
+      env:
+        SOURCE_PEER: lectureStudioServer
+        TARGET_PEERS: 1,2,3,4,5,6
+        CONNECTION_6: eth6:172.20.26.2, 6:172.20.26.3
+        CONNECTION_5: eth5:172.20.25.2, 5:172.20.25.3
+        CONNECTION_4: eth4:172.20.24.2, 4:172.20.24.3
+        CONNECTION_3: eth3:172.20.23.2, 3:172.20.23.3
+        CONNECTION_2: eth2:172.20.22.2, 2:172.20.22.3
+        CONNECTION_1: eth1:172.20.21.2, 1:172.20.21.3
+        MAIN_CLASS: LectureStudioServer
       labels:
         role: sender
         group: server
       binds:
         - /home/ozcankaraca/Desktop/mydocument.pdf:/app/mydocument.pdf
         - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-source.sh:/app/connections-source.sh
+        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connection-details.sh:/app/connection-details.sh
       exec:
         - echo "Waiting for 5 seconds..."
         - sleep 5
-        - chmod +x /app/connections-source.sh
-        - ./connections-source.sh
-      env:
-        SOURCE_PEER: lectureStudioServer
-        TARGET_PEERS: 1,2,3,4,5,6
-        CONNECTION_6: eth6;172.20.26.2, 172.20.26.3
-        CONNECTION_5: eth5;172.20.25.2, 172.20.25.3
-        CONNECTION_4: eth4;172.20.24.2, 172.20.24.3
-        CONNECTION_3: eth3;172.20.23.2, 172.20.23.3
-        CONNECTION_2: eth2;172.20.22.2, 172.20.22.3
-        CONNECTION_1: eth1;172.20.21.2, 172.20.21.3
-        MAIN_CLASS: LectureStudioServer
+        - chmod +x /app/connection-details.sh
+        - ./connection-details.sh
       ports:
         - "8080:8080"
 
@@ -43,14 +43,6 @@ topology:
       labels:
         role: receiver
         group: peer
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
     2:
       kind: linux
       image: image-testbed
@@ -61,14 +53,6 @@ topology:
       labels:
         role: receiver
         group: peer
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
     3:
       kind: linux
       image: image-testbed
@@ -79,14 +63,6 @@ topology:
       labels:
         role: receiver
         group: peer
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
     4:
       kind: linux
       image: image-testbed
@@ -97,14 +73,6 @@ topology:
       labels:
         role: receiver
         group: peer
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
     5:
       kind: linux
       image: image-testbed
@@ -113,19 +81,19 @@ topology:
         SUPER_PEER: lectureStudioServer
         SOURCE_PEER: 5
         TARGET_PEERS: 7
-        CONNECTION_7: eth2;172.20.27.2, 172.20.27.3
+        CONNECTION_7: eth2:172.20.27.2, 7:172.20.27.3
         MAIN_CLASS: SuperPeer
       labels:
         role: receiver/sender
         group: superpeer
       binds:
         - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-source.sh:/app/connections-source.sh
+        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connection-details.sh:/app/connection-details.sh
       exec:
         - echo "Waiting for 5 seconds..."
         - sleep 5
-        - chmod +x /app/connections-source.sh
-        - ./connections-source.sh
+        - chmod +x /app/connection-details.sh
+        - ./connection-details.sh
     6:
       kind: linux
       image: image-testbed
@@ -134,21 +102,21 @@ topology:
         SUPER_PEER: lectureStudioServer
         SOURCE_PEER: 6
         TARGET_PEERS: 8,9,10
-        CONNECTION_8: eth2;172.20.28.2, 172.20.28.3
-        CONNECTION_9: eth3;172.20.29.2, 172.20.29.3
-        CONNECTION_10: eth4;172.20.30.2, 172.20.30.3
+        CONNECTION_8: eth2:172.20.28.2, 8:172.20.28.3
+        CONNECTION_9: eth3:172.20.29.2, 9:172.20.29.3
+        CONNECTION_10: eth4:172.20.30.2, 10:172.20.30.3
         MAIN_CLASS: SuperPeer
       labels:
         role: receiver/sender
         group: superpeer
       binds:
         - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-source.sh:/app/connections-source.sh
+        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connection-details.sh:/app/connection-details.sh
       exec:
         - echo "Waiting for 5 seconds..."
         - sleep 5
-        - chmod +x /app/connections-source.sh
-        - ./connections-source.sh
+        - chmod +x /app/connection-details.sh
+        - ./connection-details.sh
     7:
       kind: linux
       image: image-testbed
@@ -159,14 +127,6 @@ topology:
       labels:
         role: receiver
         group: peer
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
     8:
       kind: linux
       image: image-testbed
@@ -177,14 +137,6 @@ topology:
       labels:
         role: receiver
         group: peer
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
     9:
       kind: linux
       image: image-testbed
@@ -195,14 +147,6 @@ topology:
       labels:
         role: receiver
         group: peer
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
     10:
       kind: linux
       image: image-testbed
@@ -213,14 +157,6 @@ topology:
       labels:
         role: receiver
         group: peer
-      binds:
-        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
-      exec:
-        - echo "Waiting for 5 seconds..."
-        - sleep 5
-        - chmod +x /app/connections-target.sh
-        - ./connections-target.sh
   links:
     - endpoints: [lectureStudioServer:eth1, 1:eth1]
     - endpoints: [lectureStudioServer:eth2, 2:eth1]
