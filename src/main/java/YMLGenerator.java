@@ -48,6 +48,15 @@ public class YMLGenerator {
             fw.write("        group: server\n");
             fw.write("      binds:\n");
             fw.write("        - /home/ozcankaraca/Desktop/mydocument.pdf:/app/mydocument.pdf\n");
+            fw.write(
+                    "        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json\n");
+            fw.write(
+                    "        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-source.sh:/app/connections-source.sh\n");
+            fw.write("      exec:\n");
+            fw.write("        - echo \"Waiting for 5 seconds...\"\n");
+            fw.write("        - sleep 5\n");
+            fw.write("        - chmod +x /app/connections-source.sh\n");
+            fw.write("        - ./connections-source.sh\n");
             fw.write("      env:\n");
 
             Set<String> lectureStudioPeers = superPeerToPeersMap.getOrDefault("lectureStudioServer", new HashSet<>());
@@ -64,6 +73,7 @@ public class YMLGenerator {
                 if (peerName.equals("lectureStudioServer")) {
                     continue; // Überspringen der Konfiguration für den lecturestudioserver
                 }
+                boolean isNormalPeer = !superpeerNames.contains(peerName);
                 String superPeer = determineSuperPeerForPeer(peerName);
                 String mainClass = superpeerNames.contains(peerName) ? "SuperPeer" : "Peer";
                 String role = superpeerNames.contains(peerName) ? "receiver/sender" : "receiver";
@@ -72,9 +82,9 @@ public class YMLGenerator {
                 fw.write("      kind: linux\n");
                 fw.write("      image: image-testbed\n");
                 fw.write("      env:\n");
-                
-                    for (Map.Entry<String, String> entry : peerEnvVariables.entrySet()) {
-                        if (entry.getKey().equals(peerName)) {
+
+                for (Map.Entry<String, String> entry : peerEnvVariables.entrySet()) {
+                    if (entry.getKey().equals(peerName)) {
                         fw.write("        IP_ADDRES: " + entry.getValue() + "\n");
                     }
                 }
@@ -95,7 +105,9 @@ public class YMLGenerator {
                 fw.write("        MAIN_CLASS: " + mainClass + "\n");
                 fw.write("      labels:\n");
                 fw.write("        role: " + role + "\n");
-                fw.write("        group: " + (mainClass.equals("SuperPeer") ? "superpeer" : "peer") + "\n\n");
+                fw.write("        group: " + (mainClass.equals("SuperPeer") ? "superpeer" : "peer") + "\n");
+                // Binds und Exec für alle Knoten
+                 appendBindsAndExec(fw, isNormalPeer);
             }
 
             fw.write("  links:\n");
@@ -103,12 +115,73 @@ public class YMLGenerator {
                 fw.write("    - endpoints: [" + link + "]\n");
             }
 
+             
+
+            if (!includeExtraNodes) {
+                appendExtraNodes(fw);
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("An error occurred while generating the topology YAML file.");
         }
     }
-    // Methode zur IP-Generierung
+
+    private void appendExtraNodes(FileWriter fw) throws IOException {
+        // Configuration for the prometheus tool
+        fw.write("\n    prometheus:\n");
+        fw.write("      kind: linux\n");
+        fw.write("      image: p2p-prometheus\n");
+        fw.write("      binds:\n");
+        fw.write(
+                "       - /home/ozcankaraca/Desktop/p2pjava/src/resources/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml\n");
+        fw.write("      ports:\n");
+        fw.write("        - \"9090:9090\"\n");
+
+        // Configuration for the cadvisor tool
+        fw.write("\n    cadvisor:\n");
+        fw.write("      kind: linux\n");
+        fw.write("      image: p2p-cadvisor\n");
+        fw.write("      binds:\n");
+        fw.write("        - /:/rootfs:ro\n");
+        fw.write("        - /var/run:/var/run:ro\n");
+        fw.write("        - /sys:/sys:ro\n");
+        fw.write("        - /var/snap/docker/common/var-lib-docker/:/var/lib/docker:ro\n");
+        fw.write("      ports:\n");
+        fw.write("        - \"8080:8080\"\n");
+
+        // Configuration for the grafana tool
+        fw.write("\n    grafana:\n");
+        fw.write("      kind: linux\n");
+        fw.write("      image: p2p-grafana\n");
+        fw.write("      ports:\n");
+        fw.write("       - \"3000:3000\"\n");
+    }
+
+    private void appendBindsAndExec(FileWriter fw, boolean isSuperPeer) throws IOException {
+        fw.write("      binds:\n");
+        fw.write(
+                "        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json\n");
+
+        if (isSuperPeer) {
+            fw.write(
+                    "        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh\n");
+            fw.write("      exec:\n");
+            fw.write("        - echo \"Waiting for 5 seconds...\"\n");
+            fw.write("        - sleep 5\n");
+            fw.write("        - chmod +x /app/connections-target.sh\n");
+            fw.write("        - ./connections-target.sh\n");
+        } else {
+            fw.write(
+                    "        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-source.sh:/app/connections-source.sh\n");
+            fw.write("      exec:\n");
+            fw.write("        - echo \"Waiting for 5 seconds...\"\n");
+            fw.write("        - sleep 5\n");
+            fw.write("        - chmod +x /app/connections-source.sh\n");
+            fw.write("        - ./connections-source.sh\n");
+        }
+
+    }
 
     private static String generateIpAddress(int connectionCounter, boolean isFirstNode) {
         String baseIp = "172.20." + (subnetCounter + connectionCounter - 1) + ".";
@@ -123,7 +196,6 @@ public class YMLGenerator {
             String[] node1Details = endpoints[0].split(":");
             String[] node2Details = endpoints[1].split(":");
 
-            System.out.println(node2Details[0]);
             String node1Ip = generateIpAddress(connectionCounter, true);
             String node2Ip = generateIpAddress(connectionCounter, false);
 
@@ -139,32 +211,12 @@ public class YMLGenerator {
             connectionCounter++;
         }
 
-        // printEnvironmentVariables();
-    }
-
-    private static void printEnvironmentVariables() {
-        System.out.println("lectureStudioServer Environment Variables:");
-        for (Map.Entry<String, String> entry : lectureStudioServerEnvVariables.entrySet()) {
-            System.out.println(entry.getKey() + ": " + entry.getValue());
-        }
-
-        System.out.println("\nSuperPeer Environment Variables:");
-        for (Map.Entry<String, List<String>> entry : superPeerEnvVariables.entrySet()) {
-            System.out.println(entry.getKey() + ": " + entry.getValue());
-        }
     }
 
     private String assignInterface(String nodeName) {
         int count = interfaceCounter.getOrDefault(nodeName, 1);
         interfaceCounter.put(nodeName, count + 1);
         return "eth" + count;
-    }
-
-    public static void printLinkInformation() {
-        System.out.println("Link Information:");
-        for (String link : linkInformation) {
-            System.out.println(link);
-        }
     }
 
     private String determineSuperPeerForPeer(String peerName) {

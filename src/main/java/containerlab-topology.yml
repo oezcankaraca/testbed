@@ -13,6 +13,13 @@ topology:
         group: server
       binds:
         - /home/ozcankaraca/Desktop/mydocument.pdf:/app/mydocument.pdf
+        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
+        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-source.sh:/app/connections-source.sh
+      exec:
+        - echo "Waiting for 5 seconds..."
+        - sleep 5
+        - chmod +x /app/connections-source.sh
+        - ./connections-source.sh
       env:
         SOURCE_PEER: lectureStudioServer
         TARGET_PEERS: 1,2,3,4,5,6
@@ -36,7 +43,14 @@ topology:
       labels:
         role: receiver
         group: peer
-
+      binds:
+        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
+        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
+      exec:
+        - echo "Waiting for 5 seconds..."
+        - sleep 5
+        - chmod +x /app/connections-target.sh
+        - ./connections-target.sh
     2:
       kind: linux
       image: image-testbed
@@ -47,7 +61,14 @@ topology:
       labels:
         role: receiver
         group: peer
-
+      binds:
+        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
+        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
+      exec:
+        - echo "Waiting for 5 seconds..."
+        - sleep 5
+        - chmod +x /app/connections-target.sh
+        - ./connections-target.sh
     3:
       kind: linux
       image: image-testbed
@@ -58,7 +79,14 @@ topology:
       labels:
         role: receiver
         group: peer
-
+      binds:
+        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
+        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
+      exec:
+        - echo "Waiting for 5 seconds..."
+        - sleep 5
+        - chmod +x /app/connections-target.sh
+        - ./connections-target.sh
     4:
       kind: linux
       image: image-testbed
@@ -69,7 +97,14 @@ topology:
       labels:
         role: receiver
         group: peer
-
+      binds:
+        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
+        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
+      exec:
+        - echo "Waiting for 5 seconds..."
+        - sleep 5
+        - chmod +x /app/connections-target.sh
+        - ./connections-target.sh
     5:
       kind: linux
       image: image-testbed
@@ -83,7 +118,14 @@ topology:
       labels:
         role: receiver/sender
         group: superpeer
-
+      binds:
+        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
+        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-source.sh:/app/connections-source.sh
+      exec:
+        - echo "Waiting for 5 seconds..."
+        - sleep 5
+        - chmod +x /app/connections-source.sh
+        - ./connections-source.sh
     6:
       kind: linux
       image: image-testbed
@@ -99,7 +141,14 @@ topology:
       labels:
         role: receiver/sender
         group: superpeer
-
+      binds:
+        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
+        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-source.sh:/app/connections-source.sh
+      exec:
+        - echo "Waiting for 5 seconds..."
+        - sleep 5
+        - chmod +x /app/connections-source.sh
+        - ./connections-source.sh
     7:
       kind: linux
       image: image-testbed
@@ -110,7 +159,14 @@ topology:
       labels:
         role: receiver
         group: peer
-
+      binds:
+        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
+        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
+      exec:
+        - echo "Waiting for 5 seconds..."
+        - sleep 5
+        - chmod +x /app/connections-target.sh
+        - ./connections-target.sh
     8:
       kind: linux
       image: image-testbed
@@ -121,7 +177,14 @@ topology:
       labels:
         role: receiver
         group: peer
-
+      binds:
+        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
+        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
+      exec:
+        - echo "Waiting for 5 seconds..."
+        - sleep 5
+        - chmod +x /app/connections-target.sh
+        - ./connections-target.sh
     9:
       kind: linux
       image: image-testbed
@@ -132,7 +195,14 @@ topology:
       labels:
         role: receiver
         group: peer
-
+      binds:
+        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
+        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
+      exec:
+        - echo "Waiting for 5 seconds..."
+        - sleep 5
+        - chmod +x /app/connections-target.sh
+        - ./connections-target.sh
     10:
       kind: linux
       image: image-testbed
@@ -143,7 +213,14 @@ topology:
       labels:
         role: receiver
         group: peer
-
+      binds:
+        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
+        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connections-target.sh:/app/connections-target.sh
+      exec:
+        - echo "Waiting for 5 seconds..."
+        - sleep 5
+        - chmod +x /app/connections-target.sh
+        - ./connections-target.sh
   links:
     - endpoints: [lectureStudioServer:eth1, 1:eth1]
     - endpoints: [lectureStudioServer:eth2, 2:eth1]
