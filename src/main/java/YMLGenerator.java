@@ -15,6 +15,7 @@ public class YMLGenerator {
     private static int subnetCounter = 21;
     private static Map<String, String> lectureStudioServerEnvVariables = new HashMap<>();
     private static Map<String, List<String>> superPeerEnvVariables = new HashMap<>();
+    private static Map<String, String> peerEnvVariables = new HashMap<>();
 
     public YMLGenerator(String configFilePath) throws IOException {
         readAndProcessOutputFile(); // Diese Methode wird beim Instanziieren der Klasse aufgerufen
@@ -71,6 +72,12 @@ public class YMLGenerator {
                 fw.write("      kind: linux\n");
                 fw.write("      image: image-testbed\n");
                 fw.write("      env:\n");
+                
+                    for (Map.Entry<String, String> entry : peerEnvVariables.entrySet()) {
+                        if (entry.getKey().equals(peerName)) {
+                        fw.write("        IP_ADDRES: " + entry.getValue() + "\n");
+                    }
+                }
 
                 fw.write("        SUPER_PEER: " + superPeer + "\n");
                 if (mainClass.equals("SuperPeer")) {
@@ -114,10 +121,14 @@ public class YMLGenerator {
         for (String link : linkInformation) {
             String[] endpoints = link.split(", ");
             String[] node1Details = endpoints[0].split(":");
+            String[] node2Details = endpoints[1].split(":");
+
+            System.out.println(node2Details[0]);
             String node1Ip = generateIpAddress(connectionCounter, true);
             String node2Ip = generateIpAddress(connectionCounter, false);
 
             String envVariableValue = node1Details[1] + ";" + node1Ip + ", " + node2Ip;
+            peerEnvVariables.put(node2Details[0], node2Ip);
 
             if (node1Details[0].equals("lectureStudioServer")) {
                 lectureStudioServerEnvVariables.put("CONNECTION_" + connectionCounter, envVariableValue);
@@ -128,7 +139,7 @@ public class YMLGenerator {
             connectionCounter++;
         }
 
-        printEnvironmentVariables();
+        // printEnvironmentVariables();
     }
 
     private static void printEnvironmentVariables() {
