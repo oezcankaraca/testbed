@@ -3,8 +3,6 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
-import java.net.InetAddress;
-
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Level;
@@ -29,6 +27,7 @@ public class Peer {
 
     public void startLectureStudioServer() throws Exception {
         EventLoopGroup workerGroup = new NioEventLoopGroup();
+        String superPeerIP = System.getenv("SUPER_PEER_IP_ADDRES");
         try {
             Bootstrap b = new Bootstrap();
             b.group(workerGroup)
@@ -49,13 +48,13 @@ public class Peer {
 
             while (!connected && attempts < maxAttempts) {
                 try {
-                    System.out.println("Attempting to connect to lecturestudioserver. Attempt: " + (attempts + 1));
-                    ChannelFuture f = b.connect("172.100.100.10", port).sync();
+                    System.out.println("Attempting to connect to " + superPeerIP + ". Attempt: " + (attempts + 1));
+                    ChannelFuture f = b.connect(superPeerIP, port).sync();
                     f.channel().closeFuture().sync();
                     connected = true; // Connection successful
                 } catch (Exception e) {
                     attempts++;
-                    Thread.sleep(1000); // 1 second waiting time between attempts
+                    Thread.sleep(3000); // 1 second waiting time between attempts
                 }
             }
 
@@ -73,7 +72,8 @@ public class Peer {
         }
     }
 
-    public void startSuperPeer(String serverAddress, String superPeerHost) throws Exception {
+    public void startSuperPeer(String superPeerHost) throws Exception {
+        String superPeerIP = System.getenv("SUPER_PEER_IP_ADDRES");
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
             Bootstrap b = new Bootstrap();
@@ -94,13 +94,13 @@ public class Peer {
 
             while (!connected && attempts < maxAttempts) {
                 try {
-                    System.out.println("Attempting to connect to: " + serverAddress + " Attempt: " + (attempts + 1));
-                    ChannelFuture f = b.connect(serverAddress, port).sync();
+                    System.out.println("Attempting to connect to: " + superPeerIP + " Attempt: " + (attempts + 1));
+                    ChannelFuture f = b.connect(superPeerIP, port).sync();
                     f.channel().closeFuture().sync();
                     connected = true; // Connection successful
                 } catch (Exception e) {
                     attempts++;
-                    Thread.sleep(1000); // 1 second waiting time between attempts
+                    Thread.sleep(3000); // 1 second waiting time between attempts
                 }
             }
 
@@ -108,7 +108,7 @@ public class Peer {
 
             if (connected) {
                 System.out.println("Connection successfully established to: " + port + " and with super peer "
-                        + superPeerHost + ", with IP address: " + serverAddress + " in " + duration / 1000
+                        + superPeerHost + ", with IP address: " + superPeerIP + " in " + duration / 1000
                         + " seconds after " + attempts + " attempts.");
             } else {
                 System.out.println("Connection could not be established after " + maxAttempts + " attempts.");
@@ -124,17 +124,15 @@ public class Peer {
         int portLectureServerStudio = 8080;
         int portSuperPeer = 9090;
         String superPeerHost = System.getenv("SUPER_PEER");
-        String serverAddress = null;
+
 
         if (superPeerHost.equals("lectureStudioServer")) {
             System.out.println("Super peer of this peer is lecturestudioserver");
             new Peer(portLectureServerStudio).startLectureStudioServer();
         } else {
-            InetAddress inetAddress = InetAddress.getByName("p2p-containerlab-topology-" + superPeerHost);
-            serverAddress = inetAddress.getHostAddress(); // Get the IP address from the
 
             System.out.println("Super peer of this peer is " + superPeerHost + "\n");
-            new Peer(portSuperPeer).startSuperPeer(serverAddress, superPeerHost);
+            new Peer(portSuperPeer).startSuperPeer(superPeerHost);
         }
 
         Thread.sleep(5000000);

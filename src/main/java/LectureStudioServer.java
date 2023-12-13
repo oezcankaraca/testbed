@@ -1,3 +1,5 @@
+
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -12,68 +14,79 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 public class LectureStudioServer {
-
     static {
         BasicConfigurator.configure();
         Logger.getRootLogger().setLevel(Level.ERROR);
     }
-
     private final int port;
+    private final List<String> ipAddresses;
 
-    public LectureStudioServer(int port) {
+    public LectureStudioServer(int port, List<String> ipAddresses) {
         this.port = port;
+        this.ipAddresses = ipAddresses;
         System.out.println("\nLectureStudioServer constructor called with Port: " + port);
     }
 
     public void start() throws Exception {
+        for (String ipAddress : ipAddresses) {
+            new Thread(() -> {
+                try {
+                    startServerOnAddress(ipAddress);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }).start();
+        }
+    }
+
+    private void startServerOnAddress(String ipAddress) throws Exception {
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
-    
-        int maxAttempts = 100;
-        int attempts = 0;
+        int maxAttempts = 100; // Maximale Anzahl an Bindungsversuchen
+        int attempts = 0; // Aktuelle Anzahl an Versuchen
         boolean bound = false;
-        long startTime = System.currentTimeMillis(); // Start time for binding attempts
+        long startTime = System.currentTimeMillis(); // Startzeit für die Bindungsversuche
     
-        while (!bound && attempts < maxAttempts) {
-            try {
-                ServerBootstrap b = new ServerBootstrap();
-                b.group(bossGroup, workerGroup)
-                 .channel(NioServerSocketChannel.class)
-                 .childHandler(new ChannelInitializer<Channel>() {
-                     @Override
-                     protected void initChannel(Channel ch) {
-                         ch.pipeline().addLast(new FileSenderHandler("/app/mydocument.pdf"));
-                     }
-                 })
-                 .option(ChannelOption.SO_BACKLOG, 128)
-                 .childOption(ChannelOption.SO_KEEPALIVE, true);
+        try {
+            ServerBootstrap b = new ServerBootstrap();
+            b.group(bossGroup, workerGroup)
+                    .channel(NioServerSocketChannel.class)
+                    .childHandler(new ChannelInitializer<Channel>() {
+                        @Override
+                        protected void initChannel(Channel ch) {
+                            ch.pipeline().addLast(new FileSenderHandler("/app/mydocument.pdf"));
+                        }
+                    })
+                    .option(ChannelOption.SO_BACKLOG, 128)
+                    .childOption(ChannelOption.SO_KEEPALIVE, true);
     
-                System.out.println("Attempting to bind the server to Port " + port + ". Attempt: " + (attempts + 1));
-                ChannelFuture f = b.bind(port).sync();
-                System.out.println("Server successfully bound to Port " + port + "\n");
-                f.channel().closeFuture().sync();
-                bound = true;
-            } catch (Exception e) {
-                Thread.sleep(1000); // 1 seconds waiting time between attempts
-                attempts++;
-            } finally {
-                if (bound) {
-                    workerGroup.shutdownGracefully();
-                    bossGroup.shutdownGracefully();
+            while (!bound && attempts < maxAttempts) {
+                try {
+                    System.out.println("Attempting to bind the server to IP " + ipAddress + " and Port " + port + ". Attempt: " + (attempts + 1));
+                    ChannelFuture f = b.bind(InetAddress.getByName(ipAddress), port).sync();
+                    f.channel().closeFuture().sync();
+                    bound = true; // Bindung erfolgreich
+                    System.out.println("Server successfully bound to IP " + ipAddress + " and Port " + port + "mit Duration: ");
+                } catch (Exception e) {
+                    attempts++;
+                    Thread.sleep(3000); // 3 Sekunden Wartezeit zwischen den Versuchen
                 }
             }
-        }
     
-        long duration = System.currentTimeMillis() - startTime; // Total duration of binding attempts
-    
-        if (bound) {
-            System.out.println("Server successfully bound to Port " + port + " in " + duration / 1000 + " seconds after " + attempts + " attempts.");
-        } else {
-            System.out.println("Server could not be bound after " + maxAttempts + " attempts.");
-            workerGroup.shutdownGracefully();
-            bossGroup.shutdownGracefully();
+            long duration = System.currentTimeMillis() - startTime; // Gesamtdauer der Bindungsversuche
+            System.out.println("Duration: " + duration);
+
+            if (!bound) {
+                System.out.println("Server could not be bound to IP " + ipAddress + " and Port " + port + " after " + maxAttempts + " attempts.");
+            }
+        } finally {
+            if (!bound) {
+                workerGroup.shutdownGracefully();
+                bossGroup.shutdownGracefully();
+            }
         }
-    }        
+    }
+    
 
     public static void main(String[] args) throws Exception {
         Thread.sleep(10000);
@@ -84,7 +97,10 @@ public class LectureStudioServer {
             System.out.println("Data is going to be sent to the container p2p-containerlab-topology-" + peer);
         }
         int port = 8080;
-        new LectureStudioServer(port).start();
+        List<String> ipAddresses = Arrays.asList("172.20.26.2", "172.20.25.2", "172.20.24.2", "172.20.23.2",
+                "172.20.22.2", "172.20.21.2"); // Fügen Sie hier Ihre
+        // IP-Adressen ein
+        new LectureStudioServer(port, ipAddresses).start();
 
         Thread.sleep(5000000);
     }

@@ -16,6 +16,7 @@ public class YMLGenerator {
     private static Map<String, String> lectureStudioServerEnvVariables = new HashMap<>();
     private static Map<String, List<String>> superPeerEnvVariables = new HashMap<>();
     private static Map<String, String> peerEnvVariables = new HashMap<>();
+     private static Map<String, String> peerEnvVariablesSuperPeerIP = new HashMap<>();
 
     public YMLGenerator(String configFilePath) throws IOException {
         readAndProcessOutputFile();
@@ -60,12 +61,12 @@ public class YMLGenerator {
             fw.write(
                     "        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json\n");
             fw.write(
-                    "        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connection-details.sh:/app/connection-details.sh\n");
+                    "        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connection-details-superpeer.sh:/app/connection-details-superpeer.sh\n");
             fw.write("      exec:\n");
             fw.write("        - echo \"Waiting for 5 seconds...\"\n");
             fw.write("        - sleep 5\n");
-            fw.write("        - chmod +x /app/connection-details.sh\n");
-            fw.write("        - ./connection-details.sh\n");
+            fw.write("        - chmod +x /app/connection-details-superpeer.sh\n");
+            fw.write("        - ./connection-details-superpeer.sh\n");
 
             fw.write("      ports:\n");
             fw.write("        - \"8080:8080\"\n\n");
@@ -91,6 +92,11 @@ public class YMLGenerator {
                 }
 
                 fw.write("        SUPER_PEER: " + superPeer + "\n");
+                for (Map.Entry<String, String> entry : peerEnvVariablesSuperPeerIP.entrySet()) {
+                    if (entry.getKey().equals(peerName)) {
+                        fw.write("        SUPER_PEER_IP_ADDRES: " + entry.getValue() + "\n");
+                    }
+                }
                 if (mainClass.equals("SuperPeer")) {
                     Set<String> targetPeers = superPeerToPeersMap.getOrDefault(peerName, new HashSet<>());
                     fw.write("        SOURCE_PEER: " + peerName + "\n");
@@ -163,12 +169,22 @@ public class YMLGenerator {
             fw.write(
                     "        - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json\n");
             fw.write(
-                    "        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connection-details.sh:/app/connection-details.sh\n");
+                    "        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connection-details-superpeer.sh:/app/connection-details-superpeer.sh\n");
             fw.write("      exec:\n");
             fw.write("        - echo \"Waiting for 5 seconds...\"\n");
             fw.write("        - sleep 5\n");
-            fw.write("        - chmod +x /app/connection-details.sh\n");
-            fw.write("        - ./connection-details.sh\n");
+            fw.write("        - chmod +x /app/connection-details-superpeer.sh\n");
+            fw.write("        - ./connection-details-superpeer.sh\n");
+        }
+        else {
+            fw.write("      binds:\n");
+            fw.write(
+                    "        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connection-details-peer.sh:/app/connection-details-peer.sh\n");
+            fw.write("      exec:\n");
+            fw.write("        - echo \"Waiting for 5 seconds...\"\n");
+            fw.write("        - sleep 5\n");
+            fw.write("        - chmod +x /app/connection-details-peer.sh\n");
+            fw.write("        - ./connection-details-peer.sh\n");
         }
     }
 
@@ -190,6 +206,7 @@ public class YMLGenerator {
 
             String envVariableValue = node1Details[1] + ":" + node1Ip + ", " + node2Details[0] + ":" + node2Ip;
             peerEnvVariables.put(node2Details[0], node2Ip);
+            peerEnvVariablesSuperPeerIP.put(node2Details[0], node1Ip);
 
             if (node1Details[0].equals("lectureStudioServer")) {
                 lectureStudioServerEnvVariables.put("CONNECTION_" + connectionCounter, envVariableValue);

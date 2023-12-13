@@ -24,12 +24,12 @@ topology:
       binds:
         - /home/ozcankaraca/Desktop/mydocument.pdf:/app/mydocument.pdf
         - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connection-details.sh:/app/connection-details.sh
+        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connection-details-superpeer.sh:/app/connection-details-superpeer.sh
       exec:
         - echo "Waiting for 5 seconds..."
         - sleep 5
-        - chmod +x /app/connection-details.sh
-        - ./connection-details.sh
+        - chmod +x /app/connection-details-superpeer.sh
+        - ./connection-details-superpeer.sh
       ports:
         - "8080:8080"
 
@@ -39,46 +39,79 @@ topology:
       env:
         IP_ADDRES: 172.20.21.3
         SUPER_PEER: lectureStudioServer
+        SUPER_PEER_IP_ADDRES: 172.20.21.2
         MAIN_CLASS: Peer
       labels:
         role: receiver
         group: peer
+      binds:
+        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connection-details-peer.sh:/app/connection-details-peer.sh
+      exec:
+        - echo "Waiting for 5 seconds..."
+        - sleep 5
+        - chmod +x /app/connection-details-peer.sh
+        - ./connection-details-peer.sh
     2:
       kind: linux
       image: image-testbed
       env:
         IP_ADDRES: 172.20.22.3
         SUPER_PEER: lectureStudioServer
+        SUPER_PEER_IP_ADDRES: 172.20.22.2
         MAIN_CLASS: Peer
       labels:
         role: receiver
         group: peer
+      binds:
+        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connection-details-peer.sh:/app/connection-details-peer.sh
+      exec:
+        - echo "Waiting for 5 seconds..."
+        - sleep 5
+        - chmod +x /app/connection-details-peer.sh
+        - ./connection-details-peer.sh
     3:
       kind: linux
       image: image-testbed
       env:
         IP_ADDRES: 172.20.23.3
         SUPER_PEER: lectureStudioServer
+        SUPER_PEER_IP_ADDRES: 172.20.23.2
         MAIN_CLASS: Peer
       labels:
         role: receiver
         group: peer
+      binds:
+        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connection-details-peer.sh:/app/connection-details-peer.sh
+      exec:
+        - echo "Waiting for 5 seconds..."
+        - sleep 5
+        - chmod +x /app/connection-details-peer.sh
+        - ./connection-details-peer.sh
     4:
       kind: linux
       image: image-testbed
       env:
         IP_ADDRES: 172.20.24.3
         SUPER_PEER: lectureStudioServer
+        SUPER_PEER_IP_ADDRES: 172.20.24.2
         MAIN_CLASS: Peer
       labels:
         role: receiver
         group: peer
+      binds:
+        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connection-details-peer.sh:/app/connection-details-peer.sh
+      exec:
+        - echo "Waiting for 5 seconds..."
+        - sleep 5
+        - chmod +x /app/connection-details-peer.sh
+        - ./connection-details-peer.sh
     5:
       kind: linux
       image: image-testbed
       env:
         IP_ADDRES: 172.20.25.3
         SUPER_PEER: lectureStudioServer
+        SUPER_PEER_IP_ADDRES: 172.20.25.2
         SOURCE_PEER: 5
         TARGET_PEERS: 7
         CONNECTION_7: eth2:172.20.27.2, 7:172.20.27.3
@@ -88,18 +121,19 @@ topology:
         group: superpeer
       binds:
         - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connection-details.sh:/app/connection-details.sh
+        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connection-details-superpeer.sh:/app/connection-details-superpeer.sh
       exec:
         - echo "Waiting for 5 seconds..."
         - sleep 5
-        - chmod +x /app/connection-details.sh
-        - ./connection-details.sh
+        - chmod +x /app/connection-details-superpeer.sh
+        - ./connection-details-superpeer.sh
     6:
       kind: linux
       image: image-testbed
       env:
         IP_ADDRES: 172.20.26.3
         SUPER_PEER: lectureStudioServer
+        SUPER_PEER_IP_ADDRES: 172.20.26.2
         SOURCE_PEER: 6
         TARGET_PEERS: 8,9,10
         CONNECTION_8: eth2:172.20.28.2, 8:172.20.28.3
@@ -111,52 +145,84 @@ topology:
         group: superpeer
       binds:
         - /home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json:/app/connection-details.json
-        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connection-details.sh:/app/connection-details.sh
+        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connection-details-superpeer.sh:/app/connection-details-superpeer.sh
       exec:
         - echo "Waiting for 5 seconds..."
         - sleep 5
-        - chmod +x /app/connection-details.sh
-        - ./connection-details.sh
+        - chmod +x /app/connection-details-superpeer.sh
+        - ./connection-details-superpeer.sh
     7:
       kind: linux
       image: image-testbed
       env:
         IP_ADDRES: 172.20.27.3
         SUPER_PEER: 5
+        SUPER_PEER_IP_ADDRES: 172.20.27.2
         MAIN_CLASS: Peer
       labels:
         role: receiver
         group: peer
+      binds:
+        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connection-details-peer.sh:/app/connection-details-peer.sh
+      exec:
+        - echo "Waiting for 5 seconds..."
+        - sleep 5
+        - chmod +x /app/connection-details-peer.sh
+        - ./connection-details-peer.sh
     8:
       kind: linux
       image: image-testbed
       env:
         IP_ADDRES: 172.20.28.3
         SUPER_PEER: 6
+        SUPER_PEER_IP_ADDRES: 172.20.28.2
         MAIN_CLASS: Peer
       labels:
         role: receiver
         group: peer
+      binds:
+        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connection-details-peer.sh:/app/connection-details-peer.sh
+      exec:
+        - echo "Waiting for 5 seconds..."
+        - sleep 5
+        - chmod +x /app/connection-details-peer.sh
+        - ./connection-details-peer.sh
     9:
       kind: linux
       image: image-testbed
       env:
         IP_ADDRES: 172.20.29.3
         SUPER_PEER: 6
+        SUPER_PEER_IP_ADDRES: 172.20.29.2
         MAIN_CLASS: Peer
       labels:
         role: receiver
         group: peer
+      binds:
+        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connection-details-peer.sh:/app/connection-details-peer.sh
+      exec:
+        - echo "Waiting for 5 seconds..."
+        - sleep 5
+        - chmod +x /app/connection-details-peer.sh
+        - ./connection-details-peer.sh
     10:
       kind: linux
       image: image-testbed
       env:
         IP_ADDRES: 172.20.30.3
         SUPER_PEER: 6
+        SUPER_PEER_IP_ADDRES: 172.20.30.2
         MAIN_CLASS: Peer
       labels:
         role: receiver
         group: peer
+      binds:
+        - /home/ozcankaraca/Desktop/testbed/src/resources/skripts/connection-details-peer.sh:/app/connection-details-peer.sh
+      exec:
+        - echo "Waiting for 5 seconds..."
+        - sleep 5
+        - chmod +x /app/connection-details-peer.sh
+        - ./connection-details-peer.sh
   links:
     - endpoints: [lectureStudioServer:eth1, 1:eth1]
     - endpoints: [lectureStudioServer:eth2, 2:eth1]

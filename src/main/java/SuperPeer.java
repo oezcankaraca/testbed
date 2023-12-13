@@ -79,7 +79,7 @@ public class SuperPeer {
 
     public void startClient() throws Exception {
         EventLoopGroup workerGroup = new NioEventLoopGroup();
-
+        String superPeerIP = System.getenv("SUPER_PEER_IP_ADDRES");
         try {
             Bootstrap b = new Bootstrap();
             b.group(workerGroup)
@@ -99,14 +99,14 @@ public class SuperPeer {
 
             while (!connected && attempts < maxAttempts) {
                 try {
-                    System.out.println("Attempting to establish a connection. Attempt: " + (attempts + 1));
-                    ChannelFuture f = b.connect("172.100.100.10", clientPort).sync();
+                    System.out.println("Attempting to establish a connection to " + superPeerIP + ". Attempt: " + (attempts + 1));
+                    ChannelFuture f = b.connect(superPeerIP, clientPort).sync();
                     f.channel().closeFuture().sync();
                     connected = true; // Connection successful
                     fileReceived = true;
                 } catch (Exception e) {
                     attempts++;
-                    Thread.sleep(1000); // 1 second waiting time between attempts
+                    Thread.sleep(3000); // 1 second waiting time between attempts
                 }
             }
 
