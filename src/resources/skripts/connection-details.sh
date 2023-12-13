@@ -15,11 +15,11 @@ echo "SOURCE_PEER: $SOURCE_PEER"
 # Funktion zum Konfigurieren einer Netzwerkschnittstelle mit IP-Adresse
 configure_interface() {
     local interface=$1
-    local ip_addresses=($2) # IP-Adressen als Array
+    local ip_address=$2 # Einzelne IP-Adresse
 
-    for ip in "${ip_addresses[@]}"; do
-        ip addr add ${ip}/24 dev $interface
-    done
+    ip addr add ${ip_address}/24 dev $interface
+
+    echo "Für Source-Peer: " $SOURCE_PEER "wurde eine neue IP Adresse: " $ip_address "mit Interface: " $interface "hinzugefügt."  
 }
 
 # Funktion zum Finden der Eigenschaften einer spezifischen Verbindung
@@ -32,40 +32,32 @@ get_connection_properties() {
     echo $properties
 }
 
-# Funktion zum Einstellen der Latenz, Bandbreite und des Paketverlusts für eine Ziel-IP
-set_network_properties() {
-    local interface=$1
-    local latency=$2
-    local bandwidth=$3
-    local loss=$4
-    local target_ip=$5
-
-    echo "Setting latency=${latency}ms, bandwidth=${bandwidth}kbps, loss=${loss}% for $target_ip on $interface"
-
-    # Einstellen der Netzwerkeigenschaften mit festem handle_id
-    tc qdisc add dev $interface root handle 1: prio
-    tc qdisc add dev $interface parent 1:3 handle 30: netem delay ${latency}ms
-    tc filter add dev $interface protocol ip parent 1:0 prio 3 u32 match ip dst $target_ip/32 flowid 1:3
-
-    echo "Network properties set for $target_ip on $interface"
-}
-
 # Schleife über alle CONNECTION-Umgebungsvariablen
 for var in $(compgen -e | grep '^CONNECTION_'); do
     IFS=':' read -ra ADDR <<< "${!var}"
     interface=${ADDR[0]}
-    ip_addresses=(${ADDR[1]//,/ })
+    ip_address_pair=(${ADDR[1]//,/ })
+    local_ip=${ip_address_pair[0]}
+    target_peer=${ip_address_pair[1]}
+    target_ip=${ADDR[2]}
 
-    configure_interface "$interface" "${ip_addresses[*]}"
+    echo "Konfiguriere Interface: $interface mit IP: $target_ip für Verbindung zu Peer: $target_peer"
 
-    for ip in "${ip_addresses[@]}"; do
-        read latency bandwidth loss <<< $(get_connection_properties "$ip")
-        if [ -n "$latency" ] && [ -n "$bandwidth" ] && [ -n "$loss" ]; then
-            set_network_properties "$interface" "$latency" "$bandwidth" "$loss" "$ip"
-        else
-            echo "Keine Verbindungseigenschaften gefunden für $ip"
-        fi
-    done
+    configure_interface "$interface" "$local_ip"
+
+    read raw_latency bandwidth loss <<< $(get_connection_properties "${target_peer%:*}")
+    latency=$(printf "%.0f" "$raw_latency") # Runden der Latenz auf Ganzzahl
+    
+     # Konfiguration der Netzwerkeigenschaften
+    tc qdisc add dev $interface root handle 1: prio
+    tc qdisc add dev $interface parent 1:3 handle 30: netem delay ${latency}ms
+    tc filter add dev $interface protocol ip parent 1:0 prio 3 u32 match ip dst $target_ip/32 flowid 1:3
+
+    if [ -n "$latency" ] && [ -n "$bandwidth" ] && [ -n "$loss" ]; then
+        echo "Eigenschaften der Verbindung: Source $SOURCE_PEER, Target $target_peer, IP $target_ip - Latenz: ${latency}ms, Bandbreite: ${bandwidth}kbps, Paketverlust: ${loss}%"
+    else
+        echo "Keine Verbindungseigenschaften gefunden für Verbindung von $SOURCE_PEER zu $target_peer"
+    fi
 done
 
 # Zeigt die aktuelle tc-Konfiguration an
