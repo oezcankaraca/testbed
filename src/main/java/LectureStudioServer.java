@@ -3,6 +3,7 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Level;
@@ -86,8 +87,32 @@ public class LectureStudioServer {
             }
         }
     }
-    
+    private static List<String> extractIPAddressesFromEnv() {
+        List<String> ipAddresses = new ArrayList<>();
+        Map<String, String> env = System.getenv();
 
+        for (String envKey : env.keySet()) {
+            if (envKey.startsWith("CONNECTION_")) {
+                String connectionValue = env.get(envKey);
+                System.out.println(connectionValue);
+                String firstIPAddress = extractFirstIPAddress(connectionValue);
+                if (firstIPAddress != null) {
+                    ipAddresses.add(firstIPAddress);
+                }
+            }
+        }
+        return ipAddresses;
+    }
+
+    private static String extractFirstIPAddress(String connectionInfo) {
+        String[] parts = connectionInfo.split(",");
+        if (parts.length > 0) {
+            String[] subParts = parts[0].split(":");
+            return subParts[1];
+        }
+        return null;
+    }
+    
     public static void main(String[] args) throws Exception {
         Thread.sleep(10000);
         System.out.println("****************Main method of LectureStudioServer started****************\n");
@@ -97,9 +122,9 @@ public class LectureStudioServer {
             System.out.println("Data is going to be sent to the container p2p-containerlab-topology-" + peer);
         }
         int port = 8080;
-        List<String> ipAddresses = Arrays.asList("172.20.26.2", "172.20.25.2", "172.20.24.2", "172.20.23.2",
-                "172.20.22.2", "172.20.21.2"); // Fügen Sie hier Ihre
-        // IP-Adressen ein
+        List<String> ipAddresses = extractIPAddressesFromEnv();
+        System.out.println("Erste IP-Adressen: " + ipAddresses);
+
         new LectureStudioServer(port, ipAddresses).start();
 
         Thread.sleep(5000000);

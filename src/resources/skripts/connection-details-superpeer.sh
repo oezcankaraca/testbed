@@ -3,6 +3,7 @@
 # Pfad zur JSON-Datei mit den Verbindungsdetails
 CONNECTIONS_FILE="/app/connection-details.json"
 SOURCE_PEER=$SOURCE_PEER # Umgebungsvariable für den Quellknoten
+IP_ADDRES=$IP_ADDRES # Umgebungsvariable für die IP-Adresse
 
 # Prüfen, ob die Datei existiert
 if [ ! -f "$CONNECTIONS_FILE" ]; then
@@ -11,6 +12,12 @@ if [ ! -f "$CONNECTIONS_FILE" ]; then
 fi
 
 echo "SOURCE_PEER: $SOURCE_PEER"
+
+# Bedingte Anweisung zur Konfiguration von eth1, falls SOURCE_PEER nicht lectureStudioServer ist
+if [ "$SOURCE_PEER" != "lectureStudioServer" ]; then
+    ip addr add ${IP_ADDRES}/24 dev eth1
+    echo "IP-Adresse $IP_ADDRES wurde zu eth1 hinzugefügt, da SOURCE_PEER nicht lectureStudioServer ist."
+fi
 
 # Funktion zum Konfigurieren einer Netzwerkschnittstelle mit IP-Adresse
 configure_interface() {
@@ -47,8 +54,8 @@ for var in $(compgen -e | grep '^CONNECTION_'); do
 
     read raw_latency bandwidth loss <<< $(get_connection_properties "${target_peer%:*}")
     latency=$(printf "%.0f" "$raw_latency") # Runden der Latenz auf Ganzzahl
-    
-     # Konfiguration der Netzwerkeigenschaften
+
+    # Konfiguration der Netzwerkeigenschaften
     tc qdisc add dev $interface root handle 1: prio
     tc qdisc add dev $interface parent 1:3 handle 30: netem delay ${latency}ms
     tc filter add dev $interface protocol ip parent 1:0 prio 3 u32 match ip dst $target_ip/32 flowid 1:3
