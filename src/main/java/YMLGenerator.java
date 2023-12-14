@@ -237,7 +237,7 @@ public class YMLGenerator {
 
     private void readAndProcessOutputFile() {
         ObjectMapper mapper = new ObjectMapper();
-        String pathToOutputFile = "/home/ozcankaraca/Desktop/testbed/output.json";
+        String pathToOutputFile = "/home/ozcankaraca/Desktop/testbed/src/resources/data/output-data.json";
 
         try {
             JsonNode rootNode = mapper.readTree(new File(pathToOutputFile));
