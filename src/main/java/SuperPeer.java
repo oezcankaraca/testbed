@@ -124,7 +124,7 @@ public class SuperPeer {
     }
 
     public static void main(String[] args) throws Exception {
-        Thread.sleep(10000);
+        Thread.sleep(300000);
         System.out.println("****************Main method of SuperPeer started****************\n");
         int serverPort = 9090;
         int clientPort = 8080;

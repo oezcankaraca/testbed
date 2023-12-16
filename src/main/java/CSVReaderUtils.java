@@ -104,7 +104,7 @@ public class CSVReaderUtils {
     public static void main(String[] args) {
         String pathToCSV = "/home/ozcankaraca/Desktop/testbed/src/resources/data/fixed-broadband-speeds-august-2019-data-25.csv";
         String pathToNetworkStatistics = "/home/ozcankaraca/Desktop/testbed/src/resources/results/network-statistics.txt";
-        int numberOfPeers = 50; // Set the number of peers you want to read
+        int numberOfPeers = 10; // Set the number of peers you want to read
 
         readCsvDataAndWriteToFile(pathToCSV, pathToNetworkStatistics, numberOfPeers);
         System.out.println("Network statistics have been written to the file: " + pathToNetworkStatistics);

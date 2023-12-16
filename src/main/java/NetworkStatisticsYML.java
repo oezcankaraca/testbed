@@ -17,7 +17,7 @@ public class NetworkStatisticsYML extends CSVReaderUtils {
         String pathToPeerInfoFile = "/home/ozcankaraca/Desktop/testbed/src/resources/results/connection-details.json";
         String pathToCSV = "/home/ozcankaraca/Desktop/testbed/src/resources/data/fixed-broadband-speeds-august-2019-data-25.csv";
         String pathToNetworkStatistics = "/home/ozcankaraca/Desktop/testbed/src/resources/results/network-statistics.txt";
-        int numberOfPeers = 50; 
+        int numberOfPeers = 10; 
 
         // Lesen Sie zuerst die CSV-Daten und schreiben Sie sie in eine Datei
         readCsvDataAndWriteToFile(pathToCSV, pathToNetworkStatistics, numberOfPeers);
